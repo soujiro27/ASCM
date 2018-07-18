@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+	<link rel="stylesheet" type="text/css" href="/SIA/jur/Public/css/home.css">
+</head>
+<body>
+	{% include 'HomeLayout/Components/header.twig'  %}
+	<div class="row line"></div>
+	<section class="row main">
+		 {% include 'HomeLayout/Components/menu.twig'  %}
+		 <main id="root" data-id={{id}}></main>
+		 <div id="modal"></div>
+	</section>
+	<div id="modal"></div>
+
+	<script type="text/javascript" src="/SIA/jur/Public/js/fontawesome-all.min.js"></script>
+	<script type="text/javascript" src="/SIA/jur/Public/js/home.js"></script>
+	<script type="text/javascript" src="/SIA/jur/Public/js/Update/{{js}}.js"></script>
+</body>
+</html>
