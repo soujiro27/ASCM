@@ -9,6 +9,10 @@ include_once $root_directory.'/Catalogos/Acciones.php';
 include_once $root_directory.'/Catalogos/Textos.php';
 
 
+/*------------------- API ------------------------*/
+include_once $root_directory.'/Api/Api.php';
+
+
 /*----------------Datos DB ------------------*/
 include_once '/../../src/conexion.php';
 

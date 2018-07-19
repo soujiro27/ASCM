@@ -42,11 +42,12 @@ class Form extends Component {
 
 
     render(){
+        console.log(this.props.datos)
         return(
             <div className="form-container"> 
                 <div className="form-group col-lg-3">
                 <label>Documento</label>
-                <select className="form-control" required onChange={this.HandleChangeSelect} name="documento">
+                <select className="form-control" required onChange={this.HandleChangeSelect} name="documento" defaultValue={this.props.datos.idTipoDocto}>
                     <option value="">Escoga Opcion</option>
                     {
                         this.props.documentos.map((item) =>(
@@ -58,7 +59,7 @@ class Form extends Component {
 
                 <div className="form-group col-lg-3">
                 <label>Sub-Documento</label>
-                <select className="form-control" required  name="subDocumento">
+                <select className="form-control" required  name="subDocumento" defaultValue={this.props.datos.idSubTipoDocumento}>
                     <option value="">Escoga Opcion</option>
                     {
                         this.state.subDocumentos.map((item) =>(

@@ -62,7 +62,7 @@ class Insert extends Component{
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario cancel={this.HandleCancel} documentos={this.props.data}/>
+                <Formulario cancel={this.HandleCancel} documentos={this.props.documentos}  datos={this.props.data}/>
                 {
                     this.state.modal.visible &&
                     <Modal data={this.state.modal} close={this.HandleCloseModal}/>

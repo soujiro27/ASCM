@@ -6,15 +6,16 @@ let moduleWorks = 'catalogos';
 module.exports = {
   entry: {
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Main.js')],
-    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Main.js')]
+    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Main.js')],
     /*--------------------- Insert -------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
-    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
+    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
     /*------------------------------ UPDATE --------------------------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Update.js')],
+    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Update.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Insert/'),
+    path: path.resolve(__dirname, '../public/js/Update/'),
     filename: `[name].js`
   },
   devServer: {

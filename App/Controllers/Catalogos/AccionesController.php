@@ -67,7 +67,7 @@ class AccionesController extends TwigController {
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
-			//$accion->save();
+			$accion->save();
 			$validate[0] = 'OK';	
 			
 		}

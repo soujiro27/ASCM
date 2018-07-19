@@ -56,23 +56,30 @@ class TextosController extends TwigController {
 
 	}
 
-	public function guardar($data){
+	public function guardar(array $data){
 	
 		$data['estatus'] = 'ACTIVO';
 		$validate = $this->validate($data);
 		if(empty($validate)){
 			
-			$accion = new Textos([
-				'nombre' => $data['nombre'],
+			$textos = new Textos([
+				'idTipoDocto' => $data['documento'],
+				'tipo' => 'JURIDICO',
+				'idSubTipoDocumento' => $data['subDocumento'],
+				'nombre' => 'TEXTO-JURIDICO',
+				'texto' => $data['texto'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
-			//$accion->save();
+			$textos->save();
 			$validate[0] = 'OK';	
 			
 		}
 
 		echo json_encode($validate);
+		
+
+		
 	}
 
 
@@ -128,7 +135,9 @@ class TextosController extends TwigController {
 		
 
 		$valid = GUMP::is_valid($data,array(
-			'nombre' => 'required|max_len,5|alpha_space',
+			'documento' => 'required|max_len,20|alpha_space',
+			'subDocumento' => 'required|max_len,2',
+			'texto' => 'required',
 			'estatus' => 'required|max_len,8|alpha',
 		));
 
