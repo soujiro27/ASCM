@@ -8,13 +8,13 @@ use Carbon\Carbon;
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\BaseController;
 
-use Jur\App\Models\Catalogos\Textos;
+use Jur\App\Models\Catalogos\SubDocumentos;
 
 
-class TextosController extends TwigController {
+class subDocumentosController extends TwigController {
 
-	private $js = 'Textos';
-	private $nombre = 'Textos-Juridico';
+	private $js = 'SubDocumentos';
+	private $nombre = 'Sub-Documentos';
 
 
 	public function Home(){
@@ -35,7 +35,7 @@ class TextosController extends TwigController {
 
 	public function tabla(){
 
-		$datos = Textos::all();
+		$datos = SubDocumentos::all();
 		echo json_encode($datos);
 	}
 
@@ -56,46 +56,42 @@ class TextosController extends TwigController {
 
 	}
 
-	public function guardar(array $data){
+	public function guardar($data){
 	
 		$data['estatus'] = 'ACTIVO';
 		$validate = $this->validate($data);
 		if(empty($validate)){
 			
-			$textos = new Textos([
+			$accion = new SubDocumentos([
 				'idTipoDocto' => $data['documento'],
 				'tipo' => 'JURIDICO',
-				'idSubTipoDocumento' => $data['subDocumento'],
-				'nombre' => 'TEXTO-JURIDICO',
-				'texto' => $data['texto'],
+				'nombre' => $data['nombre'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
-			$textos->save();
+			$accion->save();
 			$validate[0] = 'OK';	
 			
 		}
 
 		echo json_encode($validate);
-		
-
-		
 	}
 
 
 	public function update($data){
 
-		$id = $data['idDocumentoTexto'];
+		$id = $data['idSubTipoDocumento'];
 
 		$validate = $this->validate($data);
 			if(empty($validate)){
 				
-				Textos::find($id)->update([
-					'idSubTipoDocumento' => $data['subDocumento'],
-					'texto' => $data['texto'],
+				SubDocumentos::find($id)->update([
+					'idTipoDocto' => $data['documento'],
+					'nombre' => $data['nombre'],
 					'estatus' => $data['estatus'],
 					'usrModificacion' => $_SESSION['idUsuario'],
 					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+
 
 				]);
 				$validate[0] = 'OK';	
@@ -125,7 +121,7 @@ class TextosController extends TwigController {
 
 	
 	public function registro($id){
-		$accion = Textos::find($id);
+		$accion = SubDocumentos::find($id);
 		echo json_encode($accion);
 	}
 
@@ -135,9 +131,8 @@ class TextosController extends TwigController {
 		
 
 		$valid = GUMP::is_valid($data,array(
-			'documento' => 'required|max_len,20|alpha_space',
-			'subDocumento' => 'required|max_len,2',
-			'texto' => 'required',
+			'documento' => 'required|max_len,10',
+			'nombre' => 'required|max_len,5|alpha_space',
 			'estatus' => 'required|max_len,8|alpha',
 		));
 

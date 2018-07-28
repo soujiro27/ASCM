@@ -7,10 +7,19 @@ $root_directory = '/../App/rutas/';
 
 include_once $root_directory.'/Catalogos/Acciones.php';
 include_once $root_directory.'/Catalogos/Textos.php';
+include_once $root_directory.'/Catalogos/SubDocumentos.php';
+include_once $root_directory.'/Catalogos/Caracteres.php';
+
+
 
 
 /*------------------- API ------------------------*/
 include_once $root_directory.'/Api/Api.php';
+
+
+/*------------------ Volantes ---------------------*/
+include_once $root_directory.'/Volantes/Volantes.php';
+
 
 
 /*----------------Datos DB ------------------*/

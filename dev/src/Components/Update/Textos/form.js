@@ -11,12 +11,32 @@ class Form extends Component {
     
     state = {
         subDocumentos:[],
-        text:''
+        text:this.props.datos.texto
     }
     
 
     options = {
         theme: 'snow'
+    }
+
+    componentDidMount(){
+        let documento = this.props.datos.idTipoDocto
+        if(documento != '')
+        {
+            let url = '/SIA/juridico/Api/SubDocumentos'
+            axios.get(url,{
+                params:{
+                    tipo:documento,
+                    auditoria:'SI'
+                }
+            })
+            .then((response) => {
+                this.setState({
+                    subDocumentos:response.data,
+                })
+            })
+        }
+        
     }
 
     HandleChangeSelect = (event) =>{
@@ -41,8 +61,9 @@ class Form extends Component {
     }
 
 
+
     render(){
-        console.log(this.props.datos)
+       
         return(
             <div className="form-container"> 
                 <div className="form-group col-lg-3">
@@ -59,7 +80,7 @@ class Form extends Component {
 
                 <div className="form-group col-lg-3">
                 <label>Sub-Documento</label>
-                <select className="form-control" required  name="subDocumento" defaultValue={this.props.datos.idSubTipoDocumento}>
+                <select className="form-control" required  name="subDocumento">
                     <option value="">Escoga Opcion</option>
                     {
                         this.state.subDocumentos.map((item) =>(
@@ -68,9 +89,21 @@ class Form extends Component {
                     }
                 </select>
                 </div>
+
+                <div className="form-group col-lg-3">
+                    <label>Estatus</label>
+                    <select defaultValue={this.props.datos.estatus} className="form-control" name="estatus" required>
+                        <option value="ACTIVO">ACTIVO</option>
+                        <option value="INACTIVO">INACTIVO</option>
+                    </select> 
+                </div>
                 
                 <div className="col-lg-11">
-                    <ReactQuill options={this.options} onChange={this.HandleTextEditor}/>
+                    <ReactQuill 
+                        options={this.options} 
+                        onChange={this.HandleTextEditor}
+                        defaultValue={this.props.datos.texto}
+                        />
                     <input type="hidden" name="texto" value={this.state.text} />
                 </div>
 

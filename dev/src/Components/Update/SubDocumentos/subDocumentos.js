@@ -9,7 +9,7 @@ import Formulario from './form';
 
 import submit from './../../functions/submit';
 
-class Insert extends Component{
+class Update extends Component{
     
     state = {
         "modal":{
@@ -23,10 +23,9 @@ class Insert extends Component{
 
     HandleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.props)
         let form_functions = new submit()
-        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idDocumentoTexto',this.props.data.idDocumentoTexto)
-        let url = '/SIA/juridico/Textos/Update'
+        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idSubTipoDocumento',this.props.data.idSubTipoDocumento)
+        let url = '/SIA/juridico/SubTiposDocumentos/Update'
         
         axios.post(url,data)
         .then(response =>{
@@ -40,14 +39,14 @@ class Insert extends Component{
 
     HandleCancel = (event) =>{
         event.preventDefault()
-        location.href = '/SIA/juridico/DoctosTextos'
+        location.href = '/SIA/juridico/SubTiposDocumentos'
     }
 
     HandleCloseModal = () =>{
         
         if(this.state.modal.success){
 
-            location.href = '/SIA/juridico/DoctosTextos'
+            location.href = '/SIA/juridico/SubTiposDocumentos'
         } else{
 
             this.setState({
@@ -74,4 +73,4 @@ class Insert extends Component{
     }
 }
 
-export default Insert;
+export default Update;

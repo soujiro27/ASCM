@@ -23,10 +23,10 @@ class Insert extends Component{
 
     HandleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.props)
+
         let form_functions = new submit()
-        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idDocumentoTexto',this.props.data.idDocumentoTexto)
-        let url = '/SIA/juridico/Textos/Update'
+        let data = form_functions.createData(document.getElementsByTagName('form'))
+        let url = '/SIA/juridico/Caracteres/save'
         
         axios.post(url,data)
         .then(response =>{
@@ -34,20 +34,19 @@ class Insert extends Component{
             this.setState(state_response)
         
         })
-        
 
     }
 
     HandleCancel = (event) =>{
         event.preventDefault()
-        location.href = '/SIA/juridico/DoctosTextos'
+        location.href = '/SIA/juridico/Caracteres'
     }
 
     HandleCloseModal = () =>{
         
         if(this.state.modal.success){
 
-            location.href = '/SIA/juridico/DoctosTextos'
+            location.href = '/SIA/juridico/Caracteres'
         } else{
 
             this.setState({
@@ -62,7 +61,7 @@ class Insert extends Component{
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario cancel={this.HandleCancel} documentos={this.props.documentos}  datos={this.props.data}/>
+                <Formulario cancel={this.HandleCancel}/>
                 {
                     this.state.modal.visible &&
                     <Modal data={this.state.modal} close={this.HandleCloseModal}/>
