@@ -19,6 +19,7 @@ include_once $root_directory.'/Api/Api.php';
 
 /*------------------ Volantes ---------------------*/
 include_once $root_directory.'/Volantes/Volantes.php';
+include_once $root_directory.'/Volantes/VolantesDiversos.php';
 
 
 

@@ -47,8 +47,13 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_Turnados_Auditoria($app->request->get());
 	});
 
-		$app->get('/Export',function() use ($controller){
+	$app->get('/Export',function() use ($controller){
 		$controller->export();
+	});
+
+
+	$app->post('/Remitentes',function() use ($controller,$app){
+		$controller->add_Remitentes($app->request->post());
 	});
 
 });

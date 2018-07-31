@@ -9,13 +9,15 @@ module.exports = {
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Main.js')],
     //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Main.js')],
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Main.js')],
-    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Main.js')],
+    //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Main.js')],
+    //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Main.js')],
     /*--------------------- Insert -------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
     //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Insert.js')],
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
+    "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
     /*------------------------------ UPDATE --------------------------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Update.js')],
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Update.js')],
@@ -24,7 +26,7 @@ module.exports = {
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Home/'),
+    path: path.resolve(__dirname, '../public/js/Insert/'),
     filename: `[name].js`
   },
   devServer: {

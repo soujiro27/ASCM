@@ -2,6 +2,8 @@
 namespace Jur\App\Controllers;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Carbon\Carbon;
+use GUMP;
 use \Jur\App\Models\Modulos\TiposDocumentos;
 use \Jur\App\Models\Modulos\SubTipos;
 use \Jur\App\Models\Catalogos\Caracteres;
@@ -12,6 +14,7 @@ use Jur\App\Models\Volantes\AuditoriasUnidades;
 use Jur\App\Models\Volantes\Unidades;
 use Jur\App\Models\Volantes\VolantesDocumentos;
 use Jur\App\Models\Volantes\Volantes;
+use Jur\App\Models\Modulos\Remitentes;
 
 
 class ModulosController {
@@ -191,6 +194,48 @@ class ModulosController {
 
 		$writer = new Xlsx($spreadsheet);
 		$writer->save('./jur/export/volantes/volantes.xlsx');
+	}
+
+	public function add_Remitentes(array $data){
+
+		$validate = $this->validate_Remitentes($data);
+		if(!empty($validate)){
+			$remitente = new Remitentes([
+				'tipoRemitente' => $data['tipo'],
+				'saludo' => $data['saludo'],
+				'nombre' => $data['nombre'],
+				'puesto' => $data['puesto'],
+				'siglasArea' => $data['siglasArea'],
+				'usrAlta' => $_SESSION['idUsuario'],
+	            'estatus' => 'ACTIVO',
+	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			]);
+
+			$remitente->save();
+			$validate[0] = 'OK';
+		}
+
+		echo json_encode($validate);
+
+
+	}
+
+	public function validate_Remitentes(array $data){
+
+		$is_valid = GUMP::is_valid($data,array(
+			'tipo' => 'required|max_len,1|numeric',
+			'saludo'=> 'required|max_len,15',
+			'nombre' => 'required|max_len,120',
+			'puesto' => 'required|max_len,120',
+			'siglasArea' =>  'required|max_len,20',
+		));
+
+		if($is_valid === true){
+			$is_valid = [];	
+		}
+
+		return $is_valid;
+
 	}
 }
 
