@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import axios from 'axios';
 import { GridLoader } from 'react-spinners';
 import './../spiner.styl'
 
@@ -22,15 +23,15 @@ class TableContainer extends Component{
         },
         {
             Header:'Documento',
-            accessor:'documento'
+            accessor:'numDocumento'
         },
         {
             Header:'Remitente',
-            accessor:'remitente'
+            accessor:'idRemitente'
         },
         {
             Header:'Turnado',
-            accessor:'turnado'
+            accessor:'idAreaRecepcion'
         },
         {
             Header:'Fecha Recepcion',
@@ -42,15 +43,15 @@ class TableContainer extends Component{
         },
         {
             Header:'Auditoria',
-            accessor:'auditoria'
+            accessor:'clave'
         },
         {
             Header:'Oficio',
-            accessor:'oficio'
+            accessor:'nombre'
         },
         {
             Header:'Estado',
-            accessor:'estado'
+            accessor:'idEstadoTurnado'
         },
         {
             Header:'Estatus',
@@ -61,10 +62,13 @@ class TableContainer extends Component{
 
     componentDidMount(){
         let url = `/SIA/juridico/Volantes/all`;
-        fetch(url,{credentials: "same-origin"})
-        .then(response => response.json())
-        .then(data => this.setState({data,load:true}));
-
+        axios.get(url)
+        .then((response)=>{
+            this.setState({
+                load:true,
+                data:response.data
+            })
+        });
     }
 
     Handle_Click = (state, rowInfo, column) =>{

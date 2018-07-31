@@ -10,7 +10,7 @@ class NotalModal extends Component {
     }
 
     HandleCloseModal = () => {
-        this.props.close(false,this.state.nota)
+        this.props.close(this.state.nota)
     }
 
     HandleChangeSelect = (event) =>{
@@ -35,7 +35,7 @@ class NotalModal extends Component {
                 <h3>¿El oficio contiene Nota Informativa ?</h3>
             </div>
             <div className="col-lg-3">
-                <select className="form-control" defaultValue="NO" onChnage={this.HandleChangeSelect} >
+                <select className="form-control" defaultValue="NO" onChange={this.HandleChangeSelect} >
                     <option value="NO">NO</option>
                     <option value="SI">SI</option>
                 </select>

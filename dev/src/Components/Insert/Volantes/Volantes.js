@@ -14,22 +14,28 @@ import Formulario from './form';
 import submit from './../../functions/submit';
 
 class Insert extends Component{
-    
+  
+
     state = {
-        "modal":{
-            "visible":false,
-            "message":"",
-            "class":"",
-            "icon":"",
-            "success":false
+        modals:{
+            dictamen:false,
+            nota:false,
+            auditoria:false
         },
-        modalDictamen:false,
-        modalNota:false,
-        modalAuditoria:false,
         formData:{
-            cuenta:2016,
-            nota:'NO'
+            cuenta:'2016',
+            nota:'NO',
+            cveAuditoria:'',
+            idRemitente:''
+        },
+        modal:{
+            visible:false,
+            message:"",
+            class:"",
+            icon:"",
+            success:false
         }
+        
     }
 
     HandleSubmit = (event) => {
@@ -37,16 +43,16 @@ class Insert extends Component{
 
         let form_functions = new submit()
         let data = form_functions.createData(document.getElementsByTagName('form'))
+        data.append('file', document.getElementById('file').files[0]);
         let url = '/SIA/juridico/Volantes/save'
         
         axios.post(url,data)
         .then(response =>{
             let state_response = form_functions.resolve_request(response)
+            console.log(state_response)
             this.setState(state_response)
         
         })
-        
-
     }
 
     HandleCancel = (event) =>{
@@ -67,72 +73,84 @@ class Insert extends Component{
         }
     }
 
-    HandleCloseModalDictamen = (close,cuenta) =>{
-        this.setState({
-            modalDictamen:false,
-            form:{
-                cuenta:cuenta
-            }
+    HandleCloseModalDictamen = (cuenta) =>{
+        this.setState({modals:{
+            dictamen:false
+            },
+            formData:{cuenta}
         })
     }
 
-    HandleCloseModalNota = (close,nota) =>{
+    HandleCloseModalNota = (nota) =>{
         this.setState({
-            modalNota:false,
-            form:{
-                nota:nota
+            modals:{nota:false},
+            formData:{
+                nota,
+                cuenta:'2016'
             }
         })
     }
 
     HandleChangeSubDocumento = (texto) =>{
         if(texto == 'DICTAMEN'){
-            this.setState({modalDictamen:true})
+            this.setState({modals:{dictamen:true}})
         } else if (texto == 'CONFRONTA'){
-            this.setState({modalNota:true})
+            this.setState({modals:{nota:true}})
         }
     }
 
     HandleOpenModalAuditoria = () =>{
         this.setState({
-            modalAuditoria:true
+            modals:{auditoria:true}
+        })
+    }
+
+    HandleCloseModalAuditoria = (idRemitente,cveAuditoria,cuenta) =>{
+        
+        this.setState({
+            modals:{auditoria:false},
+            formData:{cveAuditoria,idRemitente,cuenta}
         })
     }
 
 
     render(){
+        
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
                 <Formulario 
                     cancel={this.HandleCancel} 
                     documentos={this.props.data}
+                    caracteres={this.props.caracteres}
+                    areas={this.props.areas}
+                    acciones={this.props.acciones}
                     modalSubDocumento={this.HandleChangeSubDocumento}
                     formData={this.state.formData}
                     btnAuditoria={this.HandleOpenModalAuditoria}
                 />
                 {
                     this.state.modal.visible &&
-                    <Modal data={this.state.modal} close={this.HandleCloseModal}/>
+                    <Modal data={this.state.modal}  close={this.HandleCloseModal}/>
                 }
                 {
-                    this.state.modalDictamen &&
+                    this.state.modals.dictamen &&
                     <ModalDictamen 
                         close={this.HandleCloseModalDictamen} 
-                        visible={this.state.modalDictamen}    
+                        visible={true}    
                     />
                 }
                 {
-                    this.state.modalNota &&
+                    this.state.modals.nota &&
                     <NotaModal 
                         close={this.HandleCloseModalNota} 
-                        visible={this.state.modalNota}
+                        visible={true}
                     />
                 }
                 {
-                    this.state.modalAuditoria &&
+                    this.state.modals.auditoria &&
                     <AuditoriaModal
-                        close={this.HandleCloseModal}
-                        visible={this.state.modalAuditoria}
+                        close={this.HandleCloseModalAuditoria}
+                        visible={true}
                         cuenta={this.state.formData}
                     />
 

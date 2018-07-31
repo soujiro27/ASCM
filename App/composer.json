@@ -12,6 +12,7 @@
         "twig/twig": "~1.0",
         "illuminate/database": "5.4",
         "nesbot/carbon": "1.22",
-        "wixel/gump": "dev-master"
+        "wixel/gump": "dev-master",
+        "phpoffice/phpspreadsheet": "^1.3"
     }
 }

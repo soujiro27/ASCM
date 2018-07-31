@@ -10,7 +10,7 @@ class DictamenModal extends Component {
     }
 
     HandleCloseModal = () => {
-        this.props.close(false,this.state.cuenta)
+        this.props.close(this.state.cuenta)
     }
 
     HandleChangeSelect = (event) =>{
@@ -35,7 +35,7 @@ class DictamenModal extends Component {
                 <h3>Seleccione Cuenta Publica</h3>
             </div>
             <div className="col-lg-4">
-                <select className="form-control" defaultValue="2016" onChnage={this.HandleChangeSelect} >
+                <select className="form-control" defaultValue="2016" onChange={this.HandleChangeSelect} >
                     <option value="2015">2015</option>
                     <option value="2016">2016</option>
                 </select>

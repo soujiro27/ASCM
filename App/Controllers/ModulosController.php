@@ -1,5 +1,7 @@
 <?php  
 namespace Jur\App\Controllers;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use \Jur\App\Models\Modulos\TiposDocumentos;
 use \Jur\App\Models\Modulos\SubTipos;
 use \Jur\App\Models\Catalogos\Caracteres;
@@ -9,6 +11,8 @@ use Jur\App\Models\Volantes\Auditorias;
 use Jur\App\Models\Volantes\AuditoriasUnidades;
 use Jur\App\Models\Volantes\Unidades;
 use Jur\App\Models\Volantes\VolantesDocumentos;
+use Jur\App\Models\Volantes\Volantes;
+
 
 class ModulosController {
 
@@ -147,6 +151,46 @@ class ModulosController {
 			->get();
 		}
 		echo json_encode($turnos);
+	}
+
+	public function export(){
+
+		$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','a.clave','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion')
+		->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
+		->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
+		->join('sia_auditorias as a','a.idAuditoria','=','vd.cveAuditoria')
+		->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+		->where('sub.auditoria','SI')
+		->where('t.idTipoTurnado','V')
+		->orderBy("folio","ASC")
+		->get();
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+		
+		$array_volantes = $volantes->toArray();
+		$colums = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z','AA','AB','AC','AD'];
+		$count = 0;
+		$row = 1; 
+
+		foreach ($array_volantes[0] as $key => $value) {
+			$sheet->setCellValue($colums[$count].$row, $key);
+			$count++;
+			
+		}
+
+		$count = 0;
+		foreach ($array_volantes as $key => $value) {
+			foreach ($array_volantes[$key] as $llave => $valor) {
+				$row = $key + 2 ;
+				$sheet->setCellValue($colums[$count].$row, $valor);
+				$count++;
+			}
+		}
+
+
+		$writer = new Xlsx($spreadsheet);
+		$writer->save('./jur/export/volantes/volantes.xlsx');
 	}
 }
 

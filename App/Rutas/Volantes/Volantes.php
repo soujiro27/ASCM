@@ -46,9 +46,13 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->registro($id);
 	});
 
+	$app->get('/Volantes/Export',function() use ($controller){
+		$controller->export();
+	});
+
 
 	$app->post('/Volantes/save',function() use ($controller,$app){
-		$controller->guardar($app->request->post());
+		$controller->guardar($app->request->post(),$_FILES);
 	});
 
 	$app->post('/Volantes/Update',function() use ($controller,$app){

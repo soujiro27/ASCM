@@ -7,9 +7,10 @@ import './modal.styl'
 class AuditoriaModal extends Component {
     
     state = {
-        nota:'NO',
+        cuenta:this.props.cuenta.cuenta,
         tableData:{
             visible:false,
+            cveAuditoria:'',
             area:'',
             rubro:'',
             sujeto:'',
@@ -23,13 +24,10 @@ class AuditoriaModal extends Component {
     }
 
     HandleCloseModal = () => {
-        this.props.close(false,this.state.nota)
+        
+        this.props.close(this.state.tableData.area,this.state.tableData.cveAuditoria,this.state.cuenta)
     }
 
-    HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.setState({nota:value})
-    }
 
     DatosAuditoria = (clave,cuenta) =>{
 
@@ -50,20 +48,25 @@ class AuditoriaModal extends Component {
 
         axios.all([this.DatosAuditoria(clave,cuenta),this.DatosTurnadoAuditoria(clave,cuenta)])
         .then(axios.spread((datos,turnos)=>{
-            console.log(turnos.data.length)
+
+            if(Object.keys(datos.data).length > 1 ){
             this.setState({
+                cuenta:this.state.cuenta,
                 tableData:{
                     visible:true,
                     area:datos.data.idArea,
                     rubro:datos.data.rubro,
                     sujeto:datos.data.sujeto,
                     tipo:datos.data.tipo,
+                    cveAuditoria:datos.data.id
                 },
                 tableTurno:{
                     visible:true,
                     data:turnos.data
                 }
-            })
+            })}
+            
+            
         }))
     }
 
@@ -110,8 +113,8 @@ class AuditoriaModal extends Component {
                 </tr>
                     {this.state.tableTurno.data.map((item) => (
                         <tr>
-                            <td key={item.idAreaRecepcion}>item.idAreaRecepcion</td>
-                            <td key={item.nombre}>item.nombre</td>
+                            <td key={item.idAreaRecepcion}>{item.nombre}</td>
+                            <td key={item.nombre}>{item.idAreaRecepcion}</td>
                         </tr>
 
                         ))
