@@ -56,6 +56,10 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->add_Remitentes($app->request->post());
 	});
 
+	$app->get('/Remitentes/Tipo',function() use ($controller,$app){
+		$controller->get_remitentes($app->request->get());
+	});
+
 });
 
 

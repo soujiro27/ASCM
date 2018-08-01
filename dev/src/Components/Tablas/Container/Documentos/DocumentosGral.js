@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import axios from 'axios';
 import { GridLoader } from 'react-spinners';
 import './../spiner.styl'
 
@@ -22,12 +21,8 @@ class TableContainer extends Component{
             accessor:'subFolio'
         },
         {
-            Header:'Documento',
-            accessor:'numDocumento'
-        },
-        {
-            Header:'Remitente',
-            accessor:'idRemitente'
+            Header:'Oficio',
+            accessor:'nombre'
         },
         {
             Header:'Turnado',
@@ -36,18 +31,6 @@ class TableContainer extends Component{
         {
             Header:'Fecha Recepcion',
             accessor:'fRecepcion'
-        },
-        {
-            Header:'Desfazado',
-            accessor:'extemporaneo'
-        },
-        {
-            Header:'Auditoria',
-            accessor:'clave'
-        },
-        {
-            Header:'Oficio',
-            accessor:'nombre'
         },
         {
             Header:'Estado',
@@ -61,20 +44,17 @@ class TableContainer extends Component{
 
 
     componentDidMount(){
-        let url = `/SIA/juridico/Volantes/all`;
-        axios.get(url)
-        .then((response)=>{
-            this.setState({
-                load:true,
-                data:response.data
-            })
-        });
+        let url = `/SIA/juridico/DocumentosGral/all`;
+        fetch(url,{credentials: "same-origin"})
+        .then(response => response.json())
+        .then(data => this.setState({data,load:true}));
+
     }
 
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/Volantes/${rowInfo.original.idVolante}`
+                location.href = `/SIA/juridico/DocumentosGral/${rowInfo.original.idVolante}`
             }
         }
     }

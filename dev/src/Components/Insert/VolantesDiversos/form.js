@@ -1,14 +1,33 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import SelectReact from 'react-select';
+import 'react-select/dist/react-select.css';
+
 
 class Form extends Component {
     
     state = {
         subDocumentos:[],
         Numero_Documento:50,
-        asunto:500
+        asunto:500,
+        selectedOption: ''
     }
     
+    optionSelectAreas = [
+        {value: 'DAJPA', label: 'DIRECCIÓN DE ASESORÍA JURíDICA Y PROMOCIÓN DE ACCIONES'},
+        {value: 'DCPA', label: 'DIRECCIÓN CONTENCIOSA Y DE PROMOCIÓN DE ACCIONES'},
+        {value: 'DIJPA', label: 'DIRECCIÓN DE INTERPRETACIÓN JURíDICA Y PROMOCIÓN DE ACCIONES'},
+        {value: 'DN', label: 'DIRECCIÓN DE NORMATIVIDAD'},
+        {value:'DGAJ', label:'DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS'}   
+    ]
+
+    handleChangeSelectTurnado = (selectedOption) => {
+     
+        this.setState({ 
+            selectedOption:selectedOption
+            });
+        
+      }
 
     HandleChangeSelect = (event) =>{
         let value = event.target.value
@@ -27,12 +46,6 @@ class Form extends Component {
         }
     }
 
-    HandleChangeSubDocumento = (event) =>{
-        let index = event.nativeEvent.target.selectedIndex
-        let texto = event.nativeEvent.target[index].text
-        this.props.modalSubDocumento(texto)
-    }
-
 
     CountCaracterText = (input) =>{
         let max = input.nativeEvent.target.maxLength
@@ -46,6 +59,14 @@ class Form extends Component {
     HandleClickRemitente = (event) =>{
         event.preventDefault()
         this.props.addRemitente()
+    }
+
+    HandleChangeRemitente = (event) =>{
+        let value = event.target.value
+        if(value != ''){
+            this.props.remitente(value)
+        }
+        
     }
 
 
@@ -67,7 +88,7 @@ class Form extends Component {
 
                     <div className="form-group col-lg-3">
                         <label>Sub-Documento</label>
-                        <select className="form-control" required  name="subDocumento" onChange={this.HandleChangeSubDocumento} id="subDocumento">
+                        <select className="form-control" required  name="subDocumento" id="subDocumento">
                         <option value="">Escoja Opcion</option>
                         {
                             this.state.subDocumentos.map((item) =>(
@@ -125,7 +146,7 @@ class Form extends Component {
                 <div className="row">
                         <div className="col-lg-2">
                             <label>Remitente</label>
-                            <select className="form-control">
+                            <select className="form-control" onChange={this.HandleChangeRemitente}>
                                 <option value="">Escoja Opcion</option>
                                 <option value="I">Interno</option>
                                 <option value="E">Externo</option>
@@ -138,11 +159,26 @@ class Form extends Component {
                 </div>
 
                 <div className="row">
+                    <div className="col-lg-5" >
+                        <label>Nombre</label>
+                        <p className="form-control">{this.props.dataRemitente.saludo} {this.props.dataRemitente.nombre}</p>
+                    </div>
+                    <div className="col-lg-7" >
+                        <label>Puesto</label>
+                        <p className="form-control">{this.props.dataRemitente.puesto}</p>
+                    </div>
+                </div>
+
+               
+
+                <div className="row">
                     <div className="col-lg-12" >
                         <label>Asunto ({this.state.asunto})</label>
                         <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="500"></textarea>
                     </div>
                 </div>
+
+                
 
                 <div className="row">
                     <div className="col-lg-12" >
@@ -165,14 +201,16 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-6">
                         <label>Turnado a:</label>
-                        <select className="form-control" required  name="turnado">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.areas.map((item) =>(
-                                    <option key={item.idArea} value={item.idArea}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
+                        <SelectReact
+                        name="turnado"
+                        value={this.state.selectedOption}
+                        multi={true}
+                        labelKey='value'
+                        joinValues={true}
+                        className='small-font'
+                        onChange={this.handleChangeSelectTurnado}
+                        options={this.optionSelectAreas}
+                    />
                     </div>
                     <div className="col-lg-3">
                         <label>Accion</label>
@@ -188,9 +226,8 @@ class Form extends Component {
                 </div>
                 
                 <div className="form-hidden">
-                       
-                        <input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
-                        
+                        <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />
+                        <input type="hidden" name="idRemitente" value={this.props.dataRemitente.idRemitente} />
                 </div>
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />

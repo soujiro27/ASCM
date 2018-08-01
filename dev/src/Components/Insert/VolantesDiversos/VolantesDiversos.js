@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Modal from './../../Modals/form'
-import ModalDictamen from './../../Modals/dictamen'
-import NotaModal from './../../Modals/nota'
 import AddRemitenteModal from './../../Modals/Add-Remitente';
+import RemitentesModal from './../../Modals/remitentes';
 
 import './../../shared_styles/insert.styl'
 
@@ -18,13 +17,13 @@ class Insert extends Component{
 
     state = {
         modals:{
-            dictamen:false,
-            nota:false,
-            addRemitente:false
+            addRemitente:false,
+            remitente:false
         },
         formData:{
-            nota:'NO',
-            cveAuditoria:'',
+            tipoRemitente:'',
+            nombre:'',
+            puesto:'',
             idRemitente:''
         },
         modal:{
@@ -43,7 +42,7 @@ class Insert extends Component{
         let form_functions = new submit()
         let data = form_functions.createData(document.getElementsByTagName('form'))
         data.append('file', document.getElementById('file').files[0]);
-        let url = '/SIA/juridico/Volantes/save'
+        let url = '/SIA/juridico/VolantesDiversos/save'
         
         axios.post(url,data)
         .then(response =>{
@@ -56,14 +55,14 @@ class Insert extends Component{
 
     HandleCancel = (event) =>{
         event.preventDefault()
-        location.href = '/SIA/juridico/Volantes'
+        location.href = '/SIA/juridico/VolantesDiversos'
     }
 
     HandleCloseModal = () =>{
         
         if(this.state.modal.success){
 
-            location.href = '/SIA/juridico/Volantes'
+            location.href = '/SIA/juridico/VolantesDiversos'
         } else{
 
             this.setState({
@@ -72,31 +71,6 @@ class Insert extends Component{
         }
     }
 
-    HandleCloseModalDictamen = (cuenta) =>{
-        this.setState({modals:{
-            dictamen:false
-            },
-            formData:{cuenta}
-        })
-    }
-
-    HandleCloseModalNota = (nota) =>{
-        this.setState({
-            modals:{nota:false},
-            formData:{
-                nota,
-                cuenta:'2016'
-            }
-        })
-    }
-
-    HandleChangeSubDocumento = (texto) =>{
-        if(texto == 'DICTAMEN'){
-            this.setState({modals:{dictamen:true}})
-        } else if (texto == 'CONFRONTA'){
-            this.setState({modals:{nota:true}})
-        }
-    }
 
     OpenModalAddRemitente = () =>{
         this.setState({modals:{addRemitente:true}})
@@ -107,7 +81,31 @@ class Insert extends Component{
             modals:{addRemitente:false}
         })
     }
+    
+    OpenModalRemitentes = (tipo) =>{
+        this.setState({
+            formData:{
+                tipoRemitente:tipo
+            },
+            modals:{
+                remitente:true
+            }
+        })
+    }
 
+
+    HandleCloseModalRemitentes = (data) =>{
+        this.setState({
+            modals:{remitente:false},
+            formData:{
+                nombre:data.nombre,
+                puesto:data.puesto,
+                idRemitenteJuridico:data.idRemitenteJuridico,
+                idRemitente:data.siglasArea,
+                saludo:data.saludo
+            }
+        })
+    }
 
     render(){
         
@@ -119,31 +117,27 @@ class Insert extends Component{
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
                     acciones={this.props.acciones}
-                    modalSubDocumento={this.HandleChangeSubDocumento}
                     formData={this.state.formData}
                     addRemitente={this.OpenModalAddRemitente}
+                    remitente={this.OpenModalRemitentes}
+                    dataRemitente={this.state.formData}
                 />
                 {
                     this.state.modal.visible &&
                     <Modal data={this.state.modal}  close={this.HandleCloseModal}/>
                 }
-                {
-                    this.state.modals.dictamen &&
-                    <ModalDictamen 
-                        close={this.HandleCloseModalDictamen} 
-                        visible={true}    
-                    />
-                }
-                {
-                    this.state.modals.nota &&
-                    <NotaModal 
-                        close={this.HandleCloseModalNota} 
-                        visible={true}
-                    />
-                }
+              
                 {
                     this.state.modals.addRemitente &&
                     <AddRemitenteModal visible={true} close={this.HandleCloseModalAddRemitente} />
+                }
+                {
+                    this.state.modals.remitente &&
+                    <RemitentesModal 
+                        visible={true} 
+                        close={this.HandleCloseModalRemitentes} 
+                        tipo={this.state.formData.tipoRemitente}
+                    />
                 }
             
             </form>

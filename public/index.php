@@ -22,6 +22,9 @@ include_once $root_directory.'/Volantes/Volantes.php';
 include_once $root_directory.'/Volantes/VolantesDiversos.php';
 
 
+/*----------------- Documentos Digitalizados ----------*/
+include_once $root_directory.'/Documentos/DocumentosGral.php';
+
 
 /*----------------Datos DB ------------------*/
 include_once '/../../src/conexion.php';

@@ -107,6 +107,7 @@ class BaseController {
 	    		'archivoOriginal' => $nombre_file,
 	    		'archivoFinal' => $nombre_final,
 	    		'idTipoArchivo' => $extension[1],
+	    		'idVolante' => $idVolante,
 	    		'usrAlta' => $_SESSION['idUsuario'],
 	            'estatus' => 'ACTIVO'
 	            ]);

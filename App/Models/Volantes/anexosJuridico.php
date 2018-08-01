@@ -12,6 +12,7 @@ class AnexosJuridico extends Model {
      'archivoFinal',
      'idTipoArchivo',
      'comentario',
+     'idVolante',
      'usrAlta',
      'fAlta',
      'estatus'

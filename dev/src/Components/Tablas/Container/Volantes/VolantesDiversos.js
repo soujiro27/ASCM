@@ -81,9 +81,12 @@ class TableContainer extends Component{
                 defaultPageSize={10}
                 className="-highlight"
                 previousText='Anterior'
+                filterable={true}
                 nextText='Siguiente'
                 noDataText='Sin Datos'
                 pageText='Pagina'
+                rowsText='Registros'
+                resizable={true}
                 ofText= 'de'
                 getTrProps={this.Handle_Click}
             /> 

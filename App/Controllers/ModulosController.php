@@ -237,6 +237,14 @@ class ModulosController {
 		return $is_valid;
 
 	}
+
+	public function get_remitentes(array $data){
+
+		$tipo = $data['tipo'];
+
+		$remitentes = Remitentes::where('tipoRemitente',"$tipo")->where('estatus','ACTIVO')->get();
+		echo json_encode($remitentes);
+	}
 }
 
 ?>
