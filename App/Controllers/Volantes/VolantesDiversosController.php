@@ -111,7 +111,8 @@ class VolantesDiversosController extends TwigController {
 
 			$areas = explode(',',$data['turnado']);
 
-			
+			$idTurnado = [];
+			$areaRecepcion = [];
 
 			foreach ($areas as $key => $value) {
 
@@ -132,15 +133,19 @@ class VolantesDiversosController extends TwigController {
         		]);
 
         		$turno->save();
+        		$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
+        		array_push($idTurnado, $idTurnadoJuridico);
+        		array_push($areaRecepcion,$value);
         	}
         	
-        	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
+        	
 
         	
 			if(!empty($file)){
 
-				$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
-				
+				foreach ($idTurnado as $key => $value) {
+					$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$areaRecepcion[$key]);
+				}
 			}
 
 			foreach ($areas as $key => $value) {

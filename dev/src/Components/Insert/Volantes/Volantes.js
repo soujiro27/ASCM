@@ -49,7 +49,6 @@ class Insert extends Component{
         axios.post(url,data)
         .then(response =>{
             let state_response = form_functions.resolve_request(response)
-            console.log(state_response)
             this.setState(state_response)
         
         })

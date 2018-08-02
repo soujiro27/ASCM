@@ -26,9 +26,10 @@ module.exports = {
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Update.js')],
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Update.js')],
+    "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Home/'),
+    path: path.resolve(__dirname, '../public/js/Update/'),
     filename: `[name].js`
   },
   devServer: {

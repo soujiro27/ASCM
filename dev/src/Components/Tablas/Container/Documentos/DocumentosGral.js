@@ -54,7 +54,7 @@ class TableContainer extends Component{
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/DocumentosGral/${rowInfo.original.idVolante}`
+                location.href = `/SIA/juridico/DocumentosGral/${rowInfo.original.idTurnadoJuridico}`
             }
         }
     }

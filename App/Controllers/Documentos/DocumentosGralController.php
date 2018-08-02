@@ -10,6 +10,7 @@ use Jur\App\Controllers\BaseController;
 
 use Jur\App\Models\Catalogos\Acciones;
 use Jur\App\Models\Volantes\Volantes;
+use Jur\App\Models\Volantes\AnexosJuridico;
 
 
 class DocumentosGralController extends TwigController {
@@ -36,7 +37,7 @@ class DocumentosGralController extends TwigController {
 
 	public function tabla(){
 
-		$documentos = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente')
+		$documentos = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente','t.idTurnadoJuridico')
 		->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
 		->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
 		->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
@@ -65,40 +66,39 @@ class DocumentosGralController extends TwigController {
 
 	}
 
-	public function guardar($data){
+	public function guardar(array $data, $file){
 	
 		$data['estatus'] = 'ACTIVO';
-		$validate = $this->validate($data);
-		if(empty($validate)){
-			
-			$accion = new Acciones([
-				'nombre' => $data['nombre'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
+		$idVolante = $data['idVolante'];
+		$idTurnado = $data['idTurnadoJuridico'];
+		$areaRecepcion = $data['areaRecepcion'];
 
-			$accion->save();
-			$validate[0] = 'OK';	
-			
+		$validate = [];
+		array_push($validate, 'Error');
+
+		if(!empty($file)){
+
+			$base = new BaseController();
+			$base->upload_file_areas($file,$idVolante,$idTurnado,'Areas','DGAJ',$areaRecepcion);
+			$validate[0] = 'OK';
 		}
-
+		
+		
 		echo json_encode($validate);
 	}
 
 
 	public function update($data){
 
-		$id = $data['idAccion'];
+		$id = $data['id'];
 
 		$validate = $this->validate($data);
 			if(empty($validate)){
 				
-				Acciones::find($id)->update([
-					'nombre' => $data['nombre'],
+				AnexosJuridico::find($id)->update([
 					'estatus' => $data['estatus'],
 					'usrModificacion' => $_SESSION['idUsuario'],
 					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-
-
 				]);
 				$validate[0] = 'OK';	
 				
@@ -127,8 +127,13 @@ class DocumentosGralController extends TwigController {
 
 	
 	public function registro($id){
-		$accion = Acciones::find($id);
-		echo json_encode($accion);
+		
+		//$documentos = AnexosJuridico::where('idTurnadoJuridico',"$id")->get();
+		$documentos = AnexosJuridico::select('sia_anexosJuridico.*','t.idVolante')
+					->join('sia_TurnadosJuridico as t','t.idTurnadoJuridico','=','sia_anexosJuridico.idTurnadoJuridico')
+					->where('sia_anexosJuridico.idTurnadoJuridico',"$id")
+					->get();
+		echo json_encode($documentos);
 	}
 
 
@@ -137,7 +142,7 @@ class DocumentosGralController extends TwigController {
 		
 
 		$valid = GUMP::is_valid($data,array(
-			'nombre' => 'required|max_len,5|alpha_space',
+			'id' => 'required|numeric',
 			'estatus' => 'required|max_len,8|alpha',
 		));
 

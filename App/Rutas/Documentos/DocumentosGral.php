@@ -47,7 +47,7 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 	$app->post('/DocumentosGral/save',function() use ($controller,$app){
-		$controller->guardar($app->request->post());
+		$controller->guardar($app->request->post(),$_FILES);
 	});
 
 	$app->post('/DocumentosGral/Update',function() use ($controller,$app){

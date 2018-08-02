@@ -76,7 +76,7 @@ class BaseController {
 	}
 
 
-	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico,$tipo){
+	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico,$tipo,$areaRemitente,$areaRecepcion){
 
 
 		$time = Carbon::now('America/Mexico_City')->format('H:i:s');
@@ -108,6 +108,8 @@ class BaseController {
 	    		'archivoFinal' => $nombre_final,
 	    		'idTipoArchivo' => $extension[1],
 	    		'idVolante' => $idVolante,
+	    		'areaRemitente' => $areaRemitente,
+	    		'areaRecepcion' => $areaRecepcion,
 	    		'usrAlta' => $_SESSION['idUsuario'],
 	            'estatus' => 'ACTIVO'
 	            ]);
