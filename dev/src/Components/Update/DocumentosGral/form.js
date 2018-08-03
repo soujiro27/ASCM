@@ -11,17 +11,14 @@ export default class UpdateDocumento extends Component {
     }
 
     handleChange = (checked,event) => {
-        
-        
         if(event.target.children.length > 0){
             
             let estatus
             checked ? estatus = 'ACTIVO' : estatus = 'INACTIVO'
-            console.log(estatus)
-            console.log(checked)
             let position = event.target.parentNode.parentNode.getAttribute('data-id')
             let idAnexoJuridico = event.target.parentNode.parentNode.getAttribute('data-idanexo')
-           
+            let valores = this.state.checked
+            valores[position] = checked
             
             let form = new FormData();
             
@@ -32,7 +29,7 @@ export default class UpdateDocumento extends Component {
             .then((response)=>{
                 if(response.status == 200){
                     this.setState({
-                        checked:{[position]:checked}
+                        checked:valores
                     })
                 }
             })
@@ -41,13 +38,18 @@ export default class UpdateDocumento extends Component {
 
 
     componentWillMount(){
-        for(let x in this.props.data){
-            let valor
-            this.props.data["0"].estatus == 'ACTIVO' ? valor = true : valor = false
+        if(this.props.data[0].idAnexoJuridico !== 'undefined'){
+
+        
+            let datos = {}
+            for(let x in this.props.data){
+                let valor
+                this.props.data[x].estatus == 'ACTIVO' ? valor = true : valor = false
+                datos[x] = valor
+            }
+
             this.setState({
-                checked:{
-                    [x]:valor
-                }
+                checked:datos
             })
         }
     }
@@ -79,10 +81,40 @@ export default class UpdateDocumento extends Component {
         INACTIVO
     </div>
 
-   
-                
-               /* return()
- */
+    TablaDocumentos = () => {
+        if(this.props.data[0].idAnexoJuridico !== undefined )
+        {
+            return this.props.data.map((element,index) => {
+
+                return(
+                    <tr key={element.idAnexoJuridico}>
+                        <td>{element.areaRemitente}</td>
+                        <td>{element.fAlta}</td>
+                        <td>{element.fAlta}</td>
+                        <td>{element.archivoFinal}</td>
+                        <td data-id={index} data-idanexo={element.idAnexoJuridico}>
+                            <Switch
+                            onChange={this.handleChange}
+                            checked={this.state.checked[index]}
+                            id="icon-switch"
+                            className="react-switch"
+                            width={90}
+                            checkedIcon={this.checkedIcon}
+                            uncheckedIcon={this.uncheckedIcon}
+                        />
+                        </td>
+                    </tr>
+                )
+
+            })
+        } else {
+            return (
+                <tr>
+                    <td>Sin datos</td>
+                </tr>
+            )
+        }
+    }
 
 
     render(){
@@ -100,31 +132,9 @@ export default class UpdateDocumento extends Component {
                                 <th>Archivo</th>
                                 <th>Estatus</th>
                             </tr>
-                           
-                                {
-                                    this.props.data.map((element,index) => {
-                                        return(
-                                            <tr key={element.idAnexoJuridico}>
-                                                <td>{element.areaRemitente}</td>
-                                                <td>{element.fAlta}</td>
-                                                <td>{element.fAlta}</td>
-                                                <td>{element.archivoFinal}</td>
-                                                <td data-id={index} data-idanexo={element.idAnexoJuridico}>
-                                                    <Switch
-                                                    onChange={this.handleChange}
-                                                    checked={this.state.checked[index]}
-                                                    id="icon-switch"
-                                                    className="react-switch"
-                                                    width={90}
-                                                    checkedIcon={this.checkedIcon}
-                                                    uncheckedIcon={this.uncheckedIcon}
-                                                />
-                                                </td>
-                                            </tr>
-                                        )
-
-                                    })
-                                }
+                            {
+                                <this.TablaDocumentos />
+                            }
                             </tbody>
                         </table>
                     </div>

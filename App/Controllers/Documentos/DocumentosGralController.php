@@ -11,6 +11,7 @@ use Jur\App\Controllers\BaseController;
 use Jur\App\Models\Catalogos\Acciones;
 use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Volantes\AnexosJuridico;
+use Jur\App\Models\Volantes\TurnadosJuridico;
 
 
 class DocumentosGralController extends TwigController {
@@ -132,7 +133,13 @@ class DocumentosGralController extends TwigController {
 		$documentos = AnexosJuridico::select('sia_anexosJuridico.*','t.idVolante')
 					->join('sia_TurnadosJuridico as t','t.idTurnadoJuridico','=','sia_anexosJuridico.idTurnadoJuridico')
 					->where('sia_anexosJuridico.idTurnadoJuridico',"$id")
+					->orderBy('sia_anexosJuridico.idAnexoJuridico','DESC')
 					->get();
+
+		if($documentos->isEmpty()){
+
+			$documentos = TurnadosJuridico::where('idTurnadoJuridico',"$id")->get();
+		}
 		echo json_encode($documentos);
 	}
 

@@ -11,14 +11,14 @@ module.exports = {
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Main.js')],
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Main.js')],
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Main.js')],
-    "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Main.js')],
+    //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Main.js')],
     /*--------------------- Insert -------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
     //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Insert.js')],
-    //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
-    //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
+    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
+    "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
     /*------------------------------ UPDATE --------------------------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Update.js')],
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Update.js')],
@@ -26,10 +26,10 @@ module.exports = {
     //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Update.js')],
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Update.js')],
-    "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
+    //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Update/'),
+    path: path.resolve(__dirname, '../public/js/Insert/'),
     filename: `[name].js`
   },
   devServer: {

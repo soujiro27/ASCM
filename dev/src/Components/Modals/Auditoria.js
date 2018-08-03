@@ -36,7 +36,6 @@ class AuditoriaModal extends Component {
     }
 
     DatosTurnadoAuditoria = (clave,cuenta) =>{
-       
         let url = '/SIA/juridico/Api/TurnadosAuditoria'
         return  axios.get(url,{params:{cuenta,clave}})
     }
@@ -92,6 +91,7 @@ class AuditoriaModal extends Component {
         {
             this.state.tableData.visible &&
             <table className="table">
+            <tbody>
                 <tr>
                     <th>Rubro</th>
                     <th>Sujeto</th>
@@ -102,11 +102,13 @@ class AuditoriaModal extends Component {
                     <td>{this.state.tableData.sujeto}</td>
                     <td>{this.state.tableData.tipo}</td>
                 </tr>
+                </tbody>
             </table>
         }
         {
             this.state.tableTurno.visible &&
             <table className="table">
+            <tbody>
                 <tr>
                     <th>Tipo</th>
                     <th>Area</th>
@@ -119,6 +121,7 @@ class AuditoriaModal extends Component {
 
                         ))
                     }
+                </tbody>
             </table>
         }
         </Modal>,

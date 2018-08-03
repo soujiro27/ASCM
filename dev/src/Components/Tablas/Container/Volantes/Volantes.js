@@ -4,7 +4,7 @@ import 'react-table/react-table.css';
 import axios from 'axios';
 import { GridLoader } from 'react-spinners';
 import './../spiner.styl'
-
+import './../Table.styl'
 class TableContainer extends Component{
    
     state = {

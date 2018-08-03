@@ -6,6 +6,11 @@ body{
 .Header{
     align-items: center;
     background: -webkit-linear-gradient(top, #f8f8f8, #f2f2f2);
+	background: -moz-linear-gradient(top, #f8f8f8, #f2f2f2);
+	background: linear-gradient(top, #f8f8f8, #f2f2f2);
+	background-image: -ms-linear-gradient(top, #f8f8f8, #f2f2f2);
+
+
     border-bottom: thin solid rgba(0,0,0,.3);
     color: #666;
     font-size: 14px !important;
@@ -70,7 +75,7 @@ body{
 }
 
 .Header-notificaciones .animate {
-	animation: new 3s infinite;
+	animation: new 2s infinite;
 }
 
 @-moz-keyframes new {
@@ -243,6 +248,7 @@ aside ul.Menu {
 
 aside ul.Menu li.Menu-item {
 	background: -webkit-linear-gradient(top, #f9f9f9, #f2f2f2);
+	background-image: -ms-linear-gradient(top, #f9f9f9, #f2f2f2);
 	border-bottom: #ccc;
 	cursor: pointer;
 }
@@ -257,6 +263,7 @@ aside ul.Menu li.Menu-item .Menu-item-container {
 
 aside ul.Menu li.Menu-item .Menu-item-container:hover {
 	background: -webkit-linear-gradient(top, #800000, #d38483);
+	background-image: -ms-linear-gradient(top, #800000, #d38483);
 }
 
 aside ul.Menu li.Menu-item .Menu-item-container p {
@@ -317,6 +324,7 @@ aside ul.Menu ul.Menu-sub li a svg {
 
 aside ul.Menu .active {
 	background: -webkit-linear-gradient(top, #800000, #d38483) !important;
+	background-image: -ms-linear-gradient(top, #800000, #d38483) !important;
 }
 
 aside ul.Menu .active p {
@@ -325,7 +333,7 @@ aside ul.Menu .active p {
 
 aside ul.Menu .active .arrow-down {
 	color: red;
-	transition: all 0.5s;
+	transition: all .5s !important;
 	transform: rotate(90deg) !important;
 }
 
@@ -339,11 +347,12 @@ aside ul.Menu .active .arrow-down {
 .menu-arrow-active{
 	color:white;
 	transform: rotate(90deg);
-	transition: all 4s;
+	transition: all 1s;
 }
 
 .menu-active-li{
 	background: -webkit-linear-gradient(top, #800000, #d38483) !important;
+	background-image: -ms-linear-gradient(top, #800000, #d38483) !important;
 }
 
 

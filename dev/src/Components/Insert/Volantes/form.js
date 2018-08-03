@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Folio from './../shared_components/folio';
+import Fechas from './../shared_components/fechas';
+import './../form.styl'
 
 class Form extends Component {
     
     state = {
         subDocumentos:[],
         cuenta:2016,
-        Numero_Documento:50,
+        Numero_Documento:100,
         asunto:500
     }
     
@@ -97,46 +100,19 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-2">
                     <label>Auditoria</label>
-                        <button className="btn btn-primary  form-control" onClick={this.HandleClickAuditoria}>Agregar</button>
+                        <button className="btn btn-primary  form-control" onClick={this.HandleClickAuditoria}>
+                            Agregar  <i className="fas fa-plus-circle"></i>
+                        </button>
                     </div>
                 </div>
 
-                <div className="row">
-                        <div className="col-lg-2">
-                            <label>Folio</label>
-                            <input type="number" max="999" min="1" required name="folio" className="form-control" />
-                        </div>
-                        <div className="col-lg-2">
-                            <label>Sub Folio</label>
-                            <input type="number" max="999" min="0" required name="subFolio" className="form-control" />
-                        </div>
+            <Folio 
+                Numero_Documento={this.state.Numero_Documento}
+                CountCaracterText={this.CountCaracterText}
+            />
+            <Fechas />
 
-                        <div className="col-lg-4">
-                            <label>Numero de Documento ({this.state.Numero_Documento})</label>
-                            <input type="text" maxLength="50" required name="Numero_Documento" className="form-control"  onChange={this.CountCaracterText}/>
-                        </div>
-                        <div className="col-lg-2">
-                            <label>Anexos</label>
-                            <input type="number" max="999" min="0" required name="anexos" className="form-control" />
-                        </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-lg-3">
-                        <label>Fecha Documento</label>
-                        <input type="date" className="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="YYYY-MM-DD" name="fecha_documento" required/>
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Fecha Recepcion</label>
-                        <input type="date" className="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="YYYY-MM-DD" name="fecha_recepcion" required/>
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Hora Recepcion</label>
-                        <input type="time" className="form-control"  name="hora_recepcion" required 
-                        patter="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}" placeholder="HH:MM" />
-                    </div>
-                </div>
-
+                
                 <div className="row">
                     <div className="col-lg-12" >
                         <label>Asunto ({this.state.asunto})</label>

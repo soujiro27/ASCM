@@ -30,6 +30,7 @@ export default class FileModal extends Component {
     }
 
   render(){
+     
     return ReactDom.createPortal(
       <Modal 
         open={this.props.visible} 

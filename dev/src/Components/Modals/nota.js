@@ -32,7 +32,7 @@ class NotalModal extends Component {
         
         <div className="row">
             <div className="col-lg-9">
-                <h3>¿El oficio contiene Nota Informativa ?</h3>
+                <h3><i className="fas fa-question-circle"></i> ¿El oficio contiene Nota Informativa ?</h3>
             </div>
             <div className="col-lg-3">
                 <select className="form-control" defaultValue="NO" onChange={this.HandleChangeSelect} >

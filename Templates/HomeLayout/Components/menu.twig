@@ -18,14 +18,18 @@
 					<i class="{{item.icon}}"></i>
 				</div>
 				<p>{{item.nombre}}</p>
-                <i class="fas fa-angle-right"></i>
+				<div class="memu-svg">
+                	<i class="fas fa-angle-right"></i>
+				</div>
             </div>
 
 			<ul class="Menu-sub">
 				{% for element in item.submenus %}
 				    <li class="Menu-item-submenu-element">
 				    	<a href={{element.liga}}>
-				    		<i class="{{element.icono}}"></i>
+				    		<div class="menu-svg">
+				    			<i class="{{element.icono}}"></i>
+				    		</div>
 				    		<p>{{element.nombre}}</p>
 				    	</a>
 				    </li>

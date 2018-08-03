@@ -31,8 +31,8 @@ class DictamenModal extends Component {
         classNames={{'modal':'answer'}}>
         
         <div className="row">
-            <div className="col-lg-8">
-                <h3>Seleccione Cuenta Publica</h3>
+            <div className="col-lg-7">
+                <h3><i className="fas fa-archive"></i> Seleccione Cuenta Publica</h3>
             </div>
             <div className="col-lg-4">
                 <select className="form-control" defaultValue="2016" onChange={this.HandleChangeSelect} >
