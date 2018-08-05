@@ -20,7 +20,7 @@ const folio = (props) => {
             <label>Anexos</label>
             <input type="number" max="999" min="0" required name="anexos" className="form-control" />
         </div>
-</div>
+    </div>
     )
 }
 

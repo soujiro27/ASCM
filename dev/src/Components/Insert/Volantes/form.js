@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
+import Combos from './../shared_components/Combos'
 import './../form.styl'
 
 class Form extends Component {
@@ -10,7 +11,11 @@ class Form extends Component {
         subDocumentos:[],
         cuenta:2016,
         Numero_Documento:100,
-        asunto:500
+        asunto:500,
+        formData:{
+            fDocumento:'',
+            fREcepcion:''
+        }
     }
     
 
@@ -49,9 +54,10 @@ class Form extends Component {
         this.setState({
             [name]: max - value_length
         })
-        
-        
     }
+
+
+    
 
 
     render(){
@@ -127,46 +133,22 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-lg-3">
-                        <label>Caracter</label>
-                        <select className="form-control" required  name="caracter">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.caracteres.map((item) =>(
-                                    <option key={item.idCaracter} value={item.idCaracter}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
-                    </div>
-                    <div className="col-lg-6">
-                        <label>Turnado a:</label>
-                        <select className="form-control" required  name="turnado">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.areas.map((item) =>(
-                                    <option key={item.idArea} value={item.idArea}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Accion</label>
-                        <select className="form-control" required  name="accion">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.acciones.map((item) =>(
-                                    <option key={item.idAccion} value={item.idAccion}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
-                    </div>
-                </div>
-                
+                <Combos 
+                    caracteres={this.props.caracteres}
+                    areas={this.props.areas}
+                    acciones={this.props.acciones}
+                    multi={false}
+                />
+
+               
                 <div className="form-hidden">
-                        <input type="hidden" name="nota" value={this.props.formData.nota} />
-                        <input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
-                        <input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
+                    <input type="hidden" name="nota" value={this.props.formData.nota} />
+                    <input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
+                    <input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
+                    <input type="hidden" name="fecha_Documentos" value={this.state.formData.fDocumento} />
+                    <input type="hidden" name="fecha_recepcion" value={this.state.formData.fREcepcion} />
+
+
                 </div>
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
