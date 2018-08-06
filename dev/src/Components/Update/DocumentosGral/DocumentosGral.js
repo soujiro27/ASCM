@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 
 import FileModal from './../../Modals/File'
 
@@ -9,23 +10,48 @@ import './../../shared_styles/insert.styl';
 class Update extends Component{
     
     state = {
-        anexoModal:this.props.openModalAnexo
+        modals:{
+            table:false,
+            file:false
+        },
+        data:''
     }
 
     
     CloseModalFile = () => {
-        this.props.CloseModalAnexo()
+       location.href = '/SIA/juridico/DocumentosGral'
+    }
+
+    OpenModalFile = () => {
+        this.setState({modals:{file:true}})
     }
 
 
+    componentDidMount(){
+        let url = `/SIA/juridico/DocumentosGral/Register/${this.props.id}`
+        axios.get(url).then(response => {
+            this.setState({
+                table:true,
+                data:response.data
+            })
+        })
+    }
+
     render(){
-       
+        
         return(
         <div className="table-documentos-container">
-            <Formulario data={this.props.data}  cancel={this.HandleCancel}/>
             {
-                this.props.openModalAnexo &&
-                <FileModal close={this.CloseModalFile} visible={true} data={this.props.data}/>
+                this.state.table &&
+                <Formulario 
+                    data={this.state.data}  
+                    cancel={this.HandleCancel}
+                    open={this.OpenModalFile}
+                />
+            }
+            {
+                this.state.modals.file &&
+                <FileModal close={this.CloseModalFile} visible={true} data={this.state.data}/>
             }
         
         </div>

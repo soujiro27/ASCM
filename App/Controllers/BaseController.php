@@ -195,6 +195,23 @@ class BaseController {
 		}
 	}
 
+	public function asignacion_template($id,$js,$nombre){
+
+		$notificaciones = new NotificacionesController();
+		$menu = $this->menu();
+
+
+		echo $this->render('HomeLayout/UpdateContainer.twig',[
+			'js' => $js,
+			'session' => $_SESSION,
+			'nombre' => $nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos'],
+			'id' => $id
+		]);
+
+	}
+
 }
 
 

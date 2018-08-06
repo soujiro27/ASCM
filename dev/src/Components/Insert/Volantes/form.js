@@ -145,8 +145,6 @@ class Form extends Component {
                     <input type="hidden" name="nota" value={this.props.formData.nota} />
                     <input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
                     <input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
-                    <input type="hidden" name="fecha_Documentos" value={this.state.formData.fDocumento} />
-                    <input type="hidden" name="fecha_recepcion" value={this.state.formData.fREcepcion} />
 
 
                 </div>

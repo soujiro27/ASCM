@@ -22,7 +22,7 @@ export default class fechas extends Component {
         let input = document.getElementsByClassName('DayPickerInput');
         //console.log(input[0].children)
         input[0].children[0].setAttribute('name','fecha_documento')
-        input[1].children[0].setAttribute('name','fecha_Recepcion')
+        input[1].children[0].setAttribute('name','fecha_recepcion')
 
     }
 

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import SelectReact from 'react-select';
 import 'react-select/dist/react-select.css';
+import './../form.styl'
+
 
 class Form extends Component {
     
@@ -24,7 +26,6 @@ class Form extends Component {
 
     componentDidMount(){
         let select = []
-        console.log(this.props.datos)
        this.props.datos.forEach(element => {
                 let object = {
                     value:element.idAreaRecepcion,
@@ -48,21 +49,29 @@ class Form extends Component {
     ]
 
     handleChangeSelectTurnado = (selectedOption) => {
-     
         this.setState({ 
             selectedOption:selectedOption
-            });
+            });    
+    }
+
+
+    HandleChangeRemitente = (event) =>{
+        let value = event.target.value
+        if(value != ''){
+            this.props.remitente(value)
+        }
         
-      }
+    }
+
+
 
 
 
     render(){
-        //console.log(this.props.datos)
         return(
             <div className="form-container"> 
                 <div className="row">
-                        <div className="col-lg-2">
+                        <div className="col-lg-1">
                             <label>Folio</label>
                             <p className="form-control">{this.props.datos[0].folio}</p>
                         </div>
@@ -78,6 +87,13 @@ class Form extends Component {
                         <div className="col-lg-2">
                             <label>Anexos</label>
                             <input type="number" max="999" min="0" required name="anexos" className="form-control" defaultValue={this.props.datos[0].anexos}/>
+                        </div>
+                        <div className="col-lg-2">
+                            <label>Extemporaneo</label>
+                            <select className="form-control" required name="extemporaneo" defaultValue={this.props.datos[0].extemporaneo}>
+                            <option value="SI">SI</option>
+                            <option value="NO">NO</option>
+                        </select>
                         </div>
                 </div>
 
@@ -95,6 +111,27 @@ class Form extends Component {
                         <input type="time" className="form-control"  name="hora_recepcion" required 
                         patter="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}" placeholder="HH:MM" defaultValue={this.props.datos[0].hRecepcion.substring(0, 5)}/>
                     </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-lg-2">
+                        <label>Remitente</label>
+                        <select className="form-control" onChange={this.HandleChangeRemitente} >
+                            <option value="">Escoja Opcion</option>
+                            <option value="I">Interno</option>
+                            <option value="E">Externo</option>
+                        </select>
+                    </div>
+                    <div className="col-lg-5">
+                        <label>Nombre</label>
+                        <p className="form-control">{this.props.dataRemitente.nombre}</p>
+                    </div>
+
+                    <div className="col-lg-5">
+                        <label>Puesto</label>
+                        <p className="form-control">{this.props.dataRemitente.puesto}</p>
+                    </div>
+
                 </div>
 
                 <div className="row">
@@ -140,6 +177,11 @@ class Form extends Component {
                             }
                         </select>   
                     </div>
+                </div>
+
+                <div className="form-hidden">
+                    <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />
+                    <input type="hidden" name="idRemitente" value={this.props.dataRemitente.idRemitente} />
                 </div>
                
                 <div className="col-lg-4 submit-group">

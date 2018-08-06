@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SelectReact from 'react-select';
 import 'react-select/dist/react-select.css';
+import './../form.styl'
+
+import Folio from './../shared_components/folio';
+import Fechas from './../shared_components/fechas';
+import Combos from './../shared_components/combos';
 
 
 class Form extends Component {
@@ -10,25 +15,8 @@ class Form extends Component {
         subDocumentos:[],
         Numero_Documento:50,
         asunto:500,
-        selectedOption: ''
     }
     
-    optionSelectAreas = [
-        {value: 'DAJPA', label: 'DIRECCIÓN DE ASESORÍA JURíDICA Y PROMOCIÓN DE ACCIONES'},
-        {value: 'DCPA', label: 'DIRECCIÓN CONTENCIOSA Y DE PROMOCIÓN DE ACCIONES'},
-        {value: 'DIJPA', label: 'DIRECCIÓN DE INTERPRETACIÓN JURíDICA Y PROMOCIÓN DE ACCIONES'},
-        {value: 'DN', label: 'DIRECCIÓN DE NORMATIVIDAD'},
-        {value:'DGAJ', label:'DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS'}   
-    ]
-
-    handleChangeSelectTurnado = (selectedOption) => {
-     
-        this.setState({ 
-            selectedOption:selectedOption
-            });
-        
-      }
-
     HandleChangeSelect = (event) =>{
         let value = event.target.value
         if(value != '')
@@ -108,41 +96,9 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                        <div className="col-lg-2">
-                            <label>Folio</label>
-                            <input type="number" max="999" min="1" required name="folio" className="form-control" />
-                        </div>
-                        <div className="col-lg-2">
-                            <label>Sub Folio</label>
-                            <input type="number" max="999" min="0" required name="subFolio" className="form-control" />
-                        </div>
+                <Folio />
 
-                        <div className="col-lg-4">
-                            <label>Numero de Documento ({this.state.Numero_Documento})</label>
-                            <input type="text" maxLength="50" required name="Numero_Documento" className="form-control"  onChange={this.CountCaracterText}/>
-                        </div>
-                        <div className="col-lg-2">
-                            <label>Anexos</label>
-                            <input type="number" max="999" min="0" required name="anexos" className="form-control" />
-                        </div>
-                </div>
-
-                <div className="row">
-                    <div className="col-lg-3">
-                        <label>Fecha Documento</label>
-                        <input type="date" className="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="YYYY-MM-DD" name="fecha_documento" required/>
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Fecha Recepcion</label>
-                        <input type="date" className="form-control" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" placeholder="YYYY-MM-DD" name="fecha_recepcion" required/>
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Hora Recepcion</label>
-                        <input type="time" className="form-control"  name="hora_recepcion" required 
-                        patter="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}" placeholder="HH:MM" />
-                    </div>
-                </div>
+              <Fechas />
                 <div className="row">
                         <div className="col-lg-2">
                             <label>Remitente</label>
@@ -187,43 +143,12 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-lg-3">
-                        <label>Caracter</label>
-                        <select className="form-control" required  name="caracter">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.caracteres.map((item) =>(
-                                    <option key={item.idCaracter} value={item.idCaracter}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
-                    </div>
-                    <div className="col-lg-6">
-                        <label>Turnado a:</label>
-                        <SelectReact
-                        name="turnado"
-                        value={this.state.selectedOption}
+                <Combos
+                        caracteres={this.props.caracteres}
+                        areas={this.props.areas}
+                        acciones={this.props.acciones}
                         multi={true}
-                        labelKey='value'
-                        joinValues={true}
-                        className='small-font'
-                        onChange={this.handleChangeSelectTurnado}
-                        options={this.optionSelectAreas}
-                    />
-                    </div>
-                    <div className="col-lg-3">
-                        <label>Accion</label>
-                        <select className="form-control" required  name="accion">
-                            <option value="">Escoja Opcion</option>
-                            {
-                                this.props.acciones.map((item) =>(
-                                    <option key={item.idAccion} value={item.idAccion}>{item.nombre}</option>
-                                ))
-                            }
-                        </select>   
-                    </div>
-                </div>
+                />
                 
                 <div className="form-hidden">
                         <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />

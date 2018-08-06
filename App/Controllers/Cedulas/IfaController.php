@@ -1,6 +1,6 @@
 <?php  
 
-namespace Jur\App\Controllers\Volantes;
+namespace Jur\App\Controllers\Cedulas;
 use Jur\App\Controllers\TwigController;
 use GUMP;
 use Carbon\Carbon;
@@ -13,10 +13,10 @@ use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Volantes\VolantesDocumentos;
 use Jur\App\Models\Volantes\TurnadosJuridico;
 
-class VolantesDiversosController extends TwigController {
+class IfaController extends TwigController {
 
-	private $js = 'VolantesDiversos';
-	private $nombre = 'Volantes-Diversos';
+	private $js = 'Ifa';
+	private $nombre = 'IFA';
 
 
 	public function Home(){
@@ -37,16 +37,22 @@ class VolantesDiversosController extends TwigController {
 
 	public function tabla(){
 
-		$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente')
-		->leftJoin('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
-		->leftJoin('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
-		->leftJoin('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-		->where('sub.auditoria','NO')
-		->where('t.idTipoTurnado','V')
-		->where('t.estatus','ACTIVO')
-		->orderBy("folio","ASC")
-		->get();
-		echo json_encode($volantes);
+	
+        $area = $_SESSION['idArea'];
+
+        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+            ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+            ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+            ->where('sub.nombre','=','IFA')
+            ->where('t.idAreaRecepcion','=',"$area")
+            ->where('t.idTipoTurnado','V')
+            ->get();
+
+		echo json_encode($ifa);
 	}
 
 	public function nuevo_registro(){
@@ -76,6 +82,7 @@ class VolantesDiversosController extends TwigController {
 
 		if(empty($validate)){
 			
+			
 			$volantes = new Volantes([
 				'idTipoDocto' =>$data['documento'],
 				'subFolio' => $data['subFolio'],
@@ -87,7 +94,6 @@ class VolantesDiversosController extends TwigController {
 				'fRecepcion' => $data['fecha_recepcion'],
 				'hRecepcion' => $data['hora_recepcion'],
 				'idRemitente' => $data['idRemitente'],
-				'idRemitenteJuridico' => $data['idRemitenteJuridico'],
 				'destinatario' => 'DR. IVAN OLMOS CANSIANO',
 				'asunto' => $data['asunto'],
 				'idCaracter' => $data['caracter'],
@@ -101,85 +107,64 @@ class VolantesDiversosController extends TwigController {
 
 			$volantesDocumentos = new VolantesDocumentos([
 				'idVolante' => $max,
-				'promocion' => 'NO',
+				'promocion' => $data['promocion'],
+				'cveAuditoria' => $data['cveAuditoria'],
 				'idSubTipoDocumento' => $data['subDocumento'],
-				'notaConfronta' => 'NO',
-				'usrAlta' => $_SESSION['idUsuario']
+				'notaConfronta' => $data['nota'],
+				'usrAlta' => $_SESSION['idUsuario'],
+				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 			]);
 
 			$volantesDocumentos->save();
 
-			$areas = explode(',',$data['turnado']);
+			$turno = new TurnadosJuridico([
+	            'idVolante' => $max,
+	            'idAreaRemitente' => 'DGAJ',
+	            'idAreaRecepcion' => $data['turnado'],
+	            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
+	            'idEstadoTurnado' => 'EN ATENCION',
+	            'idTipoTurnado' => 'V',
+	            'idTipoPrioridad' => $data['caracter'],
+	            'comentario' => 'SIN COMENTARIOS',
+	            'usrAlta' => $_SESSION['idUsuario'],
+	            'estatus' => 'ACTIVO',
+	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+        	]);
 
-			$idTurnado = [];
-			$areaRecepcion = [];
-
-			foreach ($areas as $key => $value) {
-
-				$datos_director_area = $base->get_data_area($value);
-				
-				$turno = new TurnadosJuridico([
-		            'idVolante' => $max,
-		            'idAreaRemitente' => 'DGAJ',
-		            'idAreaRecepcion' => $value,
-		            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-		            'idEstadoTurnado' => 'EN ATENCION',
-		            'idTipoTurnado' => 'V',
-		            'idTipoPrioridad' => $data['caracter'],
-		            'comentario' => 'SIN COMENTARIOS',
-		            'usrAlta' => $_SESSION['idUsuario'],
-		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-        		]);
-
-        		$turno->save();
-        		$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
-        		array_push($idTurnado, $idTurnadoJuridico);
-        		array_push($areaRecepcion,$value);
-        	}
-        	
-        	
+        	$turno->save();
+        	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
 
         	
 			if(!empty($file)){
 
-				foreach ($idTurnado as $key => $value) {
-					$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$areaRecepcion[$key]);
-				}
+				//$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
+				$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$data['turnado']);
+				
 			}
 
-			foreach ($areas as $key => $value) {
-				
-				$data['idTurnado'] = $value;
-				$base->notifications_complete('Volante',$data['idTurnado'],$max);
-			}
+			$base->notifications_complete('Volante',$data['turnado'],$max);
 			
 
 			$validate[0] = 'OK';	
-			
 			
 		}
 
 		echo json_encode($validate);
 
+		
 	}
 
 
 	public function update(array $data){
-
 
 		$data['estatus'] =  'ACTIVO';
 		$id = $data['idVolante'];
 
 		$validate = $this->validate_update($data);
 		$base = new BaseController();
-		
+		$datos_director_area = $base->get_data_area($data['turnado']);
+
 		if(empty($validate)){
-
-
-			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
-				'estatus' => 'INACTIVO'
-			]);
 
 			$vd = VolantesDocumentos::where('idVolante',"$id")->get();
 			$data['idSubTipoDocumento'] = $vd[0]['idSubTipoDocumento'];
@@ -190,8 +175,6 @@ class VolantesDiversosController extends TwigController {
 				'anexos' => $data['anexos'],
 				'fDocumento' => $data['fecha_documento'],
 				'fRecepcion' => $data['fecha_recepcion'],
-				'idRemitente' => $data['idRemitente'],
-				'idRemitenteJuridico' => $data['idRemitenteJuridico'],
 				'asunto' => $data['asunto'],
 				'idCaracter' => $data['caracter'],
 				'idAccion' => $data['accion'],
@@ -199,30 +182,16 @@ class VolantesDiversosController extends TwigController {
 				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
 			]);
 
-			$areas = explode(',',$data['turnado']);
+			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+				'idAreaRecepcion' => $data['turnado'],
+				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
+				'idTipoPrioridad' => $data['caracter'],
+				'usrModificacion' => $_SESSION['idUsuario'],
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
 
-			foreach ($areas as $key => $value) {
+			]);
 
-				$datos_director_area = $base->get_data_area($value);
-				
-				$turno = new TurnadosJuridico([
-		            'idVolante' => $id,
-		            'idAreaRemitente' => 'DGAJ',
-		            'idAreaRecepcion' => $value,
-		            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-		            'idEstadoTurnado' => 'EN ATENCION',
-		            'idTipoTurnado' => 'V',
-		            'idTipoPrioridad' => $data['caracter'],
-		            'comentario' => 'SIN COMENTARIOS',
-		            'usrAlta' => $_SESSION['idUsuario'],
-		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-        		]);
-
-        		$turno->save();
-				$base->notifications_complete('Volante',$value,$id);
-        	}
-
+			$base->notifications_complete('Volante',$data['turnado'],$id);
 		
 			$validate[0] = 'OK';	
 
@@ -234,31 +203,17 @@ class VolantesDiversosController extends TwigController {
 
 	}
 
-	public function update_template($id){
+	public function asginacion_template($id){
 
-		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
+		$base->asignacion_template($id,$this->js,$this->nombre);
 	}
 
 	
 	public function registro($id){
-		$datos = Volantes::select('sia_volantes.*','idAreaRecepcion','a.nombre','rj.tipoRemitente','rj.saludo as saludoRemitente','rj.nombre as nombreRemitente','rj.puesto as puestoRemitente')
+		$datos = Volantes::select('sia_volantes.*','idAreaRecepcion')
 						->join('sia_TurnadosJuridico as tj','tj.idVolante','=','sia_Volantes.idVolante')
-						->join('sia_areas as a','a.idArea','=','idAreaRecepcion')
-						->join('sia_RemitentesJuridico as rj','rj.idRemitenteJuridico','=','sia_volantes.idRemitenteJuridico')
 						->where('sia_Volantes.idVolante',"$id")
-						->where('tj.estatus','ACTIVO')
 						->get();
 		echo json_encode($datos);
 	}
@@ -270,6 +225,7 @@ class VolantesDiversosController extends TwigController {
 		$is_valid = GUMP::is_valid($data,array(
 			'documento' => 'required|max_len,15|alpha',
 			'subDocumento'=> 'required|max_len,2|numeric',
+			'promocion' => 'required|max_len,2|alpha',
 			'extemporaneo' => 'required|max_len,2|alpha',
 			'folio' =>  'required|max_len,4|numeric',
 			'subFolio' =>'required|max_len,4|numeric',
@@ -280,10 +236,11 @@ class VolantesDiversosController extends TwigController {
 			'hora_recepcion' => 'required|max_len,5',
 			'asunto' => 'required|max_len,500',
 			'caracter' => 'required|max_len,2|numeric',
-			'turnado' => 'required|max_len,30',
+			'turnado' => 'required|max_len,10|alpha',
 			'accion' => 'required|max_len,2|numeric',
+			'nota' => 'required|max_len,2|alpha',
 			'idRemitente' => 'required|max_len,10',
-			'idRemitenteJuridico' => 'required|numeric',
+			'cveAuditoria' => 'required|max_len,10|numeric',
 			'estatus' => 'required|max_len,8|alpha',
 		));
 
@@ -307,34 +264,40 @@ class VolantesDiversosController extends TwigController {
 			array_push($is_valid, 'El folio ya se encuentra asignado');
 		}
 
+		$cveAuditoria = $data['cveAuditoria'];
+		$subTipo = $data['subDocumento'];
+
+		$vd = VolantesDocumentos::where('cveAuditoria',"$cveAuditoria")->where('idSubTipoDocumento',"$subTipo")->get();
+
+		
+
+		if($vd->isNotEmpty()){
+
+			array_push($is_valid, 'La Auditoria ya ha sido Asignada a ese Documento');
+		}
 
 		$base = new BaseController();
-
-		$turnados = $data['turnado'];
-
-		$areas = explode(',',$turnados);
+		$datos_director_area = $base->get_data_area($data['turnado']);
 		
-		
-		foreach ($areas as $key => $value) {
-			
-			
-			$datos_director_area = $base->get_data_area($value);
+		if($datos_director_area->isEmpty()){
 
-				if($datos_director_area->isEmpty()){
-
-				array_push($is_valid, 'El Director de: '.$value.' NO se encuentra dado de alta ');
-			}
+			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
 		}
 
 
 		return $is_valid;
 
+
+
+		return $valid;
 	}
 
 	public function validate_update(array $data){
 
 		$estatus = $data['estatus'];
 		
+		
+
 		$is_valid = GUMP::is_valid($data,array(
 			'Numero_Documento' => 'required|max_len,50',
 			'anexos' => 'required|max_len,2|numeric',
@@ -342,7 +305,7 @@ class VolantesDiversosController extends TwigController {
 			'fecha_recepcion' => 'required',
 			'asunto' => 'max_len,200|alpha_space',
 			'caracter' => 'required|max_len,2|numeric',
-			'turnado' => 'required|max_len,30',
+			'turnado' => 'required|max_len,10|alpha',
 			'accion' => 'required|max_len,2|numeric'
 
 		));
@@ -351,21 +314,16 @@ class VolantesDiversosController extends TwigController {
 			$is_valid = [];
 		}
 
-		$base = new BaseController();
-
-		$turnados = $data['turnado'];
 		
-		$areas = explode(',',$turnados);
 
-		foreach ($areas as $key => $value) {
-			
-			$datos_director_area = $base->get_data_area($value);
+		$base = new BaseController();
+		$datos_director_area = $base->get_data_area($data['turnado']);
+		
+		if($datos_director_area->isEmpty()){
 
-			if($datos_director_area->isEmpty()){
-
-				array_push($is_valid, 'El Director de: '.$value.' NO se encuentra dado de alta ');
-			}
+			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
 		}
+
 
 		return $is_valid;
 	}

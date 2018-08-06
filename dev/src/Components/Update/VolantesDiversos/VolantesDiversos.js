@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Modal from './../../Modals/form'
+import RemitentesModal from './../../Modals/remitentes';
 
 import './../../shared_styles/insert.styl'
 
@@ -18,12 +19,22 @@ class Insert extends Component{
             "class":"",
             "icon":"",
             "success":false
+        },
+        formData:{
+            tipoRemitente:'',
+            nombre:this.props.data[0].saludoRemitente + this.props.data[0].nombreRemitente,
+            puesto:this.props.data[0].puestoRemitente,
+            idRemitente:this.props.data[0].idRemitente,
+            idRemitenteJuridico:this.props.data[0].idRemitenteJuridico,
+        },
+        modals:{
+            remitente:false
         }
+
     }
 
     HandleSubmit = (event) => {
         event.preventDefault();
-        console.log(this.props)
         let form_functions = new submit()
         let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idVolante',this.props.data[0].idVolante)
         let url = '/SIA/juridico/VolantesDiversos/Update'
@@ -54,12 +65,36 @@ class Insert extends Component{
                 modal:{visible:false}
             })
         }
-        
-    
     }
 
 
+
+    OpenModalRemitentes = (tipo) =>{
+        this.setState({
+            formData:{
+                tipoRemitente:tipo
+            },
+            modals:{
+                remitente:true
+            }
+        })
+    }
+
+    HandleCloseModalRemitentes = (data) =>{
+        this.setState({
+            modals:{remitente:false},
+            formData:{
+                nombre:data.nombre,
+                puesto:data.puesto,
+                idRemitenteJuridico:data.idRemitenteJuridico,
+                idRemitente:data.siglasArea,
+                saludo:data.saludo
+            }
+        })
+    }
+
     render(){
+        console.log(this.props.data)
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
                 <Formulario 
@@ -68,10 +103,20 @@ class Insert extends Component{
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
                     acciones={this.props.acciones}
+                    remitente={this.OpenModalRemitentes}
+                    dataRemitente={this.state.formData}
                     />
                 {
                     this.state.modal.visible &&
                     <Modal data={this.state.modal} close={this.HandleCloseModal}/>
+                }
+                {
+                    this.state.modals.remitente &&
+                    <RemitentesModal 
+                        visible={true} 
+                        close={this.HandleCloseModalRemitentes} 
+                        tipo={this.state.formData.tipoRemitente}
+                    />
                 }
             
             </form>

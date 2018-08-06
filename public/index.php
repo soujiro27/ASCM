@@ -26,6 +26,9 @@ include_once $root_directory.'/Volantes/VolantesDiversos.php';
 include_once $root_directory.'/Documentos/DocumentosGral.php';
 
 
+/*------------------- Cedulas -------------------------*/
+include_once $root_directory.'/Cedulas/Ifa.php';
+
 /*----------------Datos DB ------------------*/
 include_once '/../../src/conexion.php';
 

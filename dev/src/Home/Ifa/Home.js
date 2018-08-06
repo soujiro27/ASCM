@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-text';
-import Table from '../../Components/Tablas/Container/Documentos/DocumentosGral';
+import Table from '../../Components/Tablas/Container/Cedulas/Ifa';
 class Home extends Component{
 
     render(){
@@ -15,7 +15,7 @@ class Home extends Component{
 }
 
 Home.defaultProps = {
-    texto:'Registros Documentos',
+    texto:'Registros Ifa',
     textoButton:'Nuevo Registro',
     'modulo':'Acciones'
 }

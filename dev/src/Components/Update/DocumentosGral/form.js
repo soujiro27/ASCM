@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import Switch from "react-switch";
 import axios from 'axios'
+import './../form.styl'
 
 export default class UpdateDocumento extends Component {
 
@@ -82,6 +83,8 @@ export default class UpdateDocumento extends Component {
     </div>
 
     TablaDocumentos = () => {
+
+        
         if(this.props.data[0].idAnexoJuridico !== undefined )
         {
             return this.props.data.map((element,index) => {
@@ -91,7 +94,11 @@ export default class UpdateDocumento extends Component {
                         <td>{element.areaRemitente}</td>
                         <td>{element.fAlta}</td>
                         <td>{element.fAlta}</td>
-                        <td>{element.archivoFinal}</td>
+                        <td>
+                            <a href={`/SIA/jur/Files/${element.idVolante}/Areas/${element.archivoFinal}`} target="_blank">
+                                {element.archivoFinal}
+                            </a>
+                        </td>
                         <td data-id={index} data-idanexo={element.idAnexoJuridico}>
                             <Switch
                             onChange={this.handleChange}
@@ -117,12 +124,20 @@ export default class UpdateDocumento extends Component {
     }
 
 
+    HandleClickAnexar = () => {
+        this.props.open()
+    }
+
+
     render(){
-       
+        console.log(this.state)
             return(
                 <div className="container">
-             
-                    <div className="table-container">
+                    <div className="row" >
+                        <button className="btn btn-success btn-sm" onClick={this.HandleClickAnexar}>Anexar Documento</button>
+                       
+                    </div>
+                    <div className="row">
                         <table className="table">
                         <tbody>
                             <tr>
