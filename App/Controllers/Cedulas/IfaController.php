@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace Jur\App\Controllers\Cedulas;
 use Jur\App\Controllers\TwigController;
@@ -37,8 +37,9 @@ class IfaController extends TwigController {
 
 	public function tabla(){
 
-	
+
         $area = $_SESSION['idArea'];
+
 
         $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
@@ -51,6 +52,7 @@ class IfaController extends TwigController {
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idTipoTurnado','V')
             ->get();
+				//var_dump($ifa);
 
 		echo json_encode($ifa);
 	}
@@ -79,7 +81,7 @@ class IfaController extends TwigController {
 	}
 
 	public function guardar(array $data,$file){
-	
+
 		$data['estatus'] = 'ACTIVO';
 		$validate = $this->validate($data);
 
@@ -87,8 +89,8 @@ class IfaController extends TwigController {
 		$datos_director_area = $base->get_data_area($data['turnado']);
 
 		if(empty($validate)){
-			
-			
+
+
 			$volantes = new Volantes([
 				'idTipoDocto' =>$data['documento'],
 				'subFolio' => $data['subFolio'],
@@ -108,7 +110,7 @@ class IfaController extends TwigController {
 			]);
 
 			$volantes->save();
-			
+
 			$max = Volantes::all()->max('idVolante');
 
 			$volantesDocumentos = new VolantesDocumentos([
@@ -140,24 +142,24 @@ class IfaController extends TwigController {
         	$turno->save();
         	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
 
-        	
+
 			if(!empty($file)){
 
 				//$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
 				$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$data['turnado']);
-				
+
 			}
 
 			$base->notifications_complete('Volante',$data['turnado'],$max);
-			
 
-			$validate[0] = 'OK';	
-			
+
+			$validate[0] = 'OK';
+
 		}
 
 		echo json_encode($validate);
 
-		
+
 	}
 
 
@@ -198,20 +200,20 @@ class IfaController extends TwigController {
 			]);
 
 			$base->notifications_complete('Volante',$data['turnado'],$id);
-		
-			$validate[0] = 'OK';	
+
+			$validate[0] = 'OK';
 
 		}
 
 		echo json_encode($validate);
-		
+
 
 
 	}
 
-	
 
-	
+
+
 	public function registro($id){
 		$datos = Volantes::select('sia_volantes.*','idAreaRecepcion')
 						->join('sia_TurnadosJuridico as tj','tj.idVolante','=','sia_Volantes.idVolante')
@@ -247,7 +249,7 @@ class IfaController extends TwigController {
 		));
 
 		if($is_valid === true){
-			$is_valid = [];	
+			$is_valid = [];
 		}
 
 		$fecha = date("Y",strtotime($data['fecha_recepcion']));
@@ -255,14 +257,14 @@ class IfaController extends TwigController {
 		$folio = $data['folio'];
 		$subFolio = $data['subFolio'];
 
-		
+
 		$res = Volantes::where('folio',"$folio")
 						->where('subFolio',"$subFolio")
 						->whereYear('fRecepcion',"$fecha")
 						->get();
 
 		if($res->isNotEmpty()){
-			
+
 			array_push($is_valid, 'El folio ya se encuentra asignado');
 		}
 
@@ -271,7 +273,7 @@ class IfaController extends TwigController {
 
 		$vd = VolantesDocumentos::where('cveAuditoria',"$cveAuditoria")->where('idSubTipoDocumento',"$subTipo")->get();
 
-		
+
 
 		if($vd->isNotEmpty()){
 
@@ -280,7 +282,7 @@ class IfaController extends TwigController {
 
 		$base = new BaseController();
 		$datos_director_area = $base->get_data_area($data['turnado']);
-		
+
 		if($datos_director_area->isEmpty()){
 
 			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
@@ -297,8 +299,8 @@ class IfaController extends TwigController {
 	public function validate_update(array $data){
 
 		$estatus = $data['estatus'];
-		
-		
+
+
 
 		$is_valid = GUMP::is_valid($data,array(
 			'Numero_Documento' => 'required|max_len,50',
@@ -316,11 +318,11 @@ class IfaController extends TwigController {
 			$is_valid = [];
 		}
 
-		
+
 
 		$base = new BaseController();
 		$datos_director_area = $base->get_data_area($data['turnado']);
-		
+
 		if($datos_director_area->isEmpty()){
 
 			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
@@ -330,7 +332,7 @@ class IfaController extends TwigController {
 		return $is_valid;
 	}
 
-	
+
 
 }
 

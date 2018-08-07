@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\ModulosController;
@@ -14,7 +14,7 @@
 		$security->validacion_sesion();
 	};
 
-	
+
 
 $app->group('/juridico/Api',$auth,function() use($app,$controller){
 
@@ -58,6 +58,14 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 
 	$app->get('/Remitentes/Tipo',function() use ($controller,$app){
 		$controller->get_remitentes($app->request->get());
+	});
+
+	$app->get('/TurnadosAuditoria',function() use ($controller,$app){
+		$controller->get_Turnados_Auditoria($app->request->get());
+	});
+
+	$app->get('/Puestos',function() use ($controller,$app){
+		$controller->get_puestos($app->request->get());
 	});
 
 });

@@ -1,6 +1,6 @@
 <header class="row Header">
 		<div class="Header-logo col-lg-2">
-			<img src="/SIA/juridico/public/images/Logotipo.png">
+			<img src="/SIA/jur/public/images/Logotipo.png">
 		</div>
 
 		<div class="Header-cuenta col-lg-2">
@@ -18,29 +18,29 @@
 		</div>
 
 		<div class="Header-notificaciones col-lg-2">
-            <a href="/SIA/notificaciones"> 
-                
+            <a href="/SIA/notificaciones">
+
                 {% if notificaciones > 0 %}
-					
+
 					<i class="far fa-bell animate"></i>
 
 				{% else %}
-				    
+
 				     <i class="far fa-envelope-open"></i>
 
                 {% endif %}
-                   
+
                 Tienes
                     {% if notificaciones > 0 %}
                         <span class="active">
                             {{notificaciones}}
-                        </span> 
+                        </span>
                     {% else %}
                         <span class="inactive">
                             {{notificaciones}}
-                        </span> 
+                        </span>
                     {% endif %}
-                Notificaciones 
+                Notificaciones
             </a>
         </div>
 
@@ -61,7 +61,7 @@
                     </li>
                 </ul>
             </div>
-           
+
             <p >
 	            <i class="fas fa-user"></i>
 	            {{session.sUsuario}}

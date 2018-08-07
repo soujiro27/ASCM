@@ -15,12 +15,12 @@ module.exports = {
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Home.js')],
 */
     /*--------------------- Insert -------------------------*/
-    "Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
-    "SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
-    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
-    "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Insert.js')],
-    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
-    "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
+    //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
+    //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
+    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
+    //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Insert.js')],
+    //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
+    //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
     /*------------------------------ UPDATE --------------------------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Update.js')],
     //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Update.js')],
@@ -31,10 +31,10 @@ module.exports = {
     //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
 
     /*------------------------ Asignacion -----------------------------------------*/
-    //"Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Insert/'),
+    path: path.resolve(__dirname, '../public/js/Asignacion/'),
     filename: `[name].js`
   },
   devServer: {

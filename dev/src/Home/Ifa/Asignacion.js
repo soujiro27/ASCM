@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
-//import Form from './../../Components/Update/Acciones/Acciones';
+import Form from './../../Components/Insert/Asignacion/Asignacion';
 
 class Home extends Component{
 
@@ -10,7 +10,7 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                
+                <Form id={this.props.id}/>
             </div>
 
         )
@@ -24,9 +24,9 @@ Home.defaultProps = {
     	'Respuestas',
     	'Observaciones',
     	'Cedula'
-    ]
+    ],
+    active:'Asignacion',
+    modulo:'Ifa'
 }
 
 export default Home
-
-//<Form data={this.props.data}/>   
