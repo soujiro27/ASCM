@@ -5,7 +5,7 @@ let moduleWorks = 'catalogos';
 
 module.exports = {
   entry: {
-   /*"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Home.js')],
+   "Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Home.js')],
     "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Home.js')],
     "SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Home.js')],
     "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Home.js')],
@@ -13,7 +13,7 @@ module.exports = {
     "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Home.js')],
     "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Home.js')],
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Home.js')],
-    */
+
     /*--------------------- Insert -------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
     //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
@@ -31,10 +31,10 @@ module.exports = {
     //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
 
     /*------------------------ Asignacion -----------------------------------------*/
-    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
+    //"Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Asignacion/'),
+    path: path.resolve(__dirname, '../public/js/Home/'),
     filename: `[name].js`
   },
   devServer: {
