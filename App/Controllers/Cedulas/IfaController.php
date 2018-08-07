@@ -55,6 +55,12 @@ class IfaController extends TwigController {
 		echo json_encode($ifa);
 	}
 
+	public function asginacion_template($id){
+
+		$base = new BaseController();
+		$base->asignacion_template($id,$this->js,$this->nombre);
+	}
+
 	public function nuevo_registro(){
 
 		$notificaciones = new NotificacionesController();
@@ -203,11 +209,7 @@ class IfaController extends TwigController {
 
 	}
 
-	public function asginacion_template($id){
-
-		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre);
-	}
+	
 
 	
 	public function registro($id){

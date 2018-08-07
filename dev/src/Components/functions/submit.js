@@ -4,8 +4,9 @@ export default class submit {
 
     createData(form){
         let elementos = form[0].elements
-        let formData = new FormData(form)
+        let formData = new FormData()
 
+        console.log(elementos)
         for(let x = 0;x<elementos.length-2;x++){
             formData.append(elementos[x].name,elementos[x].value)
 
@@ -15,7 +16,7 @@ export default class submit {
 
     createDataUpdate(form,nombre,id){
         let elementos = form[0].elements
-        let formData = new FormData(form)
+        let formData = new FormData()
 
         for(let x = 0;x<elementos.length-2;x++){
             formData.append(elementos[x].name,elementos[x].value)

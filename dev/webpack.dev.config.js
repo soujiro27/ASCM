@@ -5,14 +5,15 @@ let moduleWorks = 'catalogos';
 
 module.exports = {
   entry: {
-    //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Main.js')],
-    //"Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Main.js')],
-    //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Main.js')],
-    //"Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Main.js')],
-    //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Main.js')],
-    //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Main.js')],
-    //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Main.js')],
-    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Main.js')],
+   /*"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Home.js')],
+    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Home.js')],
+    "SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Home.js')],
+    "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Home.js')],
+    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Home.js')],
+    "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Home.js')],
+    "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Home.js')],
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Home.js')],
+    */
     /*--------------------- Insert -------------------------*/
     //"Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Insert.js')],
     //"SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Insert.js')],
@@ -28,9 +29,12 @@ module.exports = {
     //"Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Update.js')],
     //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
+
+    /*------------------------ Asignacion -----------------------------------------*/
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Home/'),
+    path: path.resolve(__dirname, '../public/js/Asignacion/'),
     filename: `[name].js`
   },
   devServer: {

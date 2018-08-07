@@ -35,7 +35,7 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 	$app->get('/Ifa/Asignacion/:id',function($id) use ($controller){
-		$controller->asignacion_template($id);
+		$controller->asginacion_template($id);
 	});
 
 /*

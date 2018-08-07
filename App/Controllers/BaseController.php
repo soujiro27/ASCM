@@ -11,9 +11,9 @@ use Jur\App\Models\Volantes\Volantes;
 use Carbon\Carbon;
 
 use Jur\App\Controllers\NotificacionesController;
+use Jur\App\Controllers\TwigController;
 
-
-class BaseController {
+class BaseController extends TwigController{
 
 
 	#obtiene los modulos que le corresponden al usuario
@@ -201,7 +201,7 @@ class BaseController {
 		$menu = $this->menu();
 
 
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
+		echo $this->render('HomeLayout/Asignacion.twig',[
 			'js' => $js,
 			'session' => $_SESSION,
 			'nombre' => $nombre,
