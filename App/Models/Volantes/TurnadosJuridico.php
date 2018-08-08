@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Jur\App\Models\Volantes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,12 +14,14 @@ class TurnadosJuridico extends Model {
      'idEstadoTurnado',
      'idTipoTurnado',
      'idTipoPrioridad',
+     'areaRecepcion',
+     'areaRemitente',
      'comentario',
      'usrAlta',
      'fAlta',
      'estatus'
      ];
-     
+
      public $timestamps = false;
 
  }

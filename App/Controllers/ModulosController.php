@@ -1,4 +1,4 @@
-<?php  
+<?php
 namespace Jur\App\Controllers;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -15,6 +15,10 @@ use Jur\App\Models\Volantes\Unidades;
 use Jur\App\Models\Volantes\VolantesDocumentos;
 use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Modulos\Remitentes;
+use Jur\App\Models\Modulos\Puestos;
+use Jur\App\Models\Notificaciones\Usuarios;
+use Jur\App\Models\Volantes\TurnadosJuridico;
+use Jur\App\Models\Modulos\Observaciones;
 
 
 class ModulosController {
@@ -51,12 +55,12 @@ class ModulosController {
 	public function get_Areas_Volantes(array $data){
 
 		$tipo = $data['tipo'];
-		
-		
+
+
 		if($tipo == 'S'){
 
 			$areas = Areas::whereIn('idArea',['DAJPA','DIJPA','DCPA','DN','DGAJ'])->get();
-		
+
 		} else {
 
 			$areas = Areas::whereIn('idArea',['DAJPA','DIJPA','DCPA','DN'])->get();
@@ -74,14 +78,14 @@ class ModulosController {
 	}
 
 	public function get_Datos_Auditoria(array $dato){
-		
+
 		$cuenta = substr($dato['cuenta'], -2);
 
 		if(empty($dato['clave'])){
 			$datosAuditoria = array('error' => 'La Auditoria NO existe', );
 		}else{
 			$cveAuditoria = 'ASCM/'.$dato['clave'].'/'.$cuenta;
-			
+
 			$datos = Auditorias::select('idAuditoria', 'tipoAuditoria','rubros','idArea')
 			->where('clave',"$cveAuditoria")
 			->get();
@@ -107,21 +111,21 @@ class ModulosController {
 				->where('idCuenta',"$cuenta")
 				->get();
 
-				
+
 				$datosAuditoria = array(
 					'sujeto' => $unidades[0]['nombre'],
 					'tipo' => $datos[0]['tipoAuditoria'],
 					'rubro' => $datos[0]['rubros'],
 					'id' => $datos[0]['idAuditoria'],
 					'idArea' => $datos[0]['idArea']
-				);		
+				);
 			}
 		}
 
-		
+
 		echo json_encode($datosAuditoria);
 
-	
+
 
 	}
 
@@ -136,14 +140,14 @@ class ModulosController {
 		}else{
 
 			$clave = 'ASCM/'.$dato['clave'].'/'.$cuenta;
-			
+
 
 
 			$datos = Auditorias::select('idAuditoria', 'tipoAuditoria','rubros')
 			->where('clave',"$clave")
 			->get();
-			
-			$idAuditoria = $datos[0]['idAuditoria'];		
+
+			$idAuditoria = $datos[0]['idAuditoria'];
 
 			$turnos = VolantesDocumentos::select('sub.nombre','t.idAreaRecepcion')
 			->join('sia_volantes as v','v.idVolante','sia_volantesDocumentos.idVolante')
@@ -170,16 +174,16 @@ class ModulosController {
 
 		$spreadsheet = new Spreadsheet();
 		$sheet = $spreadsheet->getActiveSheet();
-		
+
 		$array_volantes = $volantes->toArray();
 		$colums = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','X','Y','Z','AA','AB','AC','AD'];
 		$count = 0;
-		$row = 1; 
+		$row = 1;
 
 		foreach ($array_volantes[0] as $key => $value) {
 			$sheet->setCellValue($colums[$count].$row, $key);
 			$count++;
-			
+
 		}
 
 		$count = 0;
@@ -231,7 +235,7 @@ class ModulosController {
 		));
 
 		if($is_valid === true){
-			$is_valid = [];	
+			$is_valid = [];
 		}
 
 		return $is_valid;
@@ -245,6 +249,50 @@ class ModulosController {
 		$remitentes = Remitentes::where('tipoRemitente',"$tipo")->where('estatus','ACTIVO')->get();
 		echo json_encode($remitentes);
 	}
+
+
+	public function get_puestos_asignacion(){
+
+		$area = $_SESSION['idArea'];
+		$rpe = $_SESSION['idEmpleado'];
+
+		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->orderBy('idPuestoJuridico','DESC')->get();
+		$puestos_final = $puestos->whereNotIn('rpe',"$rpe");
+		echo json_encode($puestos_final);
+	}
+
+
+	public function get_respuestas(array $data){
+
+		$idUsuario = $_SESSION['idUsuario'];
+
+		$idPuesto = $data['empleado'];
+		$puestos = Puestos::where('idPuestoJuridico',"$idPuesto")->get();
+		$rpe = $puestos[0]['rpe'];
+
+		$usuarios = Usuarios::where('idEmpleado',"$rpe")->get();
+		$usrReceptor = $usuarios[0]['idUsuario'];
+
+		$turnados = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal')
+		->leftJoin('sia_AnexosJuridico as a ','a.idTurnadoJuridico','=','sia_TurnadosJuridico.idTurnadoJuridico')
+		->whereIn('idUsrReceptor',[$idUsuario,$usrReceptor])->where('idTipoTurnado','I')->get();
+
+	foreach ($turnados as $key => $value) {
+			$turnados[$key]['usrActual'] = $idUsuario;
+	}
+
+	echo json_encode($turnados);
+
+	}
+
+	public function tabla_observaciones(array $data){
+
+		$idVolante = $data['idVolante'];
+		$observaciones = Observaciones::where('idVolante',"$idVolante")->get();
+		echo json_encode($observaciones);
+	}
+
+
 }
 
 ?>

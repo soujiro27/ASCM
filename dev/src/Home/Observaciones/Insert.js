@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import Header from './../../Components/Header/Header-cedulas';
-
-
-import Form from './../../Components/Insert/Asignacion/Asignacion';
+import Header from './../../Components/Header/Header-text';
+import Form from './../../Components/Insert/Observaciones/Observaciones';
 
 class Home extends Component{
-
 
     render(){
         return(
@@ -18,18 +15,8 @@ class Home extends Component{
     }
 }
 
-
-
 Home.defaultProps = {
-    texto:'Asignacion',
-    menu:[
-    	'Asignacion',
-    	'Respuestas',
-    	'Observaciones',
-    	'Cedula'
-    ],
-    active:'Asignacion',
-    modulo:'Ifa'
+    texto:'Agregar Nueva Observacion',
 }
 
 export default Home

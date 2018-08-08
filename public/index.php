@@ -1,4 +1,4 @@
-<?php 
+<?php
 include '/../App/vendor/autoload.php';
 
 $root_directory = '/../App/rutas/';
@@ -29,6 +29,11 @@ include_once $root_directory.'/Documentos/DocumentosGral.php';
 /*------------------- Cedulas -------------------------*/
 include_once $root_directory.'/Cedulas/Ifa.php';
 
+
+/*------------------- observaciones -------------------------*/
+include_once $root_directory.'/Observaciones/Observaciones.php';
+
+
 /*----------------Datos DB ------------------*/
 include_once '/../../src/conexion.php';
 
@@ -56,11 +61,11 @@ $app->notFound(function () use ($app) {
 });
 
 $app->error(function (\Exception $e) use ($app) {
-   
+
     $message = $e->getMessage();
     $abrir = fopen('./jur/App/error.log','a+');
     fwrite($abrir,"[".date("r")."] Error: $message\r\n");
     fclose($abrir);
-    
-   
+
+
 });

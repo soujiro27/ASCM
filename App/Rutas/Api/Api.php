@@ -5,6 +5,7 @@
 
 	use Jur\App\Controllers\ModulosController;
 
+
 	$controller = new ModulosController();
 
 
@@ -64,8 +65,16 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_Turnados_Auditoria($app->request->get());
 	});
 
-	$app->get('/Puestos',function() use ($controller,$app){
-		$controller->get_puestos($app->request->get());
+	$app->get('/Puestos/Asignacion',function() use ($controller){
+		$controller->get_puestos_asignacion();
+	});
+
+	$app->get('/Respuestas',function() use ($controller,$app){
+		$controller->get_respuestas($app->request->get());
+	});
+
+	$app->get('/Observaciones',function() use ($controller,$app){
+		$controller->tabla_observaciones($app->request->get());
 	});
 
 });

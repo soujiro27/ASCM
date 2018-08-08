@@ -13,6 +13,7 @@ use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Volantes\VolantesDocumentos;
 use Jur\App\Models\Volantes\TurnadosJuridico;
 
+
 class IfaController extends TwigController {
 
 	private $js = 'Ifa';
@@ -57,11 +58,51 @@ class IfaController extends TwigController {
 		echo json_encode($ifa);
 	}
 
-	public function asginacion_template($id){
+	public function load_cedula_template($id,$modulo){
 
 		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre);
+		$base->asignacion_template($id,$this->js,$this->nombre,$modulo);
 	}
+
+
+	public function insert_asignacion(array $data,$file){
+		$base = new BaseController();
+		$validate = $base->insert_asignacion($data,$file);
+		echo json_encode($validate );
+	}
+
+	public function nueva_observacion($id){
+		$notificaciones = new NotificacionesController();
+		$base = new BaseController();
+		$menu = $base->menu();
+
+
+		echo $this->render('HomeLayout/InsertObservaciones.twig',[
+			'js' => 'Observaciones',
+			'session' => $_SESSION,
+			'nombre' => $this->nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos'],
+			'id' => $id
+		]);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/*------------------------- viejos ------------------------*/
+
 
 	public function nuevo_registro(){
 

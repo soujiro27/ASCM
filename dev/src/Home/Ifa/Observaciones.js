@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
-
-import Form from './../../Components/Insert/Asignacion/Asignacion';
+import Table from './../../Components/Tablas/Container/Observaciones/Observaciones';
 
 class Home extends Component{
 
@@ -11,7 +10,7 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form id={this.props.id}/>
+                <Table id={this.props.id} modulo={this.props.modulo}/>
             </div>
 
         )
@@ -28,7 +27,7 @@ Home.defaultProps = {
     	'Observaciones',
     	'Cedula'
     ],
-    active:'Asignacion',
+    active:'Observaciones',
     modulo:'Ifa'
 }
 

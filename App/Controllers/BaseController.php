@@ -1,14 +1,18 @@
-<?php  
+<?php
 namespace Jur\App\Controllers;
 
 use Jur\App\Models\Security\UsuariosRoles;
 use Jur\App\Models\Security\RolesModulos;
-use Jur\App\Models\Modulos\Puestos;
-use Jur\App\Models\Volantes\AnexosJuridico;
 use Jur\App\Models\Notificaciones\Usuarios;
+
+use Jur\App\Models\Volantes\AnexosJuridico;
 use Jur\App\Models\Volantes\Volantes;
+use Jur\App\Models\Volantes\TurnadosJuridico;
+
+use Jur\App\Models\Modulos\Puestos;
 
 use Carbon\Carbon;
+use GUMP;
 
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\TwigController;
@@ -56,10 +60,10 @@ class BaseController extends TwigController{
 
 			array_push($json['modulos'][$value->panel]['submenus'],$data);
 
-			
+
 		}
 
-	
+
 		return $json;
 
 	}
@@ -81,23 +85,23 @@ class BaseController extends TwigController{
 
 		$time = Carbon::now('America/Mexico_City')->format('H:i:s');
 		$formatTime = str_replace(':', '-', $time);
-		
-		
+
+
 
 		$nombre_file = $file['file']['name'];
 		$extension = explode('.',$nombre_file);
 		$nombre_final = $formatTime.'.'.$extension[1];
 
 		$directory ='jur/files/'.$idVolante.'/'.$tipo;
-    
+
         $extension = explode('.',$nombre_file);
 
         if(!file_exists($directory)){
-                    
-            mkdir($directory,0777,true);
-        } 
 
-        
+            mkdir($directory,0777,true);
+        }
+
+
 
         move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final);
 
@@ -115,7 +119,7 @@ class BaseController extends TwigController{
 	            ]);
 
 	    	$anexo->save();
-	    	
+
 
 	}
 
@@ -127,22 +131,22 @@ class BaseController extends TwigController{
 
 		$this->send_notification_complete($rpe_boss,$idVolante,$datosArea,$tipo);
 
-		
+
 	}
 
 	public function notifications_turnados($tipo,$recibe,$idVolante){
 
-	
+
 		$datosArea = Puestos::where('rpe',"$recibe")->get();
 		$rpe_boss = $recibe;
 
 		$this->send_notification_complete($rpe_boss,$idVolante,$datosArea,$tipo);
-		
+
 	}
 
 
 	public function get_datos_Volante($idVolante){
-		
+
 
 		$volantes = Volantes::select('sia_volantes.*','vd.cveAuditoria','c.idTipoDocto','c.nombre')
 					->leftjoin('sia_volantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
@@ -175,10 +179,10 @@ class BaseController extends TwigController{
 			array_push($idusuarios,$this->get_id_usr($value));
 		}
 
-		
+
 
 		$datosVolante = $this->get_datos_Volante($idVolante);
-		
+
 
 
 		$tipoDocumento = $datosVolante['nombre'];
@@ -195,20 +199,84 @@ class BaseController extends TwigController{
 		}
 	}
 
-	public function asignacion_template($id,$js,$nombre){
+	public function asignacion_template($id,$js,$nombre,$modulo){
 
 		$notificaciones = new NotificacionesController();
 		$menu = $this->menu();
 
 
-		echo $this->render('HomeLayout/Asignacion.twig',[
+		echo $this->render('HomeLayout/Cedulas.twig',[
 			'js' => $js,
 			'session' => $_SESSION,
 			'nombre' => $nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos'],
-			'id' => $id
+			'id' => $id,
+			'modulo' => $modulo
 		]);
+
+	}
+
+	public function insert_asignacion(array $data,$file){
+
+		$validate = $this->validate_insert_asignacion($data);
+		if(empty($validate)){
+
+			$idVolante = $data['idVolante'];
+			$idPuesto = $data['empleado'];
+			$puestos = Puestos::where('idPuestoJuridico',"$idPuesto")->get();
+			$rpe = $puestos[0]['rpe'];
+
+			$usuarios = Usuarios::where('idEmpleado',"$rpe")->get();
+			$usrReceptor = $usuarios[0]['idUsuario'];
+
+			$turno = new TurnadosJuridico([
+	            'idVolante' => $idVolante,
+	            'idAreaRemitente' => $_SESSION['idArea'],
+	            'idAreaRecepcion' => $_SESSION['idArea'],
+	            'idUsrReceptor' => $usrReceptor,
+	            'idEstadoTurnado' => 'EN ATENCION',
+	            'idTipoTurnado' => 'I',
+	            'idTipoPrioridad' => $data['prioridad'],
+	            'comentario' => $data['asunto'],
+							'areaRecepcion' => $_SESSION['idArea'],
+							'areaRemitente' => $_SESSION['idArea'],
+	            'usrAlta' => $_SESSION['idUsuario'],
+	            'estatus' => 'ACTIVO'
+	    	]);
+
+	    	$turno->save();
+
+				$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
+
+				if(!empty($file)){
+					$this->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Internos',$_SESSION['idArea'],$_SESSION['idArea']);
+				}
+
+				$this->notifications_turnados('Turnado Interno',$rpe,$idVolante);
+
+				$validate[0] = 'OK';
+
+		}
+
+		return $validate;
+
+	}
+
+	public function validate_insert_asignacion($data){
+
+		$is_valid = GUMP::is_valid($data,array(
+			'empleado' => 'required|max_len,10|numeric',
+			'prioridad'=> 'required|max_len,20|alpha_numeric',
+			'asunto' => 'required|max_len,350',
+			'idVolante' => 'required|max_len,4|numeric',
+		));
+
+		if($is_valid === true){
+			$is_valid = [];
+		}
+
+		return $is_valid;
 
 	}
 

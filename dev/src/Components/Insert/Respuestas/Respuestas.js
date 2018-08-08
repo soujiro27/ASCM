@@ -23,7 +23,6 @@ export default class Asignacion extends Component {
     let form_functions = new submit()
     let data = form_functions.createData(document.getElementsByTagName('form'))
     data.append('idVolante',this.props.id)
-    data.append('file', document.getElementById('file').files[0]);
     let url = '/SIA/juridico/Ifa/Asignacion'
 
     axios.post(url,data)

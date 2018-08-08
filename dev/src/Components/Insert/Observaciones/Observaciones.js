@@ -23,8 +23,7 @@ export default class Asignacion extends Component {
     let form_functions = new submit()
     let data = form_functions.createData(document.getElementsByTagName('form'))
     data.append('idVolante',this.props.id)
-    data.append('file', document.getElementById('file').files[0]);
-    let url = '/SIA/juridico/Ifa/Asignacion'
+    let url = '/SIA/juridico/Observaciones/save'
 
     axios.post(url,data)
     .then(response =>{
@@ -36,13 +35,13 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = '/SIA/juridico/Ifa'
+    location.href = `/SIA/juridico/Ifa/Observaciones/${this.props.id}`
   }
 
   HandleCloseModal = () => {
     if(this.state.modal.success){
 
-        location.href = `/SIA/juridico/Ifa/Asignacion/${this.props.id}`
+        location.href = `/SIA/juridico/Ifa/Observaciones/${this.props.id}`
     } else{
 
         this.setState({

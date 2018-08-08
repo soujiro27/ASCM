@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\Cedulas\IfaController;
@@ -19,7 +19,7 @@
 		$security->validacion_sesion();
 	};
 
-	
+
 
 
 
@@ -29,14 +29,36 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->Home();
 	});
 
-	
+
 	$app->get('/Ifa/all',function() use ($controller){
 		$controller->tabla();
 	});
 
 	$app->get('/Ifa/Asignacion/:id',function($id) use ($controller){
-		$controller->asginacion_template($id);
+		$controller->load_cedula_template($id,'Asignacion');
 	});
+
+	$app->get('/Ifa/Respuestas/:id',function($id) use ($controller){
+		$controller->load_cedula_template($id,'Respuestas');
+	});
+
+	$app->get('/Ifa/Observaciones/:id',function($id) use ($controller){
+		$controller->load_cedula_template($id,'Observaciones');
+	});
+	$app->get('/Ifa/Cedula/:id',function($id) use ($controller){
+		$controller->load_cedula_template($id,'Cedula');
+	});
+
+
+	$app->post('/Ifa/Asignacion',function() use ($controller,$app){
+		$controller->insert_asignacion($app->request->post(),$_FILES);
+	});
+
+	$app->get('/Ifa/Observaciones/add/:id',function($id) use ($controller){
+		$controller->nueva_observacion($id);
+	});
+
+
 
 /*
 

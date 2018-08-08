@@ -31,10 +31,21 @@ module.exports = {
     //"DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
 
     /*------------------------ Asignacion -----------------------------------------*/
-    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
+    //"Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Asignacion.js')],
+
+
+    /*--------------------- Respuestas -------------------------------------------*/
+    //"Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Respuestas.js')],
+
+
+    /*------------------- Observaciones ---------------------------------------*/
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Observaciones.js')],
+
+
+
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Asignacion/'),
+    path: path.resolve(__dirname, '../public/js/Observaciones/'),
     filename: `[name].js`
   },
   devServer: {
