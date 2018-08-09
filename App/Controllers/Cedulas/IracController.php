@@ -16,10 +16,10 @@ use Jur\App\Models\Cedulas\DocumentosSiglas;
 use Jur\App\Models\Cedulas\Espacios;
 
 
-class IfaController extends TwigController {
+class IracController extends TwigController {
 
-	private $js = 'Ifa';
-	private $nombre = 'IFA';
+	private $js = 'Irac';
+	private $nombre = 'Irac';
 
 
 	public function Home(){
@@ -51,7 +51,7 @@ class IfaController extends TwigController {
             ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
             ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
             ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-            ->where('sub.nombre','=','IFA')
+            ->where('sub.nombre','=','IRAC')
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idTipoTurnado','V')
             ->get();

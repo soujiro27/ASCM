@@ -281,6 +281,7 @@ class ModulosController {
 		$idUsuario = $_SESSION['idUsuario'];
 
 		$idPuesto = $data['empleado'];
+		$idVolante = $data['idVolante'];
 		$puestos = Puestos::where('idPuestoJuridico',"$idPuesto")->get();
 		$rpe = $puestos[0]['rpe'];
 
@@ -289,7 +290,7 @@ class ModulosController {
 
 		$turnados = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal')
 		->leftJoin('sia_AnexosJuridico as a ','a.idTurnadoJuridico','=','sia_TurnadosJuridico.idTurnadoJuridico')
-		->whereIn('idUsrReceptor',[$idUsuario,$usrReceptor])->where('idTipoTurnado','I')->get();
+		->whereIn('idUsrReceptor',[$idUsuario,$usrReceptor])->where('idTipoTurnado','I')->where('sia_TurnadosJuridico.idVolante',"$idVolante")->get();
 
 	foreach ($turnados as $key => $value) {
 			$turnados[$key]['usrActual'] = $idUsuario;

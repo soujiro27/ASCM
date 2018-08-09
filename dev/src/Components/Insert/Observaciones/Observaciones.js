@@ -35,13 +35,13 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = `/SIA/juridico/Ifa/Observaciones/${this.props.id}`
+    location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.id}`
   }
 
   HandleCloseModal = () => {
     if(this.state.modal.success){
 
-        location.href = `/SIA/juridico/Ifa/Observaciones/${this.props.id}`
+        location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.id}`
     } else{
 
         this.setState({

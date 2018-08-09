@@ -73,7 +73,12 @@ export default class Respuestas extends Component {
     if(value != '')
     {
         let url = '/SIA/juridico/Api/Respuestas'
-        axios.get(url,{params:{empleado:value}})
+        axios.get(url,{
+          params:{
+            empleado:value,
+            idVolante:this.props.id
+          }
+        })
         .then((response) => {
             this.setState({data:response.data})
         })

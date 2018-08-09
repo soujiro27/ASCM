@@ -212,7 +212,7 @@ class BaseController extends TwigController{
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos'],
 			'id' => $id,
-			'modulo' => $modulo
+			'modulo' => $modulo,
 		]);
 
 	}

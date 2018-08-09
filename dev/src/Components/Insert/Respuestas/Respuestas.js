@@ -23,7 +23,7 @@ export default class Asignacion extends Component {
     let form_functions = new submit()
     let data = form_functions.createData(document.getElementsByTagName('form'))
     data.append('idVolante',this.props.id)
-    let url = '/SIA/juridico/Ifa/Asignacion'
+    let url = `/SIA/juridico/${this.props.modulo}/Asignacion`
 
     axios.post(url,data)
     .then(response =>{
@@ -35,13 +35,13 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = '/SIA/juridico/Ifa'
+    location.href = `/SIA/juridico/${this.props.modulo}`
   }
 
   HandleCloseModal = () => {
     if(this.state.modal.success){
 
-        location.href = `/SIA/juridico/Ifa/Asignacion/${this.props.id}`
+        location.href = `/SIA/juridico/${this.props.modulo}/Asignacion/${this.props.id}`
     } else{
 
         this.setState({
@@ -54,7 +54,7 @@ export default class Asignacion extends Component {
 
   render(){
     return (<form onSubmit={this.HandleSubmit}>
-      <Formulario cancel={this.HandleCancel}/>
+      <Formulario cancel={this.HandleCancel} id={this.props.id}/>
       {
           this.state.modal.visible &&
           <Modal data={this.state.modal} close={this.HandleCloseModal}/>

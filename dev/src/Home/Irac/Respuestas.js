@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import Header from './../../Components/Header/Header-text';
-import Form from './../../Components/Insert/Observaciones/Observaciones';
+import Header from './../../Components/Header/Header-cedulas';
+
+import Form from './../../Components/Insert/Respuestas/Respuestas';
 
 class Home extends Component{
+
 
     render(){
         return(
@@ -15,8 +17,18 @@ class Home extends Component{
     }
 }
 
+
+
 Home.defaultProps = {
-    texto:'Agregar Nueva Observacion',
+    texto:'Asignacion',
+    menu:[
+    	'Asignacion',
+    	'Respuestas',
+    	'Observaciones',
+    	'Cedula'
+    ],
+    active:'Respuestas',
+    modulo:'Irac'
 }
 
 export default Home

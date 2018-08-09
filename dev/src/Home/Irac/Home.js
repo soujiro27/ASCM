@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-text';
-import Form from './../../Components/Insert/Observaciones/Observaciones';
-
+import Table from '../../Components/Tablas/Container/Cedulas/Irac';
 class Home extends Component{
 
     render(){
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form id={this.props.id} modulo={this.props.modulo}/>
+                <Table/>
             </div>
 
         )
@@ -16,7 +15,9 @@ class Home extends Component{
 }
 
 Home.defaultProps = {
-    texto:'Agregar Nueva Observacion',
+    texto:'Registros Irac',
+    textoButton:'Nuevo Registro',
+    'modulo':'Irac'
 }
 
 export default Home

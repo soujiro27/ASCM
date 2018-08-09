@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Home from './../../Home/Observaciones/Insert'
+import Home from './../../Home/Irac/Asignacion'
+
+
 
 let element = document.getElementById('root')
 let id = element.dataset.id
-let modulo = element.dataset.modulo
-render(<Home id={id} modulo={modulo} />,element);
+render(<Home id={id} />,element);
