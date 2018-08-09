@@ -8,6 +8,7 @@ use \Jur\App\Models\Modulos\TiposDocumentos;
 use \Jur\App\Models\Modulos\SubTipos;
 use \Jur\App\Models\Catalogos\Caracteres;
 use Jur\App\Models\Catalogos\Acciones;
+use Jur\App\Models\Catalogos\Textos;
 use \Jur\App\Models\Modulos\Areas;
 use Jur\App\Models\Volantes\Auditorias;
 use Jur\App\Models\Volantes\AuditoriasUnidades;
@@ -261,6 +262,19 @@ class ModulosController {
 		echo json_encode($puestos_final);
 	}
 
+	public function get_puestos_cedula(){
+		$area = $_SESSION['idArea'];
+
+		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->where('titular','NO')->orderBy('idPuestoJuridico','DESC')->get();
+
+		echo json_encode($puestos);
+	}
+
+	public function get_textos_cedula(){
+			$textos = Textos::where('estatus','ACTIVO')->get();
+			echo json_encode($textos);
+	}
+
 
 	public function get_respuestas(array $data){
 
@@ -291,6 +305,8 @@ class ModulosController {
 		$observaciones = Observaciones::where('idVolante',"$idVolante")->get();
 		echo json_encode($observaciones);
 	}
+
+
 
 
 }

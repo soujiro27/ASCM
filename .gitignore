@@ -2,3 +2,7 @@ dev/node_modules/
 App/vendor/
 public/js/
 export/
+App/Cedulas/font
+App/Cedulas/img
+App/Cedulas/PDFmaster
+App/Cedulas/tcpdf

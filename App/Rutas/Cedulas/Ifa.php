@@ -45,8 +45,14 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	$app->get('/Ifa/Observaciones/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Observaciones');
 	});
+
+
 	$app->get('/Ifa/Cedula/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Cedula');
+	});
+
+	$app->get('/Ifa/Cedulas/Register',function() use ($controller,$app){
+		$controller->get_register_cedula($app->request->get());
 	});
 
 
@@ -59,36 +65,17 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-
-/*
-
-	$app->get('/Volantes/add',function() use ($controller){
-		$controller->nuevo_registro();
+	$app->post('/Ifa/Cedula/add',function() use ($controller,$app){
+		$controller->insert_cedula($app->request->post());
 	});
 
 
-	$app->get('/Volantes/:id',function($id) use ($controller){
-		$controller->update_template($id);
-	});
 
-	$app->get('/Volantes/Register/:id',function($id) use ($controller){
-		$controller->registro($id);
-	});
-
-	$app->get('/Volantes/Export',function() use ($controller){
-		$controller->export();
-	});
+		$app->post('/Ifa/Cedula/Update',function() use ($controller,$app){
+			$controller->update_cedula($app->request->post());
+		});
 
 
-	$app->post('/Volantes/save',function() use ($controller,$app){
-		$controller->guardar($app->request->post(),$_FILES);
-	});
-
-	$app->post('/Volantes/Update',function() use ($controller,$app){
-		$controller->Update($app->request->post());
-	});
-
-*/
 });
 
 

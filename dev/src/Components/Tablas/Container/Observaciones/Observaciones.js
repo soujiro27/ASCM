@@ -24,7 +24,12 @@ class TableContainer extends Component{
         },
         {
             Header:'Observacion',
-            accessor:'observacion'
+            accessor: props => {
+              let parse = new DOMParser()
+              let el = (parse.parseFromString(props.observacion,'text/html'))
+              return el.body.textContent
+          },
+          id:'id'
         },
         {
             Header:'Estatus',
@@ -46,7 +51,7 @@ class TableContainer extends Component{
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/Acciones/${rowInfo.original.idAccion}`
+                location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/Update/${rowInfo.original.idObservacionDoctoJuridico}`
             }
         }
     }

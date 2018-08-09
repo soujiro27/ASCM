@@ -8,11 +8,6 @@
 	$controller = new ObservacionesController();
 
 
-	$rol = function(){
-		$security = new SecurityController();
-		$security->valida_rol('CAT-ACCIONES');
-	};
-
 	$auth = function(){
 
 		$security = new SecurityController();
@@ -26,9 +21,24 @@
 $app->group('/juridico',$auth,function() use($app,$controller){
 
 
+
 	$app->post('/Observaciones/save',function() use ($controller,$app){
 		$controller->guardar($app->request->post());
 	});
+
+  $app->post('/Observaciones/Update',function() use ($controller,$app){
+    $controller->update($app->request->post());
+  });
+
+  $app->get('/:modulo/Observaciones/Update/:id',function($modulo,$id) use ($controller){
+    $controller->update_template($modulo,$id);
+  });
+
+
+  $app->get('/Observaciones/Register/:id',function($id) use ($controller){
+    $controller->registro($id);
+  });
+
 
 /*	$app->post('/Acciones/Update',function() use ($controller,$app){
 		$controller->Update($app->request->post());

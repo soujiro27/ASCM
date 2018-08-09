@@ -5,18 +5,14 @@ let moduleWorks = 'catalogos';
 
 module.exports = {
   entry: {
-    "Acciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Acciones/Update.js')],
-    "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Update.js')],
-    "SubDocumentos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/SubDocumentos/Update.js')],
-    "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Update.js')],
-    "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
-    "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Update.js')],
-    "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
-    "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Update.js')],
+
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Cedula.js')],
+
+
 
   },
   output: {
-    path: path.resolve(__dirname, '../public/js/Update/'),
+    path: path.resolve(__dirname, '../public/js/Cedula/'),
     filename: `[name].js`
   },
   devServer: {

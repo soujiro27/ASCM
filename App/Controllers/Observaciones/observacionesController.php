@@ -14,9 +14,8 @@ use Jur\App\Models\Volantes\VolantesDocumentos;
 
 class ObservacionesController extends TwigController {
 
-	private $js = 'Acciones';
-	private $nombre = 'Acciones';
-
+	private $js = 'Observaciones';
+	private $nombre = 'Observaciones';
 
 
 	public function guardar($data){
@@ -52,30 +51,8 @@ class ObservacionesController extends TwigController {
 	}
 
 
-	public function update($data){
 
-		$id = $data['idAccion'];
-
-		$validate = $this->validate($data);
-			if(empty($validate)){
-
-				Acciones::find($id)->update([
-					'nombre' => $data['nombre'],
-					'estatus' => $data['estatus'],
-					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-
-
-				]);
-				$validate[0] = 'OK';
-
-			}
-
-			echo json_encode($validate);
-
-	}
-
-	public function update_template($id){
+  public function update_template($modulo,$id){
 
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
@@ -88,15 +65,52 @@ class ObservacionesController extends TwigController {
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos'],
-			'id' => $id
+			'id' => $id,
+      'modulo' => $modulo
 		]);
 	}
 
 
-	public function registro($id){
-		$accion = Acciones::find($id);
-		echo json_encode($accion);
+  public function registro($id){
+    $observacion = Observaciones::find($id);
+    echo json_encode($observacion);
+  }
+
+
+
+
+	public function update($data){
+
+		$id = $data['idObservacionDoctoJuridico'];
+
+		$validate = $this->validate($data);
+			if(empty($validate)){
+
+				Observaciones::find($id)->update([
+          'pagina' => $data['hoja'],
+          'parrafo' => $data['parrafo'],
+          'observacion' => $data['texto'],
+					'estatus' => $data['estatus'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				]);
+				$validate[0] = 'OK';
+
+			}
+
+			echo json_encode($validate);
+
 	}
+
+
+/*----------------------viejos ---------------------*/
+
+
+
+
+
+
+
 
 
 	public function validate($data){
@@ -105,7 +119,6 @@ class ObservacionesController extends TwigController {
 			'hoja' => 'required|max_len,3|numeric',
 			'parrafo' => 'required|max_len,3|numeric',
       'texto' =>'required',
-      'idVolante' => 'required|max_len,3|numeric',
       'estatus' => 'required|max_len,8|alpha',
 		));
 

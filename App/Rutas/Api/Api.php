@@ -69,6 +69,14 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_puestos_asignacion();
 	});
 
+	$app->get('/Puestos/Cedula',function() use ($controller){
+		$controller->get_puestos_cedula();
+	});
+
+	$app->get('/Textos',function() use ($controller){
+		$controller->get_textos_cedula();
+	});
+
 	$app->get('/Respuestas',function() use ($controller,$app){
 		$controller->get_respuestas($app->request->get());
 	});
@@ -76,6 +84,8 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 	$app->get('/Observaciones',function() use ($controller,$app){
 		$controller->tabla_observaciones($app->request->get());
 	});
+
+
 
 });
 
