@@ -10,6 +10,7 @@ module.exports = {
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Respuestas.js')],
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Respuestas.js')],
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Respuestas.js')],
+    "DocumentosDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Diversos/Respuestas.js')],
 
   },
   output: {
