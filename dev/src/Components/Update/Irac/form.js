@@ -13,7 +13,6 @@ export default class Cedula extends Component {
   }
 
   render(){
-    console.log(this.props.data)
     return(
       <div className="form-container">
         <div className="row">
@@ -21,6 +20,11 @@ export default class Cedula extends Component {
           <div className="col-lg-3">
             <label>Siglas</label>
             <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control" defaultValue={this.props.data.siglas}/>
+          </div>
+
+          <div className="col-lg-3">
+            <label>Numero de Folio</label>
+            <input type="text" name="folio" required maxLength="50" placeholder="Folio"  className="form-control" defaultValue={this.props.data.numFolio}/>
           </div>
 
           <div className="col-lg-2">
@@ -31,11 +35,6 @@ export default class Cedula extends Component {
             <div className="col-lg-2">
               <label>Añadir Firmas</label>
               <button className="btn btn-success" onClick={this.props.OpenModalFirmas}>Agregar</button>
-            </div>
-
-            <div className="col-lg-3">
-              <label>Texto Promocion de Acciones</label>
-              <button className="btn btn-success" onClick={this.props.OpenModalTextos}>Agregar</button>
             </div>
 
         </div>
@@ -57,16 +56,38 @@ export default class Cedula extends Component {
           </div>
 
           <div className="col-lg-3">
-            <label>Espacios Copias</label>
-            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue={this.props.data.sigla}/>
+            <label>Espacios Copias Cedula</label>
+            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue={this.props.data.copiaCedula} />
           </div>
 
         </div>
+
+        <div className="row">
+          <div className="col-lg-3">
+            <label>Espacios Atentamente</label>
+            <input type="number" min='0' max='100' name="e_atte" className="form-control" defaultValue={this.props.data.atte} />
+          </div>
+
+          <div className="col-lg-3">
+            <label>Espacios Copias</label>
+            <input type="number" min='0' max='100' name="e_copias_oficio" className="form-control" defaultValue={this.props.data.copia} />
+          </div>
+
+          <div className="col-lg-3">
+            <label>Espacios Siglas</label>
+            <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue={this.props.data.sigla} />
+          </div>
+
+
+
+        </div>
+
 
         <div className="col-lg-4 submit-group">
             <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
             <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
             <button className="btn btn-warning btn-sm" onClick={this.props.PrintCedula}>Cedula</button>
+
         </div>
 
 

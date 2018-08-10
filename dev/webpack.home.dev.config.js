@@ -14,6 +14,7 @@ module.exports = {
     "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Home.js')],
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Home.js')],
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Home.js')],
+    "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Home.js')],
 
   },
   output: {

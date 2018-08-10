@@ -112,10 +112,10 @@ class IracController extends TwigController {
 			$documento = new DocumentosSiglas([
 				'idVolante' => $idVolante,
 				'idSubTipoDocumento' => $subTipo,
-				'idDocumentoTexto' => $data['texto'],
 				'idPuestosJuridico' => $data['firmas'],
 				'fOficio' => $data['fecha_documento'],
 				'siglas' => $data['siglas'],
+        'numFolio' => $data['folio'],
 				'usrAlta' => $_SESSION['idUsuario'],
 			]);
 
@@ -126,7 +126,10 @@ class IracController extends TwigController {
 				'encabezado' => $data['e_observaciones'],
 				'cuerpo' => $data['e_texto'],
 				'pie' => $data['e_firmas'],
-				'sigla' => $data['e_copias'],
+				'copiaCedula' => $data['e_copias'],
+        'atte' => $data['e_atte'],
+        'copia' => $data['e_copias_oficio'],
+        'sigla' => $data['e_siglas'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
@@ -148,7 +151,7 @@ class IracController extends TwigController {
 		$idVolante = $data['idVolante'];
 
 		DocumentosSiglas::find($id)->update([
-			'idDocumentoTexto' => $data['texto'],
+      'numFolio' => $data['folio'],
 			'idPuestosJuridico' => $data['firmas'],
 			'fOficio' => $data['fecha_documento'],
 			'siglas' => $data['siglas'],
@@ -161,7 +164,10 @@ class IracController extends TwigController {
 			'encabezado' => $data['e_observaciones'],
 			'cuerpo' => $data['e_texto'],
 			'pie' => $data['e_firmas'],
-			'sigla' => $data['e_copias'],
+			'copiaCedula' => $data['e_copias'],
+      'atte' => $data['e_atte'],
+      'copia' => $data['e_copias_oficio'],
+      'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
 			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
@@ -183,8 +189,11 @@ class IracController extends TwigController {
 			'e_texto' => 'required|max_len,2|numeric',
 			'e_firmas' => 'required|max_len,2|numeric',
 			'e_copias' => 'required|max_len,2|numeric',
+      'e_atte' => 'required|max_len,2|numeric',
+      'e_copias_oficio' => 'required|max_len,2|numeric',
+      'e_siglas' => 'required|max_len,2|numeric',
+      'folio' => 'required|max_len,50' ,
 			'firmas' => 'required|max_len,50',
-			'texto' => 'required|max_len,2|numeric',
 		));
 
 		if($valid === true){

@@ -14,12 +14,13 @@ use Jur\App\Models\Volantes\VolantesDocumentos;
 use Jur\App\Models\Volantes\TurnadosJuridico;
 use Jur\App\Models\Cedulas\DocumentosSiglas;
 use Jur\App\Models\Cedulas\Espacios;
+use Jur\App\Models\Cedulas\Confrontas;
 
 
-class IfaController extends TwigController {
+class ConfrontaController extends TwigController {
 
-	private $js = 'Ifa';
-	private $nombre = 'IFA';
+	private $js = 'Confronta';
+	private $nombre = 'Confronta';
 
 
 	public function Home(){
@@ -51,7 +52,7 @@ class IfaController extends TwigController {
             ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
             ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
             ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-            ->where('sub.nombre','=','IFA')
+            ->where('sub.nombre','=','CONFRONTA')
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idTipoTurnado','V')
             ->get();
@@ -92,12 +93,18 @@ class IfaController extends TwigController {
 
 	public function get_register_cedula(array $data){
 			$idVolante = $data['id'];
-			$cedula = DocumentosSiglas::select('sia_documentosSiglas.*','e.*')
-							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_documentosSiglas.idVolante')
-							->where('sia_documentosSiglas.idVolante',"$idVolante")->get();
+			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*')
+							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
+							->where('sia_ConfrontasJuridico.idVolante',"$idVolante")->get();
 			echo json_encode($cedula);
 	}
 
+
+	public function get_register_nota(array $data){
+		$idVolante = $data['id'];
+		$vd = VolantesDocumentos::where('idVolante',"$idVolante")->get();
+		echo json_encode($vd);
+	}
 
 	public function insert_cedula(array $data){
 
@@ -106,27 +113,26 @@ class IfaController extends TwigController {
 
 			$idVolante = $data['idVolante'];
 
-			$volantesDocumentos = VolantesDocumentos::where('idVolante',"$idVolante")->get();
-			$subTipo = $volantesDocumentos[0]['idSubTipoDocumento'];
-
-			$documento = new DocumentosSiglas([
+			$confronta = new Confrontas([
 				'idVolante' => $idVolante,
-				'idSubTipoDocumento' => $subTipo,
-				'idDocumentoTexto' => $data['texto'],
-				'idPuestosJuridico' => $data['firmas'],
-				'fOficio' => $data['fecha_documento'],
+				'nombreResponsable' => $data['nombre'],
+				'cargoResponsable' => $data['cargo'],
 				'siglas' => $data['siglas'],
+				'numFolio' => $data['folio'],
+				'refDocumento' => $data['ref_documento'],
+				'fConfronta' => $data['fecha_confronta'],
+				'fOficio' => $data['fecha_documento'],
+				'hConfronta' => $data['hora_confronta'],
 				'usrAlta' => $_SESSION['idUsuario'],
 			]);
 
-			$documento->save();
+			if(isset($data['notaInformativa'])){ $confronta['notaInformativa'] = $data['notaInformativa'];  }
+
+			$confronta->save();
 
 			$espacios = new Espacios([
 				'idVolante' => $idVolante,
-				'encabezado' => $data['e_observaciones'],
-				'cuerpo' => $data['e_texto'],
-				'pie' => $data['e_firmas'],
-				'copiaCedula' => $data['e_copias'],
+        'sigla' => $data['e_siglas'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
@@ -144,24 +150,29 @@ class IfaController extends TwigController {
 
 		if(empty($validate)){
 
-		$id = $data['idDocumentoSiglas'];
+		$id = $data['idConfrontaJuridico'];
 		$idVolante = $data['idVolante'];
 
-		DocumentosSiglas::find($id)->update([
-			'idDocumentoTexto' => $data['texto'],
-			'idPuestosJuridico' => $data['firmas'],
-			'fOficio' => $data['fecha_documento'],
+		$datos_confronta = [
+			'nombreResponsable' => $data['nombre'],
+			'cargoResponsable' => $data['cargo'],
 			'siglas' => $data['siglas'],
+			'numFolio' => $data['folio'],
+			'refDocumento' => $data['ref_documento'],
+			'fConfronta' => $data['fecha_confronta'],
+			'fOficio' => $data['fecha_documento'],
+			'hConfronta' => $data['hora_confronta'],
 			'usrModificacion' => $_SESSION['idUsuario'],
 			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		]);
+		];
+
+		if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
+
+		Confrontas::find($id)->update($datos_confronta);
 
 
 		Espacios::where('idVolante',"$idVolante")->update([
-			'encabezado' => $data['e_observaciones'],
-			'cuerpo' => $data['e_texto'],
-			'pie' => $data['e_firmas'],
-			'sigla' => $data['e_copias'],
+      'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
 			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
@@ -177,14 +188,15 @@ class IfaController extends TwigController {
 	public function validate(array $data){
 
 		$valid = GUMP::is_valid($data,array(
-			'siglas' => 'required|max_len,150',
+			'nombre' => 'required|max_len,120',
+			'cargo' => 'required|max_len,120',
+			'siglas' => 'required|max_len,100',
+			'folio' => 'required|max_len,50',
+			'ref_documento' => 'required|max_len,50',
+			'fecha_confronta' => 'required|max_len,10',
 			'fecha_documento' => 'required|max_len,10',
-			'e_observaciones' => 'required|max_len,2|numeric',
-			'e_texto' => 'required|max_len,2|numeric',
-			'e_firmas' => 'required|max_len,2|numeric',
-			'e_copias' => 'required|max_len,2|numeric',
-			'firmas' => 'required|max_len,50',
-			'texto' => 'required|max_len,2|numeric',
+			'hora_confronta' => 'required|max_len,5',
+      'e_siglas' => 'required|max_len,2|numeric',
 		));
 
 		if($valid === true){

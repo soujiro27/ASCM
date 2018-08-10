@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import './../form.styl'
-import './fechas.styl';
+import './../fechas.styl';
 
 
 export default class Cedula extends Component {
@@ -65,7 +65,7 @@ export default class Cedula extends Component {
         <div className="col-lg-4 submit-group">
             <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
             <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
-        
+
         </div>
 
 

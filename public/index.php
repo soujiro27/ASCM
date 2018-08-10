@@ -29,6 +29,7 @@ include_once $root_directory.'/Documentos/DocumentosGral.php';
 /*------------------- Cedulas -------------------------*/
 include_once $root_directory.'/Cedulas/Ifa.php';
 include_once $root_directory.'/Cedulas/Irac.php';
+include_once $root_directory.'/Cedulas/Confronta.php';
 
 
 /*------------------- observaciones -------------------------*/
