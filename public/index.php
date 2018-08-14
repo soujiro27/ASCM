@@ -33,6 +33,14 @@ include_once $root_directory.'/Cedulas/Confronta.php';
 include_once $root_directory.'/Cedulas/OficiosGenericos.php';
 
 
+/*--------------------- Asignacion -------------------------*/
+include_once $root_directory.'/Asignacion/Asignacion.php';
+
+
+/*--------------------- Respuestas -------------------------*/
+include_once $root_directory.'/Respuestas/Respuestas.php';
+
+
 /*------------------- observaciones -------------------------*/
 include_once $root_directory.'/Observaciones/Observaciones.php';
 

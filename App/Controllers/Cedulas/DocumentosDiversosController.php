@@ -15,6 +15,7 @@ use Jur\App\Models\Volantes\TurnadosJuridico;
 use Jur\App\Models\Cedulas\DocumentosSiglas;
 use Jur\App\Models\Cedulas\Espacios;
 use Jur\App\Models\Cedulas\Confrontas;
+use Jur\App\Models\Cedulas\Plantillas;
 
 
 class DocumentosDiversosController extends TwigController {
@@ -89,8 +90,9 @@ class DocumentosDiversosController extends TwigController {
 
 	public function get_register_cedula(array $data){
 			$idVolante = $data['id'];
-			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*')
+			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*','v.idTipoDocto')
 							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
+              ->leftJoin('sia_Volantes as v','v.idVolante','=','sia_ConfrontasJuridico.idVolante')
 							->where('sia_ConfrontasJuridico.idVolante',"$idVolante")->get();
 			echo json_encode($cedula);
 	}
@@ -98,18 +100,25 @@ class DocumentosDiversosController extends TwigController {
 
 	public function get_register_nota(array $data){
 		$idVolante = $data['id'];
-		$vd = VolantesDocumentos::where('idVolante',"$idVolante")->get();
+		//$vd = Volantes::where('idVolante',"$idVolante")->get();
+    $vd = Volantes::select('idTipoDocto')->where('idVolante',"$idVolante")->get();
 		echo json_encode($vd);
 	}
 
-	public function insert_cedula(array $data){
 
+  public function load_template_oficio($id){
+    $base = new BaseController();
+		$base->asignacion_template($id,'OficiosGenericos',$this->nombre,'DocumentosDiversos');
+  }
+
+
+	public function insert_cedula(array $data){
 		$validate =  $this->validate($data);
 		if(empty($validate)){
 
 			$idVolante = $data['idVolante'];
 
-			$confronta = new Confrontas([
+			$plantilla = new Plantillas([
 				'idVolante' => $idVolante,
 				'nombreResponsable' => $data['nombre'],
 				'cargoResponsable' => $data['cargo'],
@@ -122,9 +131,9 @@ class DocumentosDiversosController extends TwigController {
 				'usrAlta' => $_SESSION['idUsuario'],
 			]);
 
-			if(isset($data['notaInformativa'])){ $confronta['notaInformativa'] = $data['notaInformativa'];  }
+			if(isset($data['refDocumento'])){ $plantilla['refDocumento'] = $data['refDocumento'];  }
 
-			$confronta->save();
+			$plantilla->save();
 
 			$espacios = new Espacios([
 				'idVolante' => $idVolante,
@@ -137,6 +146,7 @@ class DocumentosDiversosController extends TwigController {
 
 		}
 		echo json_encode($validate);
+    var_dump($data);
 	}
 
 
@@ -184,14 +194,12 @@ class DocumentosDiversosController extends TwigController {
 	public function validate(array $data){
 
 		$valid = GUMP::is_valid($data,array(
-			'nombre' => 'required|max_len,120',
-			'cargo' => 'required|max_len,120',
 			'siglas' => 'required|max_len,100',
 			'folio' => 'required|max_len,50',
-			'ref_documento' => 'required|max_len,50',
-			'fecha_confronta' => 'required|max_len,10',
 			'fecha_documento' => 'required|max_len,10',
-			'hora_confronta' => 'required|max_len,5',
+			'texto' => 'required',
+      'e_atte' => 'required|max_len,2|numeric',
+      'e_copias' => 'required|max_len,2|numeric',
       'e_siglas' => 'required|max_len,2|numeric',
 		));
 

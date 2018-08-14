@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Jur\App\Controllers;
 
 use Jur\App\Models\Notificaciones\Notificaciones;
@@ -12,9 +12,9 @@ class NotificacionesController{
 		$idUsuario = $_SESSION['idUsuario'];
 
 		$notificaciones = Notificaciones::where('idUsuario',"$idUsuario")->get();
-		
+
 		return($notificaciones->count());
-		
+
 
 	}
 
@@ -46,7 +46,7 @@ class NotificacionesController{
 				'mensaje' => $mensaje,
 				'idPrioridad' => 'ALTA',
 				'idImpacto' => 'MEDIO',
-				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
 				'usrAlta' => $_SESSION['idUsuario'],
 				'estatus' => 'ACTIVO',
 				'situacion' => 'NUEVO',
@@ -55,7 +55,7 @@ class NotificacionesController{
 				'idAuditoria' => '1',
 				'idModulo' => 'Volantes',
 				'referencia' => 'idVolante'
-	 
+
 			]);
 			$notifica->save();
 

@@ -60,18 +60,6 @@ class IracController extends TwigController {
 		echo json_encode($ifa);
 	}
 
-	public function load_cedula_template($id,$modulo){
-
-		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre,$modulo);
-	}
-
-
-	public function insert_asignacion(array $data,$file){
-		$base = new BaseController();
-		$validate = $base->insert_asignacion($data,$file);
-		echo json_encode($validate );
-	}
 
 	public function nueva_observacion($id){
 		$notificaciones = new NotificacionesController();

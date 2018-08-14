@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace Jur\App\Controllers;
 use Jur\App\Models\Security\UsuariosRoles;
 use Jur\App\Models\Security\RolesModulos;
-
+use Jur\App\Models\Volantes\TurnadosJuridico;
+use Jur\App\Models\Modulos\Observaciones;
 
 class SecurityController {
 
@@ -30,8 +31,36 @@ class SecurityController {
 
 	}
 
+	public function validate_idVolante($idVolante){
+
+		$idArea = $_SESSION['idArea'];
+		$idUsuario = $_SESSION['idUsuario'];
+
+		$turnos = TurnadosJuridico::where('idAreaRecepcion',"$idArea")->where('idUsrReceptor',"$idUsuario")->where('idVolante',"$idVolante")->get();
+		if($turnos->isEmpty()){
+			$app = \Slim\Slim::getInstance();
+			$app->redirect('/SIA');
+		}
 
 	}
+
+	public function validate_update_observaciones($idObservacion){
+
+		$obvs = Observaciones::find($idObservacion)->get();
+		$idVolante = $obvs[0]['idVolante'];
+
+		$idArea = $_SESSION['idArea'];
+		$idUsuario = $_SESSION['idUsuario'];
+
+		$turnos = TurnadosJuridico::where('idAreaRecepcion',"$idArea")->where('idUsrReceptor',"$idUsuario")->where('idVolante',"$idVolante")->get();
+		if($turnos->isEmpty()){
+			$app = \Slim\Slim::getInstance();
+			$app->redirect('/SIA');
+		}
+	}
+
+
+}
 
 
  ?>

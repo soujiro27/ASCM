@@ -34,9 +34,16 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->tabla();
 	});
 
+/* ----Rutas de Asignacion
 	$app->get('/Irac/Asignacion/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Asignacion');
 	});
+
+	$app->post('/Irac/Asignacion',function() use ($controller,$app){
+		$controller->insert_asignacion($app->request->post(),$_FILES);
+	});
+
+----*/
 
 	$app->get('/Irac/Respuestas/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Respuestas');
@@ -56,9 +63,6 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->post('/Irac/Asignacion',function() use ($controller,$app){
-		$controller->insert_asignacion($app->request->post(),$_FILES);
-	});
 
 	$app->get('/Irac/Observaciones/add/:id',function($id) use ($controller){
 		$controller->nueva_observacion($id);

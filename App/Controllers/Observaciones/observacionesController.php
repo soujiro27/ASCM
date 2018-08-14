@@ -18,6 +18,39 @@ class ObservacionesController extends TwigController {
 	private $nombre = 'Observaciones';
 
 
+	public function load_observaciones_home(){
+		$notificaciones = new NotificacionesController();
+    $base = new BaseController();
+    $menu = $base->menu();
+
+
+    echo $this->render('HomeLayout/HomeContainer.twig',[
+      'js' => $this->js,
+      'session' => $_SESSION,
+      'nombre' => $this->nombre,
+      'notificaciones' => $notificaciones->get_notificaciones(),
+      'menu' => $menu['modulos']
+    ]);
+	}
+
+
+	public function load_observaciones_insert_template(){
+
+		$notificaciones = new NotificacionesController();
+		$base = new BaseController();
+		$menu = $base->menu();
+
+
+		echo $this->render('HomeLayout/InsertContainer.twig',[
+			'js' => $this->js,
+			'session' => $_SESSION,
+			'nombre' => $this->nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos']
+		]);
+	}
+
+
 	public function guardar($data){
 
 		$data['estatus'] = 'ACTIVO';
@@ -52,7 +85,7 @@ class ObservacionesController extends TwigController {
 
 
 
-  public function update_template($modulo,$id){
+  public function update_template($id){
 
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
@@ -66,7 +99,6 @@ class ObservacionesController extends TwigController {
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos'],
 			'id' => $id,
-      'modulo' => $modulo
 		]);
 	}
 

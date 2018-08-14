@@ -8,10 +8,10 @@
     "build:home": "webpack --config ./webpack.home.dev.config.js --watch",
     "build:insert": "webpack --config ./webpack.insert.dev.config.js --watch",
     "build:update": "webpack --config ./webpack.update.config.js --watch",
-    "build:obs":"webpack --config ./webpack.observaciones.config.js --watch",
-    "build:cedulas":"webpack --config ./webpack.cedulas.dev.config.js --watch",
-    "build:asig":"webpack --config ./webpack.asignacion.config.js --watch",
-    "build:res":"webpack --config ./webpack.respuestas.config.js --watch",
+    "build:obs": "webpack --config ./webpack.observaciones.config.js --watch",
+    "build:cedulas": "webpack --config ./webpack.cedulas.dev.config.js --watch",
+    "build:asig": "webpack --config ./webpack.asignacion.config.js --watch",
+    "build:res": "webpack --config ./webpack.respuestas.config.js --watch",
     "build": "webpack",
     "build:local": "webpack --env.NODE_ENV=local",
     "build:prod": "webpack -p --env.NODE_ENV=production"
@@ -19,7 +19,7 @@
   "keywords": [
     "react"
   ],
-  "author": "LeonidasEsteban",
+  "author": "JcUstarroz",
   "license": "MIT",
   "devDependencies": {
     "babel-core": "6.26.0",
@@ -44,19 +44,20 @@
   "dependencies": {
     "axios": "0.18.0",
     "rc-tooltip": "3.7.1",
-    "react": "16.1.1",
+    "react": "^16.4.2",
     "react-addons-css-transition-group": "15.6.2",
-    "react-date-picker": "^6.11.2",
-    "react-day-picker": "^7.1.10",
-    "react-dom": "16.1.1",
+    "react-date-picker": "6.11.2",
+    "react-day-picker": "7.1.10",
+    "react-dom": "^16.4.2",
     "react-fade": "1.1.1",
-    "react-input-calendar": "^0.5.3",
-    "react-jsonschema-form": "^1.0.3",
+    "react-froala-editor": "1.0.2",
+    "react-input-calendar": "0.5.3",
+    "react-jsonschema-form": "1.0.3",
     "react-quill": "1.2.7",
-    "react-responsive-modal": "^3.0.3",
+    "react-responsive-modal": "3.0.3",
     "react-select": "1.2.1",
     "react-spinners": "0.3.2",
-    "react-switch": "^3.0.4",
+    "react-switch": "3.0.4",
     "react-table": "6.8.0",
     "uninstall": "0.0.0"
   }

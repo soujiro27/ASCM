@@ -1,12 +1,12 @@
 
 export default class submit {
-    
+
 
     createData(form){
         let elementos = form[0].elements
         let formData = new FormData()
 
-        console.log(elementos)
+      
         for(let x = 0;x<elementos.length-2;x++){
             formData.append(elementos[x].name,elementos[x].value)
 
@@ -27,7 +27,7 @@ export default class submit {
     }
 
     resolve_request(response){
-        
+
         let state
         if(response.status == 500){
             state = {
@@ -40,7 +40,7 @@ export default class submit {
             }
 
         } else if (response.status == 200 ){
-               
+
             if(response.data[0] === 'OK'){
 
                 state = {
@@ -70,7 +70,7 @@ export default class submit {
     }
 
 
-   
+
 
 
     errorData(data,message){
@@ -83,7 +83,7 @@ export default class submit {
         }
 
         form['modal'] = {
-           
+
                 message:message,
                 visible:true,
                 class:'error',
@@ -91,9 +91,9 @@ export default class submit {
         }
 
         return form
-        
+
     }
-    
+
     successData(){
         let res = {
                 modal:{
@@ -109,4 +109,3 @@ export default class submit {
     }
 
 }
-

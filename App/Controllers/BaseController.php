@@ -199,86 +199,8 @@ class BaseController extends TwigController{
 		}
 	}
 
-	public function asignacion_template($id,$js,$nombre,$modulo){
-
-		$notificaciones = new NotificacionesController();
-		$menu = $this->menu();
 
 
-		echo $this->render('HomeLayout/Cedulas.twig',[
-			'js' => $js,
-			'session' => $_SESSION,
-			'nombre' => $nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id,
-			'modulo' => $modulo,
-		]);
-
-	}
-
-	public function insert_asignacion(array $data,$file){
-
-		$validate = $this->validate_insert_asignacion($data);
-		if(empty($validate)){
-
-			$idVolante = $data['idVolante'];
-			$idPuesto = $data['empleado'];
-			$puestos = Puestos::where('idPuestoJuridico',"$idPuesto")->get();
-			$rpe = $puestos[0]['rpe'];
-
-			$usuarios = Usuarios::where('idEmpleado',"$rpe")->get();
-			$usrReceptor = $usuarios[0]['idUsuario'];
-
-			$turno = new TurnadosJuridico([
-	            'idVolante' => $idVolante,
-	            'idAreaRemitente' => $_SESSION['idArea'],
-	            'idAreaRecepcion' => $_SESSION['idArea'],
-	            'idUsrReceptor' => $usrReceptor,
-	            'idEstadoTurnado' => 'EN ATENCION',
-	            'idTipoTurnado' => 'I',
-	            'idTipoPrioridad' => $data['prioridad'],
-	            'comentario' => $data['asunto'],
-							'areaRecepcion' => $_SESSION['idArea'],
-							'areaRemitente' => $_SESSION['idArea'],
-	            'usrAlta' => $_SESSION['idUsuario'],
-	            'estatus' => 'ACTIVO'
-	    	]);
-
-	    	$turno->save();
-
-				$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
-
-				if(!empty($file)){
-					$this->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Internos',$_SESSION['idArea'],$_SESSION['idArea']);
-				}
-
-				$this->notifications_turnados('Turnado Interno',$rpe,$idVolante);
-
-				$validate[0] = 'OK';
-
-		}
-
-		return $validate;
-
-	}
-
-	public function validate_insert_asignacion($data){
-
-		$is_valid = GUMP::is_valid($data,array(
-			'empleado' => 'required|max_len,10|numeric',
-			'prioridad'=> 'required|max_len,20|alpha_numeric',
-			'asunto' => 'required|max_len,350',
-			'idVolante' => 'required|max_len,4|numeric',
-		));
-
-		if($is_valid === true){
-			$is_valid = [];
-		}
-
-		return $is_valid;
-
-	}
 
 }
 

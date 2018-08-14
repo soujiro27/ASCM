@@ -20,9 +20,13 @@ export default class Asignacion extends Component {
   HandleSubmit = (event) => {
     event.preventDefault();
 
+    let div = document.getElementsByClassName('fr-element')
+    let html = div[0].innerHTML
+
     let form_functions = new submit()
     let data = form_functions.createData(document.getElementsByTagName('form'))
     data.append('idVolante',this.props.id)
+    data.append('texto',html)
     let url = '/SIA/juridico/Observaciones/save'
 
     axios.post(url,data)
@@ -35,13 +39,13 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.id}`
+    location.href = `/SIA/juridico/Observaciones/${this.props.id}`
   }
 
   HandleCloseModal = () => {
     if(this.state.modal.success){
 
-        location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.id}`
+        location.href = `/SIA/juridico/Observaciones/${this.props.id}`
     } else{
 
         this.setState({

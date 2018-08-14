@@ -6,7 +6,7 @@ const HeaderCedula = (props) => {
 		<ul className="menu-cedulas row Header">
 		{props.menu.map(item => (
 			<li className={props.active==item ? 'active': undefined} key={item}>
-				<a href={`/SIA/juridico/${props.modulo}/${item}/${props.id}`}>
+				<a href={`/SIA/juridico/${item}/${props.id}`}>
 					{item}
 				</a>
 			</li>

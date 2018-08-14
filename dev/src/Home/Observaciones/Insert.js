@@ -17,6 +17,8 @@ class Home extends Component{
 
 Home.defaultProps = {
     texto:'Agregar Nueva Observacion',
+    id:localStorage.getItem('idVolante'),
+    modulo:localStorage.getItem('modulo')
 }
 
 export default Home

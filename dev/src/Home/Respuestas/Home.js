@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
-
-import Form from './../../Components/Insert/Asignacion/Asignacion';
+import Form from './../../Components/Insert/Respuestas/Respuestas';
 
 class Home extends Component{
 
@@ -28,8 +27,9 @@ Home.defaultProps = {
     	'Observaciones',
     	'Cedula'
     ],
-    active:'Asignacion',
-    modulo:'Irac'
+    active:'Respuestas',
+    modulo:localStorage.getItem('modulo'),
+    id:localStorage.getItem('idVolante')
 }
 
 export default Home

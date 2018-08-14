@@ -57,6 +57,11 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
+  $app->get('/DocumentosDiversos/OficioGenerico/:id',function($id) use ($controller){
+		$controller->load_template_oficio($id);
+	});
+
+
 	$app->post('/DocumentosDiversos/Asignacion',function() use ($controller,$app){
 		$controller->insert_asignacion($app->request->post(),$_FILES);
 	});

@@ -9,6 +9,7 @@ module.exports = {
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Cedula.js')],
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Cedula.js')],
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Cedula.js')],
+    "DocumentosDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Diversos/Cedula.js')],
 
 
 

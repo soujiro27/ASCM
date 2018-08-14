@@ -17,6 +17,12 @@ export default class Asignacion extends Component {
       }
   }
 
+  modulo = {
+    nombre:localStorage.getItem('modulo')
+  }
+
+
+
   HandleSubmit = (event) => {
     event.preventDefault();
 
@@ -24,7 +30,7 @@ export default class Asignacion extends Component {
     let data = form_functions.createData(document.getElementsByTagName('form'))
     data.append('idVolante',this.props.id)
     data.append('file', document.getElementById('file').files[0]);
-    let url = `/SIA/juridico/${this.props.modulo}/Asignacion`
+    let url = `/SIA/juridico/Asignacion/Add`
 
     axios.post(url,data)
     .then(response =>{
@@ -36,13 +42,13 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = `/SIA/juridico/${this.props.modulo}`
+    location.href = `/SIA/juridico/${this.modulo.nombre}`
   }
 
   HandleCloseModal = () => {
     if(this.state.modal.success){
 
-        location.href = `/SIA/juridico/${this.props.modulo}/Asignacion/${this.props.id}`
+        location.href = `/SIA/juridico/Asignacion/${this.props.id}`
     } else{
 
         this.setState({
@@ -54,6 +60,7 @@ export default class Asignacion extends Component {
 
 
   render(){
+    console.log(localStorage)
     return (<form onSubmit={this.HandleSubmit}>
       <Formulario cancel={this.HandleCancel}/>
       {

@@ -51,7 +51,7 @@ class TableContainer extends Component{
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/Update/${rowInfo.original.idObservacionDoctoJuridico}`
+                location.href = `/SIA/juridico/Observaciones/Update/${rowInfo.original.idObservacionDoctoJuridico}`
             }
         }
     }
@@ -62,7 +62,7 @@ class TableContainer extends Component{
               <div className="table-container">
                 <div className="row">
                   <div className="col-lg-2">
-                    <a href={`/SIA/juridico/${this.props.modulo}/Observaciones/add/${this.props.id}`} className="btn btn-success btn-sm">Agregar Observacion</a>
+                    <a href={`/SIA/juridico/Observaciones/add/${this.props.id}`} className="btn btn-success btn-sm">Agregar Observacion</a>
                   </div>
                   <div className="col-lg-12">
                     <ReactTable

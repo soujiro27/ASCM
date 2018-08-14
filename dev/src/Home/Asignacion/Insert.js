@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
-import Table from './../../Components/Tablas/Container/Observaciones/Observaciones';
+
+import Form from './../../Components/Insert/Asignacion/Asignacion';
 
 class Home extends Component{
-
 
     render(){
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Table id={this.props.id} modulo={this.props.modulo}/>
+                <Form id={this.props.id} />
             </div>
 
         )
@@ -27,8 +27,8 @@ Home.defaultProps = {
     	'Observaciones',
     	'Cedula'
     ],
-    active:'Observaciones',
-    modulo:'Irac'
+    active:'Asignacion',
+    id:localStorage.getItem('idVolante'),
 }
 
 export default Home
