@@ -62,7 +62,6 @@ export default class Asignacion extends Component {
     return (<form onSubmit={this.HandleSubmit}>
     <Formulario
       id={this.props.id}
-      nota={this.props.nota}
       cancel={this.HandleCancel}
       />
       {

@@ -1,7 +1,6 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const extractCSS = new ExtractTextPlugin('[name].css');
-let moduleWorks = 'catalogos';
 
 module.exports = {
   entry: {
@@ -14,6 +13,9 @@ module.exports = {
     //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
     "Asignacion":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Asignacion/Insert.js')],
     "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Insert.js')],
+    "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Insert.js')],
+    "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Insert.js')],
+    "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Insert.js')],
 
   },
   output: {

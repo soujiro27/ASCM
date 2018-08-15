@@ -24,14 +24,18 @@ class Update extends Component{
 
     HandleCancel = (event) =>{
         event.preventDefault()
-        location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.data.idVolante}`
+        location.href = `/SIA/juridico/Observaciones/${this.props.data.idVolante}`
     }
 
     HandleSubmit = (event) => {
         event.preventDefault();
 
+        let div = document.getElementsByClassName('fr-element')
+        let html = div[0].innerHTML
+
         let form_functions = new submit()
         let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idObservacionDoctoJuridico',this.props.data.idObservacionDoctoJuridico)
+        data.append('texto',html)
         let url = '/SIA/juridico/Observaciones/Update'
 
         axios.post(url,data)
@@ -48,7 +52,7 @@ class Update extends Component{
 
         if(this.state.modal.success){
 
-            location.href = `/SIA/juridico/${this.props.modulo}/Observaciones/${this.props.data.idVolante}`
+            location.href = `/SIA/juridico/Observaciones/${this.props.data.idVolante}`
         } else{
 
             this.setState({

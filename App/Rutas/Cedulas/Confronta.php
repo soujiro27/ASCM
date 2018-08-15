@@ -34,21 +34,15 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->tabla();
 	});
 
-	$app->get('/Confronta/Asignacion/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Asignacion');
-	});
 
-	$app->get('/Confronta/Respuestas/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Respuestas');
-	});
 
 
 	$app->get('/Confronta/Cedula/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Cedula');
 	});
 
-	$app->get('/Confronta/Cedulas/Register',function() use ($controller,$app){
-		$controller->get_register_cedula($app->request->get());
+	$app->get('/Confronta/Cedula/Register/:id',function($id) use ($controller,$app){
+		$controller->get_register_cedula($id);
 	});
 
 
@@ -56,10 +50,6 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->get_register_nota($app->request->get());
 	});
 
-
-	$app->post('/Confronta/Asignacion',function() use ($controller,$app){
-		$controller->insert_asignacion($app->request->post(),$_FILES);
-	});
 
 
 	$app->post('/Confronta/Cedula/add',function() use ($controller,$app){

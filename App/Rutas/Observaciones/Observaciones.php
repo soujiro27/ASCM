@@ -51,14 +51,9 @@ $app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolant
   });
 
 
-
-
-
   $app->post('/Observaciones/Update',function() use ($controller,$app){
     $controller->update($app->request->post());
   });
-
-
 
 
   $app->get('/Observaciones/Register/:id',function($id) use ($controller){

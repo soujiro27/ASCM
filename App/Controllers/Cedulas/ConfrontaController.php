@@ -45,7 +45,7 @@ class ConfrontaController extends TwigController {
         $area = $_SESSION['idArea'];
 
 
-        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado','vd.notaConfronta')
             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
             ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
             ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
@@ -61,42 +61,37 @@ class ConfrontaController extends TwigController {
 		echo json_encode($ifa);
 	}
 
-	public function load_cedula_template($id,$modulo){
 
-		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre,$modulo);
+	public function get_register_cedula($id){
+
+			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*')
+							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
+							->where('sia_ConfrontasJuridico.idVolante',"$id")->get();
+			echo json_encode($cedula);
 	}
 
+	public function load_cedula_template($id){
 
-	public function insert_asignacion(array $data,$file){
-		$base = new BaseController();
-		$validate = $base->insert_asignacion($data,$file);
-		echo json_encode($validate );
-	}
-
-	public function nueva_observacion($id){
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
 		$menu = $base->menu();
 
-
-		echo $this->render('HomeLayout/InsertObservaciones.twig',[
-			'js' => 'Observaciones',
+		$template = [
+			'js' => $this->js,
 			'session' => $_SESSION,
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
-	}
+			'menu' => $menu['modulos']
+		];
 
+		$ds = Confrontas::where('idVolante',"$id")->get();
+		if($ds->isEmpty()){
+					echo $this->render('HomeLayout/InsertContainer.twig',$template);
+		} else {
+				$template['id'] = $id;
+				echo $this->render('HomeLayout/UpdateContainer.twig',$template);
+		}
 
-	public function get_register_cedula(array $data){
-			$idVolante = $data['id'];
-			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*')
-							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
-							->where('sia_ConfrontasJuridico.idVolante',"$idVolante")->get();
-			echo json_encode($cedula);
 	}
 
 
@@ -163,7 +158,7 @@ class ConfrontaController extends TwigController {
 			'fOficio' => $data['fecha_documento'],
 			'hConfronta' => $data['hora_confronta'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 		];
 
 		if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
@@ -174,7 +169,7 @@ class ConfrontaController extends TwigController {
 		Espacios::where('idVolante',"$idVolante")->update([
       'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 		]);
 
 			 $validate[0] = 'OK';

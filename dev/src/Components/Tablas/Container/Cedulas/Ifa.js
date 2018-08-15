@@ -7,7 +7,7 @@ import './../spiner.styl'
 import './../Table.styl'
 
 class TableContainer extends Component{
-   
+
     state = {
         load:false,
         data:{}
@@ -66,14 +66,16 @@ class TableContainer extends Component{
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/Ifa/Asignacion/${rowInfo.original.idVolante}`
+              localStorage.setItem('idVolante',rowInfo.original.idVolante)
+              localStorage.setItem('modulo','Ifa')
+                location.href = `/SIA/juridico/Asignacion/${rowInfo.original.idVolante}`
             }
         }
     }
 
     render(){
         if(this.state.load){
-            return( 
+            return(
                 <ReactTable
                 data={this.state.data}
                 columns={this.columns}
@@ -89,20 +91,20 @@ class TableContainer extends Component{
                 resizable={true}
                 ofText= 'de'
                 getTrProps={this.Handle_Click}
-            /> 
+            />
 
             )
         } else {
-            return(  
+            return(
                 <div className="spiner">
                     <GridLoader
-                        color={'#851B07'} 
-                        loading={!this.state.load} 
+                        color={'#851B07'}
+                        loading={!this.state.load}
                     />
                 </div>
             )
         }
-        
+
     }
 }
 

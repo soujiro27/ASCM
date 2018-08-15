@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-text';
-import Form from './../../Components/Update/Observaciones/Observaciones';
+import Form from './../../Components/Update/Ifa/Ifa';
 
 class Home extends Component{
 

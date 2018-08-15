@@ -1,12 +1,7 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import './../form.styl'
-import ReactQuill from 'react-quill'
-
-// import stylesheet
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import './../../shared_styles/text-editor.styl'
+import FroalaEditor from 'react-froala-editor'
 
 export default  class formAsignacion extends Component {
 
@@ -16,13 +11,6 @@ export default  class formAsignacion extends Component {
   }
 
 
-  options = {
-      theme: 'snow'
-  }
-
-  HandleTextEditor = (html) =>{
-      this.setState({text:html})
-  }
 
   render(){
     return(
@@ -44,8 +32,13 @@ export default  class formAsignacion extends Component {
           <div className="row">
           <div className="col-lg-12">
               <label>Observacion</label>
-              <ReactQuill options={this.options} onChange={this.HandleTextEditor} value={this.state.text} />
-              <input type="hidden" name="texto" value={this.state.text} />
+                <FroalaEditor
+                  base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
+                  fullscreenP={true}
+                  listsP={true}
+                  value={this.state.text}
+                  options={{placeholderText: 'Escriba aqui la Observacion',}}
+                  />
           </div>
         </div>
         <div className="row">

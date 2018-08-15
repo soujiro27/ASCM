@@ -60,41 +60,38 @@ class IfaController extends TwigController {
 		echo json_encode($ifa);
 	}
 
-	public function load_cedula_template($id,$modulo){
 
-		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre,$modulo);
-	}
+	public function load_cedula_template($id){
 
-
-	public function insert_asignacion(array $data,$file){
-		$base = new BaseController();
-		$validate = $base->insert_asignacion($data,$file);
-		echo json_encode($validate );
-	}
-
-	public function nueva_observacion($id){
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
 		$menu = $base->menu();
 
-
-		echo $this->render('HomeLayout/InsertObservaciones.twig',[
-			'js' => 'Observaciones',
+		$template = [
+			'js' => $this->js,
 			'session' => $_SESSION,
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
+			'menu' => $menu['modulos']
+		];
+
+		$ds = DocumentosSiglas::where('idVolante',"$id")->get();
+		if($ds->isEmpty()){
+					echo $this->render('HomeLayout/InsertContainer.twig',$template);
+		} else {
+				$template['id'] = $id;
+				echo $this->render('HomeLayout/UpdateContainer.twig',$template);
+		}
+
 	}
 
 
-	public function get_register_cedula(array $data){
-			$idVolante = $data['id'];
+
+	public function get_register_cedula($id){
+
 			$cedula = DocumentosSiglas::select('sia_documentosSiglas.*','e.*')
 							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_documentosSiglas.idVolante')
-							->where('sia_documentosSiglas.idVolante',"$idVolante")->get();
+							->where('sia_documentosSiglas.idVolante',"$id")->get();
 			echo json_encode($cedula);
 	}
 
@@ -153,7 +150,7 @@ class IfaController extends TwigController {
 			'fOficio' => $data['fecha_documento'],
 			'siglas' => $data['siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 		]);
 
 
@@ -163,7 +160,7 @@ class IfaController extends TwigController {
 			'pie' => $data['e_firmas'],
 			'sigla' => $data['e_copias'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 		]);
 
 			 $validate[0] = 'OK';

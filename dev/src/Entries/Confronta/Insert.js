@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Home from './../../Home/Confronta/Asignacion'
-
-
+import Home from './../../Home/Confronta/Insert'
 
 let element = document.getElementById('root')
-let id = element.dataset.id
-render(<Home id={id} />,element);
+
+render(<Home />,element);

@@ -34,34 +34,13 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->tabla();
 	});
 
-	$app->get('/Ifa/Asignacion/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Asignacion');
-	});
-
-	$app->get('/Ifa/Respuestas/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Respuestas');
-	});
-
-	$app->get('/Ifa/Observaciones/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Observaciones');
-	});
-
 
 	$app->get('/Ifa/Cedula/:id',function($id) use ($controller){
 		$controller->load_cedula_template($id,'Cedula');
 	});
 
-	$app->get('/Ifa/Cedulas/Register',function() use ($controller,$app){
-		$controller->get_register_cedula($app->request->get());
-	});
-
-
-	$app->post('/Ifa/Asignacion',function() use ($controller,$app){
-		$controller->insert_asignacion($app->request->post(),$_FILES);
-	});
-
-	$app->get('/Ifa/Observaciones/add/:id',function($id) use ($controller){
-		$controller->nueva_observacion($id);
+	$app->get('/Ifa/Cedula/Register/:id',function($id) use ($controller,$app){
+		$controller->get_register_cedula($id);
 	});
 
 
@@ -70,10 +49,9 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-
-		$app->post('/Ifa/Cedula/Update',function() use ($controller,$app){
-			$controller->update_cedula($app->request->post());
-		});
+	$app->post('/Ifa/Cedula/Update',function() use ($controller,$app){
+		$controller->update_cedula($app->request->post());
+	});
 
 
 });

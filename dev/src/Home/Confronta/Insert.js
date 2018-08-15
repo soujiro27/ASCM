@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
 
-import Form from './../../Components/Insert/Asignacion/Asignacion';
+import Form from './../../Components/Insert/Confronta/Confronta';
 
 class Home extends Component{
 
@@ -28,7 +28,7 @@ modulo == 'Confronta' ? url = ['Asignacion','Respuestas',url_cedula] : url = ['A
 
 Home.defaultProps = {
     menu:menu,
-    active:'Asignacion',
+    active:'Cedula',
     id:localStorage.getItem('idVolante'),
     url:url
 }

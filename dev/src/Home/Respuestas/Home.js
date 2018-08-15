@@ -10,7 +10,7 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form id={this.props.id} modulo={this.props.modulo}/>
+                <Form id={this.props.id} />
             </div>
 
         )
@@ -18,18 +18,20 @@ class Home extends Component{
 }
 
 
+const modulo = localStorage.getItem('modulo')
+const url_cedula = localStorage.getItem('modulo') + '/Cedula'
+let menu = []
+let url = []
+
+modulo == 'Confronta' ? menu = ['Asignacion','Respuestas','Cedula'] : menu = ['Asignacion','Respuestas','Observaciones','Cedula'],
+modulo == 'Confronta' ? url = ['Asignacion','Respuestas',url_cedula] : url = ['Asignacion','Respuestas','Observaciones',url_cedula],
 
 Home.defaultProps = {
-    texto:'Asignacion',
-    menu:[
-    	'Asignacion',
-    	'Respuestas',
-    	'Observaciones',
-    	'Cedula'
-    ],
+    menu:menu,
     active:'Respuestas',
-    modulo:localStorage.getItem('modulo'),
-    id:localStorage.getItem('idVolante')
+    id:localStorage.getItem('idVolante'),
+    url:url
 }
+
 
 export default Home

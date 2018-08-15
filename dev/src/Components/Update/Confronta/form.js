@@ -18,11 +18,11 @@ export default class Cedula extends Component {
   }
 
   componentWillMount(){
-    if(this.props.nota == 'SI'){
+    let nota = localStorage.getItem('nota')
+    if(nota == 'SI'){
       this.setState({inputNota:true})
     }
   }
-
 
 
   render(){
