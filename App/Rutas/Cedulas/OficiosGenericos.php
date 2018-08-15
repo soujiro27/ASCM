@@ -34,18 +34,10 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->tabla();
 	});
 
-	$app->get('/DocumentosDiversos/Asignacion/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Asignacion');
-	});
-
-	$app->get('/DocumentosDiversos/Respuestas/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Respuestas');
-	});
-
-
 	$app->get('/DocumentosDiversos/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Cedula');
+		$controller->load_cedula_template($id);
 	});
+
 
 	$app->get('/DocumentosDiversos/Cedulas/Register',function() use ($controller,$app){
 		$controller->get_register_cedula($app->request->get());
@@ -62,13 +54,9 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->post('/DocumentosDiversos/Asignacion',function() use ($controller,$app){
-		$controller->insert_asignacion($app->request->post(),$_FILES);
-	});
 
-
-	$app->post('/DocumentosDiversos/Cedula/add',function() use ($controller,$app){
-		$controller->insert_cedula($app->request->post());
+	$app->post('/OficiosGenericos/Cedula/add',function() use ($controller,$app){
+		$controller->insert_cedula_oficio($app->request->post());
 	});
 
 

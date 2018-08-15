@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-cedulas';
 
 
-import Form from './../../Components/Insert/Asignacion/Asignacion';
+import Form from './../../Components/Insert/OficiosGenericos/OficiosGenericos';
 
 class Home extends Component{
 
@@ -20,17 +20,12 @@ class Home extends Component{
 
 const modulo = localStorage.getItem('modulo')
 const url_cedula = localStorage.getItem('modulo') + '/Cedula'
-let menu = []
-let url = []
-
-modulo == 'Confronta' || modulo == 'DocumentosDiversos' ? menu = ['Asignacion','Respuestas','Cedula'] : menu = ['Asignacion','Respuestas','Observaciones','Cedula'],
-modulo == 'Confronta' || modulo == 'DocumentosDiversos' ? url = ['Asignacion','Respuestas',url_cedula] : url = ['Asignacion','Respuestas','Observaciones',url_cedula],
 
 Home.defaultProps = {
-    menu:menu,
-    active:'Asignacion',
+    menu:['Asignacion','Respuestas','Observaciones','Cedula'],
+    active:'Cedula',
     id:localStorage.getItem('idVolante'),
-    url:url
+    url:['Asignacion','Respuestas','Observaciones',url_cedula],
 }
 
 export default Home

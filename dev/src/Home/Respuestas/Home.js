@@ -23,8 +23,8 @@ const url_cedula = localStorage.getItem('modulo') + '/Cedula'
 let menu = []
 let url = []
 
-modulo == 'Confronta' ? menu = ['Asignacion','Respuestas','Cedula'] : menu = ['Asignacion','Respuestas','Observaciones','Cedula'],
-modulo == 'Confronta' ? url = ['Asignacion','Respuestas',url_cedula] : url = ['Asignacion','Respuestas','Observaciones',url_cedula],
+modulo == 'Confronta' || modulo == 'DocumentosDiversos' ? menu = ['Asignacion','Respuestas','Cedula'] : menu = ['Asignacion','Respuestas','Observaciones','Cedula'],
+modulo == 'Confronta' || modulo == 'DocumentosDiversos' ? url = ['Asignacion','Respuestas',url_cedula] : url = ['Asignacion','Respuestas','Observaciones',url_cedula],
 
 Home.defaultProps = {
     menu:menu,

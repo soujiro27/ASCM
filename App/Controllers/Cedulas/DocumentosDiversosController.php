@@ -58,34 +58,44 @@ class DocumentosDiversosController extends TwigController {
 		echo json_encode($diversos);
 	}
 
-	public function load_cedula_template($id,$modulo){
+	public function load_cedula_template($id){
 
-		$base = new BaseController();
-		$base->asignacion_template($id,$this->js,$this->nombre,$modulo);
-	}
-
-
-	public function insert_asignacion(array $data,$file){
-		$base = new BaseController();
-		$validate = $base->insert_asignacion($data,$file);
-		echo json_encode($validate );
-	}
-
-	public function nueva_observacion($id){
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
 		$menu = $base->menu();
 
+		$volantes = Volantes::find($id)->get();
+		$tipo = $volantes[0]['idTipoDocto'];
 
-		echo $this->render('HomeLayout/InsertObservaciones.twig',[
-			'js' => 'Observaciones',
+		$template = [
 			'session' => $_SESSION,
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
+			'menu' => $menu['modulos']
+		];
+
+
+
+		if($tipo == 'OFICIO' || $tipo == 'CIRCULAR'){
+			$template['js'] = 'OficiosGenericos';
+		} elseif ( $tipo == 'NOTA') {
+			$template['js'] = 'NotaGenerico';
+		}
+
+
+
+		$ds = Plantillas::where('idVolante',"$id")->get();
+		if($ds->isEmpty()){
+					echo $this->render('HomeLayout/InsertContainer.twig',$template);
+		} else {
+				$template['id'] = $id;
+				echo $this->render('HomeLayout/UpdateContainer.twig',$template);
+		}
+
+
 	}
+
+
 
 
 	public function get_register_cedula(array $data){
@@ -112,32 +122,34 @@ class DocumentosDiversosController extends TwigController {
   }
 
 
-	public function insert_cedula(array $data){
-		$validate =  $this->validate($data);
+	public function insert_cedula_oficio(array $data){
+		$validate =  $this->validate_oficio($data);
 		if(empty($validate)){
 
 			$idVolante = $data['idVolante'];
 
+			$v = Volantes::find($idVolante);
+			$remitente = $v['idRemitenteJuridico'];
+
 			$plantilla = new Plantillas([
 				'idVolante' => $idVolante,
-				'nombreResponsable' => $data['nombre'],
-				'cargoResponsable' => $data['cargo'],
 				'siglas' => $data['siglas'],
 				'numFolio' => $data['folio'],
-				'refDocumento' => $data['ref_documento'],
-				'fConfronta' => $data['fecha_confronta'],
 				'fOficio' => $data['fecha_documento'],
-				'hConfronta' => $data['hora_confronta'],
+				'asunto' => $data['asunto'] ,
+				'copias' => $data['copias'],
+				'texto' => $data['texto'],
+				'idRemitente' => $remitente,
 				'usrAlta' => $_SESSION['idUsuario'],
 			]);
-
-			if(isset($data['refDocumento'])){ $plantilla['refDocumento'] = $data['refDocumento'];  }
 
 			$plantilla->save();
 
 			$espacios = new Espacios([
 				'idVolante' => $idVolante,
-        'sigla' => $data['e_siglas'],
+				'atte' => $data['e_atte'],
+				'copia' => $data['e_copias'],
+				'sigla' => $data['e_siglas'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
@@ -146,7 +158,6 @@ class DocumentosDiversosController extends TwigController {
 
 		}
 		echo json_encode($validate);
-    var_dump($data);
 	}
 
 
@@ -191,12 +202,13 @@ class DocumentosDiversosController extends TwigController {
 	}
 
 
-	public function validate(array $data){
+	public function validate_oficio(array $data){
 
 		$valid = GUMP::is_valid($data,array(
 			'siglas' => 'required|max_len,100',
 			'folio' => 'required|max_len,50',
 			'fecha_documento' => 'required|max_len,10',
+			'asunto' =>'required|max_len,200',
 			'texto' => 'required',
       'e_atte' => 'required|max_len,2|numeric',
       'e_copias' => 'required|max_len,2|numeric',
