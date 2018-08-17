@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\Documentos\DocumentosGralController;
@@ -10,7 +10,7 @@
 
 	$rol = function(){
 		$security = new SecurityController();
-		$security->valida_rol('CAT-ACCIONES');
+		$security->valida_rol('DOCUMENTOSGRAL');
 	};
 
 	$auth = function(){
@@ -19,7 +19,7 @@
 		$security->validacion_sesion();
 	};
 
-	
+
 
 
 

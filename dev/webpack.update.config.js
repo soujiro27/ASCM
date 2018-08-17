@@ -12,10 +12,13 @@ module.exports = {
     "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Update.js')],
     "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Update.js')],
     "DocumentosGral":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosGral/Update.js')],
+    "DocumentosDirectores":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosDirectores/Update.js')],
     "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Update.js')],
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Update.js')],
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Update.js')],
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Update.js')],
+    "OficiosGenericos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/OficioGenericos/Update.js')],
+    "NotaGenerico":['babel-polyfill', path.resolve(__dirname, 'src/Entries/NotaGenericos/Update.js')],
 
 
   },

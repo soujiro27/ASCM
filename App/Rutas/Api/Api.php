@@ -61,6 +61,10 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_remitentes($app->request->get());
 	});
 
+	$app->get('/Firmas',function() use ($controller){
+		$controller->get_firmas_nota_generico();
+	});
+
 	$app->get('/TurnadosAuditoria',function() use ($controller,$app){
 		$controller->get_Turnados_Auditoria($app->request->get());
 	});

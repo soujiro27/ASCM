@@ -16,8 +16,10 @@ module.exports = {
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Home.js')],
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Home.js')],
     "DocumentosDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Diversos/Home.js')],
+    "DocumentosDirectores":['babel-polyfill', path.resolve(__dirname, 'src/Entries/DocumentosDirectores/Home.js')],
     "Respuestas":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Respuestas/Home.js')],
     "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Home.js')],
+    "Irac-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac-internos/Home.js')],
 
 
 

@@ -11,8 +11,6 @@ include_once $root_directory.'/Catalogos/SubDocumentos.php';
 include_once $root_directory.'/Catalogos/Caracteres.php';
 
 
-
-
 /*------------------- API ------------------------*/
 include_once $root_directory.'/Api/Api.php';
 
@@ -24,6 +22,7 @@ include_once $root_directory.'/Volantes/VolantesDiversos.php';
 
 /*----------------- Documentos Digitalizados ----------*/
 include_once $root_directory.'/Documentos/DocumentosGral.php';
+include_once $root_directory.'/Documentos/DocumentosDirectores.php';
 
 
 /*------------------- Cedulas -------------------------*/
@@ -43,6 +42,10 @@ include_once $root_directory.'/Respuestas/Respuestas.php';
 
 /*------------------- observaciones -------------------------*/
 include_once $root_directory.'/Observaciones/Observaciones.php';
+
+
+/*------------------- Cedulas internos -------------------------*/
+include_once $root_directory.'/Cedulas/irac_internos.php';
 
 
 /*----------------Datos DB ------------------*/
@@ -68,14 +71,16 @@ $capsule->bootEloquent();
 /*------------------- 404 ---------------------*/
 
 $app->notFound(function () use ($app) {
-   $app->render('/react/public/404.html');
+   $app->render('/jur/public/404.html');
 });
 
 $app->error(function (\Exception $e) use ($app) {
 
     $message = $e->getMessage();
+    //$error = $e->errorInfo();
     $abrir = fopen('./jur/App/error.log','a+');
     fwrite($abrir,"[".date("r")."] Error: $message\r\n");
+    fwrite($abrir,"[".date("r")."] Error: $e\r\n");
     fclose($abrir);
 
 

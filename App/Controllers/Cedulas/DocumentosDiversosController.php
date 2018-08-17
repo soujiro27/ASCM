@@ -64,7 +64,7 @@ class DocumentosDiversosController extends TwigController {
 		$base = new BaseController();
 		$menu = $base->menu();
 
-		$volantes = Volantes::find($id)->get();
+		$volantes = Volantes::where('idVolante',"$id")->get();
 		$tipo = $volantes[0]['idTipoDocto'];
 
 		$template = [
@@ -73,8 +73,6 @@ class DocumentosDiversosController extends TwigController {
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos']
 		];
-
-
 
 		if($tipo == 'OFICIO' || $tipo == 'CIRCULAR'){
 			$template['js'] = 'OficiosGenericos';
@@ -98,12 +96,12 @@ class DocumentosDiversosController extends TwigController {
 
 
 
-	public function get_register_cedula(array $data){
-			$idVolante = $data['id'];
-			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*','v.idTipoDocto')
-							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
-              ->leftJoin('sia_Volantes as v','v.idVolante','=','sia_ConfrontasJuridico.idVolante')
-							->where('sia_ConfrontasJuridico.idVolante',"$idVolante")->get();
+	public function get_register_cedula($id){
+
+			$cedula = plantillas::select('sia_plantillasJuridico.*','e.*')
+							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_plantillasJuridico.idVolante')
+							->where('sia_plantillasJuridico.idVolante',"$id")->get();
+
 			echo json_encode($cedula);
 	}
 
@@ -115,11 +113,6 @@ class DocumentosDiversosController extends TwigController {
 		echo json_encode($vd);
 	}
 
-
-  public function load_template_oficio($id){
-    $base = new BaseController();
-		$base->asignacion_template($id,'OficiosGenericos',$this->nombre,'DocumentosDiversos');
-  }
 
 
 	public function insert_cedula_oficio(array $data){
@@ -161,37 +154,36 @@ class DocumentosDiversosController extends TwigController {
 	}
 
 
-	public function update_cedula(array $data){
+	public function update_cedula_oficio(array $data){
 
-		$validate = $this->validate($data);
+		$validate = $this->validate_oficio($data);
 
 		if(empty($validate)){
 
-		$id = $data['idConfrontaJuridico'];
+		$id = $data['idPlantillaJuridico'];
 		$idVolante = $data['idVolante'];
 
-		$datos_confronta = [
-			'nombreResponsable' => $data['nombre'],
-			'cargoResponsable' => $data['cargo'],
+
+		Plantillas::find($id)->update([
+			'idVolante' => $idVolante,
 			'siglas' => $data['siglas'],
 			'numFolio' => $data['folio'],
-			'refDocumento' => $data['ref_documento'],
-			'fConfronta' => $data['fecha_confronta'],
 			'fOficio' => $data['fecha_documento'],
-			'hConfronta' => $data['hora_confronta'],
+			'asunto' => $data['asunto'] ,
+			'copias' => $data['copias'],
+			'texto' => $data['texto'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		];
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+		]);
 
-		if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
-
-		Confrontas::find($id)->update($datos_confronta);
 
 
 		Espacios::where('idVolante',"$idVolante")->update([
-      'sigla' => $data['e_siglas'],
+			'atte' => $data['e_atte'],
+			'copia' => $data['e_copias'],
+			'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 		]);
 
 			 $validate[0] = 'OK';
@@ -209,6 +201,105 @@ class DocumentosDiversosController extends TwigController {
 			'folio' => 'required|max_len,50',
 			'fecha_documento' => 'required|max_len,10',
 			'asunto' =>'required|max_len,200',
+			'texto' => 'required',
+      'e_atte' => 'required|max_len,2|numeric',
+      'e_copias' => 'required|max_len,2|numeric',
+      'e_siglas' => 'required|max_len,2|numeric',
+		));
+
+		if($valid === true){
+			$valid = [];
+		}
+
+		return $valid;
+	}
+
+
+	public function insert_cedula_nota(array $data){
+
+			$validate = $this->validate_nota($data);
+			if(empty($validate)){
+				$idVolante = $data['idVolante'];
+
+				$v = Volantes::find($idVolante);
+				$remitente = $v['idRemitenteJuridico'];
+
+				$plantilla = new Plantillas([
+					'idVolante' => $idVolante,
+					'siglas' => $data['siglas'],
+					'numFolio' => $data['folio'],
+					'fOficio' => $data['fecha_documento'],
+					'copias' => $data['copias'],
+					'texto' => $data['texto'],
+					'idRemitente' => $remitente,
+					'idPuestoJuridico' => $data['idPuestoJuridico'] ,
+					'refDocumento' => $data['refDocumento'],
+					'usrAlta' => $_SESSION['idUsuario'],
+				]);
+
+				$plantilla->save();
+
+				$espacios = new Espacios([
+					'idVolante' => $idVolante,
+					'atte' => $data['e_atte'],
+					'copia' => $data['e_copias'],
+					'sigla' => $data['e_siglas'],
+					'usrAlta' => $_SESSION['idUsuario']
+				]);
+
+					$espacios->save();
+					$validate[0] = 'OK';
+
+			}
+
+			echo json_encode($validate);
+	}
+
+
+	public function update_cedula_nota(array $data){
+
+		$validate = $this->validate_nota($data);
+		if(empty($validate)){
+
+			$id = $data['idPlantillaJuridico'];
+			$idVolante = $data['idVolante'];
+
+
+			Plantillas::find($id)->update([
+				'siglas' => $data['siglas'],
+				'numFolio' => $data['folio'],
+				'fOficio' => $data['fecha_documento'],
+				'refDocumento' => $data['refDocumento'] ,
+				'copias' => $data['copias'],
+				'texto' => $data['texto'],
+				'idPuestoJuridico' => $data['idPuestoJuridico'] ,
+				'usrModificacion' => $_SESSION['idUsuario'],
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			]);
+
+
+
+			Espacios::where('idVolante',"$idVolante")->update([
+				'atte' => $data['e_atte'],
+				'copia' => $data['e_copias'],
+				'sigla' => $data['e_siglas'],
+				'usrModificacion' => $_SESSION['idUsuario'],
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			]);
+
+				 $validate[0] = 'OK';
+
+		}
+		echo json_encode($validate);
+	}
+
+
+	public function validate_nota(array $data){
+		$valid = GUMP::is_valid($data,array(
+			'siglas' => 'required|max_len,100',
+			'folio' => 'required|max_len,50',
+			'fecha_documento' => 'required|max_len,10',
+			'refDocumento' => 'required|max_len,50',
 			'texto' => 'required',
       'e_atte' => 'required|max_len,2|numeric',
       'e_copias' => 'required|max_len,2|numeric',

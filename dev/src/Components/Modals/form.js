@@ -3,8 +3,8 @@ import ReactDom from 'react-dom'
 import Modal from 'react-responsive-modal';
 import './modal.styl'
 class FormModal extends Component {
-    
- 
+
+
 
   HandleCloseModal = () => {
     this.props.close(false)
@@ -21,18 +21,18 @@ class FormModal extends Component {
 
   render(){
     return ReactDom.createPortal(
-      <Modal 
+      <Modal
         open={this.props.data.visible} 
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':this.props.data.class}}>
-        
+
         <h5>
           {this.icon()}
           {this.props.data.message}
          </h5>
-      
+
         </Modal>,
       document.getElementById('modal')
       )

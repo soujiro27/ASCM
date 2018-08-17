@@ -5,7 +5,7 @@ import Modal from 'react-responsive-modal'
 import './modal.styl'
 
 export default class FileModal extends Component {
-    
+
     HandleCloseModal = () => {
         this.props.close()
     }
@@ -18,22 +18,22 @@ export default class FileModal extends Component {
         form.append('idVolante',this.props.data[0].idVolante)
         form.append('idTurnadoJuridico',this.props.data[0].idTurnadoJuridico)
         form.append('areaRecepcion',this.props.data[0].areaRecepcion)
-        let url = '/SIA/juridico/DocumentosGral/save'
-        
+        let url = '/SIA/juridico/Documentos/save'
+
         axios.post(url,form)
         .then(response =>{
             if(response.status == 200 ){
                 this.HandleCloseModal()
             }
-        
+
         })
     }
 
   render(){
-     
+
     return ReactDom.createPortal(
-      <Modal 
-        open={this.props.visible} 
+      <Modal
+        open={!this.props.status}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
@@ -46,7 +46,7 @@ export default class FileModal extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-2"> 
+                    <div className="col-lg-2">
                         <input type="submit" value="Anexar" className="btn btn-primary btn-sm" />
                     </div>
                 </div>
@@ -56,4 +56,3 @@ export default class FileModal extends Component {
       )
     }
 }
-

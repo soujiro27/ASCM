@@ -70,12 +70,12 @@ class AsignacionController extends TwigController {
 	    	$turno->save();
 
 				$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
+				$base = new BaseController();
 
 				if(!empty($file)){
-					$this->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Internos',$_SESSION['idArea'],$_SESSION['idArea']);
+					$base->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Internos',$_SESSION['idArea'],$_SESSION['idArea']);
 				}
 
-				$base = new BaseController();
 
 				$base->notifications_turnados('Turnado Interno',$rpe,$idVolante);
 

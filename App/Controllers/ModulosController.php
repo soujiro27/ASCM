@@ -257,9 +257,11 @@ class ModulosController {
 		$area = $_SESSION['idArea'];
 		$rpe = $_SESSION['idEmpleado'];
 
+		$rpe_parse = intval($rpe);
+
 		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->orderBy('idPuestoJuridico','DESC')->get();
-		$puestos_final = $puestos->whereNotIn('rpe',"$rpe");
-		echo json_encode($puestos_final);
+
+		echo json_encode($puestos);
 	}
 
 	public function get_puestos_cedula(){
@@ -307,6 +309,10 @@ class ModulosController {
 		echo json_encode($observaciones);
 	}
 
+	public function get_firmas_nota_generico(){
+		$puestos = Puestos::where('firmaNota','SI')->get();
+		echo json_encode($puestos);
+	}
 
 
 

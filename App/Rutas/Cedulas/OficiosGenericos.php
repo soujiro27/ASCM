@@ -39,31 +39,42 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->get('/DocumentosDiversos/Cedulas/Register',function() use ($controller,$app){
-		$controller->get_register_cedula($app->request->get());
+		$app->post('/OficiosGenericos/Cedula/add',function() use ($controller,$app){
+			$controller->insert_cedula_oficio($app->request->post());
+		});
+
+
+		$app->post('/NotaGenericos/Cedula/add',function() use ($controller,$app){
+			$controller->insert_cedula_nota($app->request->post());
+		});
+
+
+
+
+	$app->get('/DocumentosDiversos/Cedula/Register/:id',function($id) use ($controller,$app){
+		$controller->get_register_cedula($id);
 	});
 
 
-	$app->get('/DocumentosDiversos/Nota/Register',function() use ($controller,$app){
+		$app->post('/DocumentosDiversos/Cedula/Update',function() use ($controller,$app){
+			$controller->update_cedula_oficio($app->request->post());
+		});
+
+
+
+		$app->post('/DocumentosDiversos/Cedula/Nota/Update',function() use ($controller,$app){
+			$controller->update_cedula_nota($app->request->post());
+		});
+
+
+
+
+
+	$app->get('/DocumentosDiversos/Nota/Register',function($id) use ($controller,$app){
 		$controller->get_register_nota($app->request->get());
 	});
 
 
-  $app->get('/DocumentosDiversos/OficioGenerico/:id',function($id) use ($controller){
-		$controller->load_template_oficio($id);
-	});
-
-
-
-	$app->post('/OficiosGenericos/Cedula/add',function() use ($controller,$app){
-		$controller->insert_cedula_oficio($app->request->post());
-	});
-
-
-
-		$app->post('/DocumentosDiversos/Cedula/Update',function() use ($controller,$app){
-			$controller->update_cedula($app->request->post());
-		});
 
 
 });

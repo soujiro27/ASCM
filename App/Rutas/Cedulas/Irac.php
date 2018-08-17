@@ -23,7 +23,7 @@
 
 
 
-$app->group('/juridico',$auth,$rol,function() use($app,$controller){
+$app->group('/juridico',$auth,function() use($app,$controller){
 
 	$app->get('/Irac',function() use ($controller){
 		$controller->Home();

@@ -30,7 +30,7 @@ export default  class formAsignacion extends Component {
 
 
   render(){
-
+    //console.log(this.state)
     return(
       <div className="form-container">
         <div className="row">

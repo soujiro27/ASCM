@@ -60,7 +60,7 @@ export default class Asignacion extends Component {
 
 
   render(){
-    console.log(localStorage)
+    
     return (<form onSubmit={this.HandleSubmit}>
       <Formulario cancel={this.HandleCancel}/>
       {

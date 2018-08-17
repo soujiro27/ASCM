@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace Jur\App\Controllers\Volantes;
 use Jur\App\Controllers\TwigController;
@@ -67,7 +67,7 @@ class VolantesDiversosController extends TwigController {
 	}
 
 	public function guardar(array $data,$file){
-	
+
 		$data['estatus'] = 'ACTIVO';
 		$validate = $this->validate($data);
 
@@ -75,7 +75,7 @@ class VolantesDiversosController extends TwigController {
 		$datos_director_area = $base->get_data_area($data['turnado']);
 
 		if(empty($validate)){
-			
+
 			$volantes = new Volantes([
 				'idTipoDocto' =>$data['documento'],
 				'subFolio' => $data['subFolio'],
@@ -96,7 +96,7 @@ class VolantesDiversosController extends TwigController {
 			]);
 
 			$volantes->save();
-			
+
 			$max = Volantes::all()->max('idVolante');
 
 			$volantesDocumentos = new VolantesDocumentos([
@@ -117,7 +117,7 @@ class VolantesDiversosController extends TwigController {
 			foreach ($areas as $key => $value) {
 
 				$datos_director_area = $base->get_data_area($value);
-				
+
 				$turno = new TurnadosJuridico([
 		            'idVolante' => $max,
 		            'idAreaRemitente' => 'DGAJ',
@@ -129,7 +129,7 @@ class VolantesDiversosController extends TwigController {
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
 		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
         		]);
 
         		$turno->save();
@@ -137,10 +137,10 @@ class VolantesDiversosController extends TwigController {
         		array_push($idTurnado, $idTurnadoJuridico);
         		array_push($areaRecepcion,$value);
         	}
-        	
-        	
 
-        	
+
+
+
 			if(!empty($file)){
 
 				foreach ($idTurnado as $key => $value) {
@@ -149,15 +149,15 @@ class VolantesDiversosController extends TwigController {
 			}
 
 			foreach ($areas as $key => $value) {
-				
+
 				$data['idTurnado'] = $value;
 				$base->notifications_complete('Volante',$data['idTurnado'],$max);
 			}
-			
 
-			$validate[0] = 'OK';	
-			
-			
+
+			$validate[0] = 'OK';
+
+
 		}
 
 		echo json_encode($validate);
@@ -173,7 +173,7 @@ class VolantesDiversosController extends TwigController {
 
 		$validate = $this->validate_update($data);
 		$base = new BaseController();
-		
+
 		if(empty($validate)){
 
 
@@ -204,7 +204,7 @@ class VolantesDiversosController extends TwigController {
 			foreach ($areas as $key => $value) {
 
 				$datos_director_area = $base->get_data_area($value);
-				
+
 				$turno = new TurnadosJuridico([
 		            'idVolante' => $id,
 		            'idAreaRemitente' => 'DGAJ',
@@ -223,13 +223,13 @@ class VolantesDiversosController extends TwigController {
 				$base->notifications_complete('Volante',$value,$id);
         	}
 
-		
-			$validate[0] = 'OK';	
+
+			$validate[0] = 'OK';
 
 		}
 
 		echo json_encode($validate);
-		
+
 
 
 	}
@@ -251,7 +251,7 @@ class VolantesDiversosController extends TwigController {
 		]);
 	}
 
-	
+
 	public function registro($id){
 		$datos = Volantes::select('sia_volantes.*','idAreaRecepcion','a.nombre','rj.tipoRemitente','rj.saludo as saludoRemitente','rj.nombre as nombreRemitente','rj.puesto as puestoRemitente')
 						->join('sia_TurnadosJuridico as tj','tj.idVolante','=','sia_Volantes.idVolante')
@@ -288,7 +288,7 @@ class VolantesDiversosController extends TwigController {
 		));
 
 		if($is_valid === true){
-			$is_valid = [];	
+			$is_valid = [];
 		}
 
 		$fecha = date("Y",strtotime($data['fecha_recepcion']));
@@ -296,14 +296,14 @@ class VolantesDiversosController extends TwigController {
 		$folio = $data['folio'];
 		$subFolio = $data['subFolio'];
 
-		
+
 		$res = Volantes::where('folio',"$folio")
 						->where('subFolio',"$subFolio")
 						->whereYear('fRecepcion',"$fecha")
 						->get();
 
 		if($res->isNotEmpty()){
-			
+
 			array_push($is_valid, 'El folio ya se encuentra asignado');
 		}
 
@@ -313,11 +313,11 @@ class VolantesDiversosController extends TwigController {
 		$turnados = $data['turnado'];
 
 		$areas = explode(',',$turnados);
-		
-		
+
+
 		foreach ($areas as $key => $value) {
-			
-			
+
+
 			$datos_director_area = $base->get_data_area($value);
 
 				if($datos_director_area->isEmpty()){
@@ -334,7 +334,7 @@ class VolantesDiversosController extends TwigController {
 	public function validate_update(array $data){
 
 		$estatus = $data['estatus'];
-		
+
 		$is_valid = GUMP::is_valid($data,array(
 			'Numero_Documento' => 'required|max_len,50',
 			'anexos' => 'required|max_len,2|numeric',
@@ -354,11 +354,11 @@ class VolantesDiversosController extends TwigController {
 		$base = new BaseController();
 
 		$turnados = $data['turnado'];
-		
+
 		$areas = explode(',',$turnados);
 
 		foreach ($areas as $key => $value) {
-			
+
 			$datos_director_area = $base->get_data_area($value);
 
 			if($datos_director_area->isEmpty()){
@@ -370,7 +370,7 @@ class VolantesDiversosController extends TwigController {
 		return $is_valid;
 	}
 
-	
+
 
 }
 

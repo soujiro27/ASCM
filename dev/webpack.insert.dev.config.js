@@ -17,6 +17,8 @@ module.exports = {
     "Ifa":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa/Insert.js')],
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Insert.js')],
     "OficiosGenericos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/OficioGenericos/Insert.js')],
+    "NotaGenerico":['babel-polyfill', path.resolve(__dirname, 'src/Entries/NotaGenericos/Insert.js')],
+    "Irac-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac-internos/Insert.js')],
 
   },
   output: {
