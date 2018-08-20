@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\Volantes\VolantesController;
@@ -19,7 +19,7 @@
 		$security->validacion_sesion();
 	};
 
-	
+
 
 
 

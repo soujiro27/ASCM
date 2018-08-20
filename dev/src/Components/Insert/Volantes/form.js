@@ -3,10 +3,14 @@ import axios from 'axios';
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
 import Combos from './../shared_components/Combos'
+
+import ToolTip from 'rc-tooltip';
+import 'rc-tooltip/assets/bootstrap.css'
+
 import './../form.styl'
 
 class Form extends Component {
-    
+
     state = {
         subDocumentos:[],
         cuenta:2016,
@@ -17,7 +21,7 @@ class Form extends Component {
             fREcepcion:''
         }
     }
-    
+
 
     HandleChangeSelect = (event) =>{
         let value = event.target.value
@@ -37,14 +41,13 @@ class Form extends Component {
     }
 
     HandleChangeSubDocumento = (event) =>{
-        let index = event.nativeEvent.target.selectedIndex
-        let texto = event.nativeEvent.target[index].text
-        this.props.modalSubDocumento(texto)
+        let texto = event.nativeEvent.target[event.nativeEvent.target.selectedIndex].text
+        this.props.openModal(texto)
     }
 
     HandleClickAuditoria = (event) => {
         event.preventDefault();
-        this.props.btnAuditoria()
+        this.props.openModal('AUDITORIA')
     }
 
     CountCaracterText = (input) =>{
@@ -57,12 +60,14 @@ class Form extends Component {
     }
 
 
-    
+
 
 
     render(){
-        return(
-            <div className="form-container"> 
+      const numero = this.props.numeroAuditoria
+      const numeroAuditoria = numero === undefined || numero === ''  ? 'No has seleccionado Auditoria' : `Auditoria selccionada: ${this.props.numeroAuditoria}`
+      return(
+            <div className="form-container">
                 <div className="row">
                     <div className="col-lg-3">
                         <label>Documento</label>
@@ -106,19 +111,21 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-2">
                     <label>Auditoria</label>
-                        <button className="btn btn-primary  form-control" onClick={this.HandleClickAuditoria}>
+                        <ToolTip placement="bottom" overlay={numeroAuditoria}>
+                        <button className='btn-primary btn form-control' onClick={this.HandleClickAuditoria}>
                             Agregar  <i className="fas fa-plus-circle"></i>
                         </button>
+                      </ToolTip>
                     </div>
                 </div>
 
-            <Folio 
+            <Folio
                 Numero_Documento={this.state.Numero_Documento}
                 CountCaracterText={this.CountCaracterText}
             />
             <Fechas />
 
-                
+
                 <div className="row">
                     <div className="col-lg-12" >
                         <label>Asunto ({this.state.asunto})</label>
@@ -133,19 +140,15 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <Combos 
+                <Combos
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
                     acciones={this.props.acciones}
                     multi={false}
                 />
 
-               
-                <div className="form-hidden">
-                    <input type="hidden" name="nota" value={this.props.formData.nota} />
-                    <input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
-                    <input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
 
+                <div className="form-hidden">
 
                 </div>
                 <div className="col-lg-4 submit-group">
@@ -160,3 +163,11 @@ class Form extends Component {
 
 export default Form;
 
+
+/*
+
+<input type="hidden" name="nota" value={this.props.formData.nota} />
+<input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
+<input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
+
+*/

@@ -13,7 +13,7 @@ import Formulario from './form';
 import submit from './../../functions/submit';
 
 class Insert extends Component{
-  
+
 
     state = {
         modals:{
@@ -33,7 +33,7 @@ class Insert extends Component{
             icon:"",
             success:false
         }
-        
+
     }
 
     HandleSubmit = (event) => {
@@ -43,13 +43,13 @@ class Insert extends Component{
         let data = form_functions.createData(document.getElementsByTagName('form'))
         data.append('file', document.getElementById('file').files[0]);
         let url = '/SIA/juridico/VolantesDiversos/save'
-        
+
         axios.post(url,data)
         .then(response =>{
             let state_response = form_functions.resolve_request(response)
             console.log(state_response)
             this.setState(state_response)
-        
+
         })
     }
 
@@ -59,7 +59,7 @@ class Insert extends Component{
     }
 
     HandleCloseModal = () =>{
-        
+
         if(this.state.modal.success){
 
             location.href = '/SIA/juridico/VolantesDiversos'
@@ -81,7 +81,7 @@ class Insert extends Component{
             modals:{addRemitente:false}
         })
     }
-    
+
     OpenModalRemitentes = (tipo) =>{
         this.setState({
             formData:{
@@ -108,11 +108,11 @@ class Insert extends Component{
     }
 
     render(){
-        
+
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario 
-                    cancel={this.HandleCancel} 
+                <Formulario
+                    cancel={this.HandleCancel}
                     documentos={this.props.data}
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
@@ -126,20 +126,20 @@ class Insert extends Component{
                     this.state.modal.visible &&
                     <Modal data={this.state.modal}  close={this.HandleCloseModal}/>
                 }
-              
+
                 {
                     this.state.modals.addRemitente &&
                     <AddRemitenteModal visible={true} close={this.HandleCloseModalAddRemitente} />
                 }
                 {
                     this.state.modals.remitente &&
-                    <RemitentesModal 
-                        visible={true} 
-                        close={this.HandleCloseModalRemitentes} 
+                    <RemitentesModal
+                        visible={true}
+                        close={this.HandleCloseModalRemitentes}
                         tipo={this.state.formData.tipoRemitente}
                     />
                 }
-            
+
             </form>
 
         )

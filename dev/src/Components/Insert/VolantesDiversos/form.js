@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import SelectReact from 'react-select';
 import 'react-select/dist/react-select.css';
-import './../form.styl'
 
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
@@ -10,13 +9,13 @@ import Combos from './../shared_components/combos';
 
 
 class Form extends Component {
-    
+
     state = {
         subDocumentos:[],
         Numero_Documento:50,
         asunto:500,
     }
-    
+
     HandleChangeSelect = (event) =>{
         let value = event.target.value
         if(value != '')
@@ -41,7 +40,7 @@ class Form extends Component {
         let name = input.nativeEvent.target.name
         this.setState({
             [name]: max - value_length
-        })   
+        })
     }
 
     HandleClickRemitente = (event) =>{
@@ -54,13 +53,13 @@ class Form extends Component {
         if(value != ''){
             this.props.remitente(value)
         }
-        
+
     }
 
 
     render(){
         return(
-            <div className="form-container"> 
+            <div className="form-container">
                 <div className="row">
                     <div className="col-lg-3">
                         <label>Documento</label>
@@ -96,10 +95,11 @@ class Form extends Component {
                     </div>
                 </div>
 
+
                 <Folio />
 
               <Fechas />
-                <div className="row">
+                <div className="row form-group">
                         <div className="col-lg-2">
                             <label>Remitente</label>
                             <select className="form-control" onChange={this.HandleChangeRemitente}>
@@ -125,7 +125,7 @@ class Form extends Component {
                     </div>
                 </div>
 
-               
+
 
                 <div className="row">
                     <div className="col-lg-12" >
@@ -134,7 +134,7 @@ class Form extends Component {
                     </div>
                 </div>
 
-                
+
 
                 <div className="row">
                     <div className="col-lg-12" >
@@ -149,8 +149,8 @@ class Form extends Component {
                         acciones={this.props.acciones}
                         multi={true}
                 />
-                
-                <div className="form-hidden">
+
+              <div className="form-hidden">
                         <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />
                         <input type="hidden" name="idRemitente" value={this.props.dataRemitente.idRemitente} />
                 </div>
@@ -165,4 +165,3 @@ class Form extends Component {
 
 
 export default Form;
-

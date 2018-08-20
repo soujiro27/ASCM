@@ -6,12 +6,26 @@ export default class submit {
         let elementos = form[0].elements
         let formData = new FormData()
 
-      
+
         for(let x = 0;x<elementos.length-2;x++){
             formData.append(elementos[x].name,elementos[x].value)
+            if(elementos[x].type == 'file' && elementos[x].files.length > 0 ){
+              formData.append(elementos[x].name,elementos[x].files[0])
+            }
 
         }
         return formData
+    }
+
+    appendFormData(formData,form){
+
+      let keys = Object.keys(formData);
+      keys.map(item => {
+        form.append(item,formData[item])
+      });
+
+      return form;
+
     }
 
     createDataUpdate(form,nombre,id){
@@ -28,84 +42,21 @@ export default class submit {
 
     resolve_request(response){
 
-        let state
+        let state = {FORM:true}
         if(response.status == 500){
             state = {
-                modal:{
-                    visible:true,
+                formModal:{
                     message:'Ha ocurrido un error contacte al adminstrador del Sistema',
-                    class:'error',
-                    icon:false
+                    success:false
                 }
             }
 
         } else if (response.status == 200 ){
 
-            if(response.data[0] === 'OK'){
-
-                state = {
-                    modal:{
-                        visible:true,
-                        message:'Registro Exitoso',
-                        class:'success',
-                        icon:true,
-                        success:true
-                    }
-                }
-            } else {
-
-                state = {
-                    modal:{
-                        visible:true,
-                        message:response.data[0],
-                        class:'error',
-                        icon:false
-                    }
-                }
-            }
-
+          response.data[0] === 'OK' ? state.formModal={success:true} : state.formModal = {message:response.data[0],success:false}
         }
 
         return state
-    }
-
-
-
-
-
-    errorData(data,message){
-        let datos = data.formData
-        let form = {}
-        for(let x in datos){
-            form['form'] = {
-                [x]:datos[x]
-            }
-        }
-
-        form['modal'] = {
-
-                message:message,
-                visible:true,
-                class:'error',
-                icon:false
-        }
-
-        return form
-
-    }
-
-    successData(){
-        let res = {
-                modal:{
-                    visible:true,
-                    message:'Registro Exitoso',
-                    class:'success',
-                    icon:true,
-                    status:true
-                }
-            }
-
-        return res
-    }
+  }
 
 }

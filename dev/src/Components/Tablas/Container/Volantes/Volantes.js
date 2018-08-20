@@ -6,11 +6,7 @@ import columnas from './columns.js'
 
 class TableContainer extends Component{
 
-    state = {
-        load:false,
-        data:{}
-    }
-
+  
     columns = columnas;
 
 

@@ -87,7 +87,7 @@ class ModulosController {
 		}else{
 			$cveAuditoria = 'ASCM/'.$dato['clave'].'/'.$cuenta;
 
-			$datos = Auditorias::select('idAuditoria', 'tipoAuditoria','rubros','idArea')
+			$datos = Auditorias::select('idAuditoria', 'tipoAuditoria','rubros','idArea','clave')
 			->where('clave',"$cveAuditoria")
 			->get();
 
@@ -118,7 +118,8 @@ class ModulosController {
 					'tipo' => $datos[0]['tipoAuditoria'],
 					'rubro' => $datos[0]['rubros'],
 					'id' => $datos[0]['idAuditoria'],
-					'idArea' => $datos[0]['idArea']
+					'idArea' => $datos[0]['idArea'],
+					'clave' => $datos[0]['clave']
 				);
 			}
 		}

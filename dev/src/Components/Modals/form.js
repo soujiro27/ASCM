@@ -22,7 +22,7 @@ class FormModal extends Component {
   render(){
     return ReactDom.createPortal(
       <Modal
-        open={this.props.data.visible} 
+        open={true} 
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center

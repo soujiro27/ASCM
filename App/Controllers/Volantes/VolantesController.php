@@ -143,7 +143,6 @@ class VolantesController extends TwigController {
 
 			if(!empty($file)){
 
-				//$base->upload_file_areas($file,$max,$idTurnadoJuridico,'Areas');
 				$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$data['turnado']);
 
 			}
@@ -156,7 +155,6 @@ class VolantesController extends TwigController {
 		}
 
 		echo json_encode($validate);
-
 
 	}
 
@@ -185,7 +183,7 @@ class VolantesController extends TwigController {
 				'idCaracter' => $data['caracter'],
 				'idAccion' => $data['accion'],
 				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
 			]);
 
 			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
@@ -193,7 +191,7 @@ class VolantesController extends TwigController {
 				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
 				'idTipoPrioridad' => $data['caracter'],
 				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
 
 			]);
 
