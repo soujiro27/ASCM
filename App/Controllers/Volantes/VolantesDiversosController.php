@@ -129,7 +129,6 @@ class VolantesDiversosController extends TwigController {
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
 		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
         		]);
 
         		$turno->save();
@@ -193,6 +192,7 @@ class VolantesDiversosController extends TwigController {
 				'idRemitente' => $data['idRemitente'],
 				'idRemitenteJuridico' => $data['idRemitenteJuridico'],
 				'asunto' => $data['asunto'],
+				'extemporaneo' => $data['extemporaneo'],
 				'idCaracter' => $data['caracter'],
 				'idAccion' => $data['accion'],
 				'usrModificacion' => $_SESSION['idUsuario'],
@@ -216,7 +216,7 @@ class VolantesDiversosController extends TwigController {
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
 		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+		            
         		]);
 
         		$turno->save();
@@ -342,6 +342,7 @@ class VolantesDiversosController extends TwigController {
 			'fecha_recepcion' => 'required',
 			'asunto' => 'max_len,200|alpha_space',
 			'caracter' => 'required|max_len,2|numeric',
+			'extemporaneo' =>'required|max_len,2|alpha',
 			'turnado' => 'required|max_len,30',
 			'accion' => 'required|max_len,2|numeric'
 

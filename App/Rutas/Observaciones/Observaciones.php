@@ -46,7 +46,7 @@ $app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolant
 	});
 
 	$app->get('/Observaciones/Update/:id',function($id) use ($controller,$validate_update){
-		$validate_update($id);
+		//$validate_update($id);
     $controller->update_template($id);
   });
 

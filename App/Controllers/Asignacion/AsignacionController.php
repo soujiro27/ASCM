@@ -61,8 +61,6 @@ class AsignacionController extends TwigController {
 	            'idTipoTurnado' => 'I',
 	            'idTipoPrioridad' => $data['prioridad'],
 	            'comentario' => $data['asunto'],
-							'areaRecepcion' => $_SESSION['idArea'],
-							'areaRemitente' => $_SESSION['idArea'],
 	            'usrAlta' => $_SESSION['idUsuario'],
 	            'estatus' => 'ACTIVO'
 	    	]);

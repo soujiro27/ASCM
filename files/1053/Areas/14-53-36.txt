@@ -1,0 +1,149 @@
+commit d97883d8d8fc4999b2ceac38f8fa27c5cc2a1606
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Mon Aug 20 23:20:18 2018 +0100
+
+    lunes 20 agosto se tiene que cambiar los modals
+
+commit e82d5bb0637b9cb358f1591afa86c3fb375d8592
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Sat Aug 18 00:04:50 2018 +0100
+
+    version mejorada
+
+commit f682fc4cae4a26915202a2777bb3a815fac373aa
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Thu Aug 16 00:10:05 2018 +0100
+
+    terminado el insert de Oficios Genericos
+
+commit eb4358edc29d16a8b403b0a99f42643460b7708c
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Wed Aug 15 20:18:03 2018 +0100
+
+    irac,ifa y confronta terminados
+
+commit 2f887daff0040f1a98139e8bba9824c118b9545a
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Wed Aug 15 00:30:36 2018 +0100
+
+    haciendo update de observaciones
+
+commit 84d5e25be253cad8cd66018f2abc57143c448e1c
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Fri Aug 10 21:42:38 2018 +0100
+
+    creando la cedula de oficios genericos
+
+commit 69e365bc6f9640522606037c09356a84aadb6259
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Fri Aug 10 20:38:00 2018 +0100
+
+    ifa,irac y confronta terminados
+
+commit 3a4b35827dd30f9296a3668ca6485bef92275962
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Fri Aug 10 00:39:48 2018 +0100
+
+    empezando cedula Irac
+
+commit 3e615ece48cd6d76a66283cec748bbe6466ef0f3
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Thu Aug 9 23:23:23 2018 +0100
+
+    ifa terminado
+
+commit cb6a69a202d711db7d9385242e1f9590ab2df55e
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Thu Aug 9 00:27:17 2018 +0100
+
+    terminado insert de obervaciones
+
+commit 4ec5f441ea4b9c38116fab8a65a45b88a623f913
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Wed Aug 8 00:25:12 2018 +0100
+
+    haciendo asignacion
+
+commit fb3d2938ade72a912aa5d3eb25d692c8e551293f
+Author: Juan Carlos Ramirez Ostarros <JCRAMIREZO@contaduria.mx>
+Date:   Tue Aug 7 21:49:42 2018 +0100
+
+    checando hook
+
+commit 5a3fb46dbc2d44e41a103b8622caf26ac4cfe72a
+Author: Juan Carlos Ramirez Ostarros <JCRAMIREZO@contaduria.mx>
+Date:   Tue Aug 7 20:57:41 2018 +0100
+
+    last
+
+commit ef7a2ffb12952d986614f395ed8f3387b2346ec9
+Author: Juan Carlos Ramirez Ostarros <JCRAMIREZO@contaduria.mx>
+Date:   Tue Aug 7 20:26:31 2018 +0100
+
+    Ultiumos cambios git ftp
+
+commit 3228dde27b2fc853f8006fc935f3a2afed1f38aa
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Tue Aug 7 10:54:40 2018 -0500
+
+    haciendo menu cedulas en ifa
+
+commit ef00a91eae0c54b6d0c23c787edb686b605fb33e
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Mon Aug 6 18:21:31 2018 -0500
+
+    ifa
+
+commit 76b78489a99915708eaf443ad3edf09d155c75bd
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Sun Aug 5 17:38:04 2018 -0500
+
+    inser volantes nuevo
+
+commit 32cb149d9be97b73298f7a511d2bbb7b47a0d080
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Fri Aug 3 18:12:44 2018 -0500
+
+    ultima version
+
+commit cb459d6fc00c7c8d4a7dd4e4ebd6806e42f13d69
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Thu Aug 2 18:47:07 2018 -0500
+
+    checando cambios
+
+commit 44f7f1644b21f48e5d476dea147f7cdd9616ba05
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Wed Aug 1 18:19:56 2018 -0500
+
+    documentos digitales
+
+commit 0480976579450989819efe4f624df1efb552417f
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Tue Jul 31 16:52:49 2018 -0500
+
+    haciendo insert volantes diversos
+
+commit c88c65affab8b1549ffe35d4e6eae0373e1d3e35
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Mon Jul 30 23:31:46 2018 -0500
+
+    empezando el volantes documentos
+
+commit fa5e9df8b0fa7208389f7a54f50f1ea494715cf3
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Sat Jul 28 18:20:03 2018 -0500
+
+    insert volantes
+
+commit 191212f10a20d76b144717603a04cc4f218ad235
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Thu Jul 19 17:58:42 2018 -0500
+
+    haciendo el update de textos
+
+commit 1c4b781ad6ec4f0c3ba10b624f92456c26445fdb
+Author: soujiro27 <jc.raus27@gmail.com>
+Date:   Wed Jul 18 17:42:36 2018 -0500
+
+    haciendo insert de textos

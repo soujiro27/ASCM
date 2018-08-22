@@ -46,6 +46,9 @@ include_once $root_directory.'/Observaciones/Observaciones.php';
 
 /*------------------- Cedulas internos -------------------------*/
 include_once $root_directory.'/Cedulas/irac_internos.php';
+include_once $root_directory.'/Cedulas/Confronta_internos.php';
+include_once $root_directory.'/Cedulas/ifa_internos.php';
+include_once $root_directory.'/Cedulas/diversos_internos.php';
 
 
 /*----------------Datos DB ------------------*/

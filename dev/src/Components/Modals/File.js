@@ -17,7 +17,7 @@ export default class FileModal extends Component {
         form.append('file', document.getElementById('file').files[0]);
         form.append('idVolante',this.props.data[0].idVolante)
         form.append('idTurnadoJuridico',this.props.data[0].idTurnadoJuridico)
-        form.append('areaRecepcion',this.props.data[0].areaRecepcion)
+        form.append('areaRecepcion',this.props.data[0].idAreaRecepcion)
         let url = '/SIA/juridico/Documentos/save'
 
         axios.post(url,form)
@@ -30,7 +30,7 @@ export default class FileModal extends Component {
     }
 
   render(){
-
+console.log(this.props)
     return ReactDom.createPortal(
       <Modal
         open={!this.props.status}

@@ -118,7 +118,7 @@ class VolantesController extends TwigController {
 				'idSubTipoDocumento' => $data['subDocumento'],
 				'notaConfronta' => $data['nota'],
 				'usrAlta' => $_SESSION['idUsuario'],
-				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				//'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 			]);
 
 			$volantesDocumentos->save();
@@ -134,7 +134,7 @@ class VolantesController extends TwigController {
 	            'comentario' => 'SIN COMENTARIOS',
 	            'usrAlta' => $_SESSION['idUsuario'],
 	            'estatus' => 'ACTIVO',
-	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+	            //'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
         	]);
 
         	$turno->save();

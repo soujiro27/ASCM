@@ -11,8 +11,15 @@ export default class FormularioInsert extends Component {
   componentDidMount(){
       let input = document.getElementsByClassName('DayPickerInput');
       input[0].children[0].setAttribute('name','fecha_documento')
+      let froala_container = document.getElementById('froala').childNodes[1]
+      //console.log(froala_container)
+
   }
 
+  componentWillUnmount(){
+    let froala_container = document.getElementById('froala').childNodes[1]
+    console.log(froala_container)
+  }
 
   pruebasHtml = () => {
     let div = document.getElementsByClassName('fr-element')
@@ -83,7 +90,7 @@ export default class FormularioInsert extends Component {
         </div>
 
         <div className="row">
-          <div className="col-lg-12">
+          <div className="col-lg-12" id="froala">
             <label>Texto Cedula</label>
             <FroalaEditor
               base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'

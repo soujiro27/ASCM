@@ -40,6 +40,44 @@ class DocumentosDiversosController extends TwigController {
 		]);
 	}
 
+
+	public function Home_internos(){
+
+		$notificaciones = new NotificacionesController();
+		$base = new BaseController();
+		$menu = $base->menu();
+
+
+		echo $this->render('HomeLayout/HomeContainer.twig',[
+			'js' => 'DiversosInternos',
+			'session' => $_SESSION,
+			'nombre' => $this->nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos']
+		]);
+	}
+
+
+
+		public function tabla_internos(){
+
+	        $area = $_SESSION['idArea'];
+
+	        $diversos = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','t.idEstadoTurnado','sub.idTipoDocto')
+	             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+	             ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+	             ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+	             ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+	             ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+	             ->where('sub.auditoria','NO')
+	             ->where('t.idAreaRecepcion','=',"$area")
+	             ->where('t.idTipoTurnado','I')
+							 ->where('t.estatus','ACTIVO')
+	             ->get();
+
+			echo json_encode($diversos);
+		}
+
 	public function tabla(){
 
         $area = $_SESSION['idArea'];
@@ -53,6 +91,7 @@ class DocumentosDiversosController extends TwigController {
              ->where('sub.auditoria','NO')
              ->where('t.idAreaRecepcion','=',"$area")
              ->where('t.idTipoTurnado','V')
+						 ->where('t.estatus','ACTIVO')
              ->get();
 
 		echo json_encode($diversos);
@@ -173,7 +212,7 @@ class DocumentosDiversosController extends TwigController {
 			'copias' => $data['copias'],
 			'texto' => $data['texto'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 
@@ -183,7 +222,7 @@ class DocumentosDiversosController extends TwigController {
 			'copia' => $data['e_copias'],
 			'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 			 $validate[0] = 'OK';
@@ -274,7 +313,7 @@ class DocumentosDiversosController extends TwigController {
 				'texto' => $data['texto'],
 				'idPuestoJuridico' => $data['idPuestoJuridico'] ,
 				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 			]);
 
 
@@ -284,7 +323,7 @@ class DocumentosDiversosController extends TwigController {
 				'copia' => $data['e_copias'],
 				'sigla' => $data['e_siglas'],
 				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 			]);
 
 				 $validate[0] = 'OK';

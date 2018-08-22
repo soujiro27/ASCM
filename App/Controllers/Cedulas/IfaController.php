@@ -38,6 +38,45 @@ class IfaController extends TwigController {
 		]);
 	}
 
+
+	public function Home_internos(){
+
+		$notificaciones = new NotificacionesController();
+		$base = new BaseController();
+		$menu = $base->menu();
+
+
+		echo $this->render('HomeLayout/HomeContainer.twig',[
+			'js' => 'Ifa-Internos',
+			'session' => $_SESSION,
+			'nombre' => $this->nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos']
+		]);
+	}
+
+	public function tabla_internos(){
+
+
+        $area = $_SESSION['idArea'];
+
+
+        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+            ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+            ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+            ->where('sub.nombre','=','IFA')
+            ->where('t.idAreaRecepcion','=',"$area")
+            ->where('t.idTipoTurnado','I')
+            ->get();
+				//var_dump($ifa);
+
+		echo json_encode($ifa);
+	}
+
 	public function tabla(){
 
 
@@ -150,7 +189,7 @@ class IfaController extends TwigController {
 			'fOficio' => $data['fecha_documento'],
 			'siglas' => $data['siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 
@@ -160,7 +199,7 @@ class IfaController extends TwigController {
 			'pie' => $data['e_firmas'],
 			'sigla' => $data['e_copias'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 			 $validate[0] = 'OK';

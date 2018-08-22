@@ -175,7 +175,7 @@ class IracController extends TwigController {
 			'fOficio' => $data['fecha_documento'],
 			'siglas' => $data['siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 
@@ -188,7 +188,7 @@ class IracController extends TwigController {
       'copia' => $data['e_copias_oficio'],
       'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 			 $validate[0] = 'OK';
