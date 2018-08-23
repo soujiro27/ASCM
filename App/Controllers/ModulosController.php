@@ -118,7 +118,8 @@ class ModulosController {
 					'tipo' => $datos[0]['tipoAuditoria'],
 					'rubro' => $datos[0]['rubros'],
 					'id' => $datos[0]['idAuditoria'],
-					'idArea' => $datos[0]['idArea']
+					'idArea' => $datos[0]['idArea'],
+					'auditoria' => $cveAuditoria
 				);
 			}
 		}

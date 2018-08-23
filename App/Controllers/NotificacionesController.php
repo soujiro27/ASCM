@@ -46,7 +46,7 @@ class NotificacionesController{
 				'mensaje' => $mensaje,
 				'idPrioridad' => 'ALTA',
 				'idImpacto' => 'MEDIO',
-				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
 				'usrAlta' => $_SESSION['idUsuario'],
 				'estatus' => 'ACTIVO',
 				'situacion' => 'NUEVO',

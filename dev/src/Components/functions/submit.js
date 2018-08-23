@@ -2,17 +2,29 @@
 export default class submit {
 
 
-    createData(form){
-        let elementos = form[0].elements
-        let formData = new FormData()
+    createData_complete(form,formData){
+      let elementos = form[0].elements
+      let formulario = new FormData(form)
 
-      
-        for(let x = 0;x<elementos.length-2;x++){
-            formData.append(elementos[x].name,elementos[x].value)
+      for(let x = 0;x<elementos.length-2;x++){
+          formulario.append(elementos[x].name,elementos[x].value);
+          if(elementos[x].type == 'file' && elementos[x].files.length > 0 ){
+            formulario.append(elementos[x].name,elementos[x].files[0])
+          }
 
-        }
-        return formData
+
+      }
+
+      let keys = Object.keys(formData);
+      keys.map(item => {
+        formulario.append(item,formData[item])
+      });
+
+
+        return formulario
     }
+
+
 
     createDataUpdate(form,nombre,id){
         let elementos = form[0].elements
@@ -27,85 +39,14 @@ export default class submit {
     }
 
     resolve_request(response){
+      let respuesta = {modal:true,response:response.data.status};
 
-        let state
-        if(response.status == 500){
-            state = {
-                modal:{
-                    visible:true,
-                    message:'Ha ocurrido un error contacte al adminstrador del Sistema',
-                    class:'error',
-                    icon:false
-                }
-            }
-
-        } else if (response.status == 200 ){
-
-            if(response.data[0] === 'OK'){
-
-                state = {
-                    modal:{
-                        visible:true,
-                        message:'Registro Exitoso',
-                        class:'success',
-                        icon:true,
-                        success:true
-                    }
-                }
-            } else {
-
-                state = {
-                    modal:{
-                        visible:true,
-                        message:response.data[0],
-                        class:'error',
-                        icon:false
-                    }
-                }
-            }
-
-        }
-
-        return state
+      if(response.status === 200 && response.data.status){
+        respuesta['nombre'] = 'SUCCESS'
+      } else {
+        respuesta['nombre'] = 'ERROR';
+        respuesta['message'] = response.data.message
+      }
+      return respuesta;
     }
-
-
-
-
-
-    errorData(data,message){
-        let datos = data.formData
-        let form = {}
-        for(let x in datos){
-            form['form'] = {
-                [x]:datos[x]
-            }
-        }
-
-        form['modal'] = {
-
-                message:message,
-                visible:true,
-                class:'error',
-                icon:false
-        }
-
-        return form
-
-    }
-
-    successData(){
-        let res = {
-                modal:{
-                    visible:true,
-                    message:'Registro Exitoso',
-                    class:'success',
-                    icon:true,
-                    status:true
-                }
-            }
-
-        return res
-    }
-
 }

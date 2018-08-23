@@ -5,9 +5,8 @@ import Modal from 'react-responsive-modal';
 import './modal.styl'
 
 class AuditoriaModal extends Component {
-    
+
     state = {
-        cuenta:this.props.cuenta.cuenta,
         tableData:{
             visible:false,
             cveAuditoria:'',
@@ -15,7 +14,8 @@ class AuditoriaModal extends Component {
             rubro:'',
             sujeto:'',
             tipo:'',
-            turno:''
+            turno:'',
+            auditoria:''
         },
         tableTurno:{
             visible:false,
@@ -24,8 +24,8 @@ class AuditoriaModal extends Component {
     }
 
     HandleCloseModal = () => {
-        
-        this.props.close(this.state.tableData.area,this.state.tableData.cveAuditoria,this.state.cuenta)
+        let datos = this.state.tableData
+        this.props.close(datos.area,datos.cveAuditoria,datos.auditoria)
     }
 
 
@@ -43,29 +43,29 @@ class AuditoriaModal extends Component {
     HandleChangeInput = (event) =>{
 
         let clave= event.target.value
-        let cuenta = this.props.cuenta.cuenta
+        let cuenta = this.props.cuenta
 
         axios.all([this.DatosAuditoria(clave,cuenta),this.DatosTurnadoAuditoria(clave,cuenta)])
         .then(axios.spread((datos,turnos)=>{
 
             if(Object.keys(datos.data).length > 1 ){
             this.setState({
-                cuenta:this.state.cuenta,
                 tableData:{
                     visible:true,
                     area:datos.data.idArea,
                     rubro:datos.data.rubro,
                     sujeto:datos.data.sujeto,
                     tipo:datos.data.tipo,
-                    cveAuditoria:datos.data.id
+                    cveAuditoria:datos.data.id,
+                    auditoria:datos.data.auditoria
                 },
                 tableTurno:{
                     visible:true,
                     data:turnos.data
                 }
             })}
-            
-            
+
+
         }))
     }
 
@@ -73,13 +73,13 @@ class AuditoriaModal extends Component {
 
   render(){
     return ReactDom.createPortal(
-      <Modal 
-        open={this.props.visible} 
+      <Modal
+        open={this.props.visible}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':'auditoria'}}>
-        
+
         <div className="row">
             <div className="col-lg-12">
                 <p>Escriba el numero de Auditoria solicitado</p>

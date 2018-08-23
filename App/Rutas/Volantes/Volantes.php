@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\Volantes\VolantesController;
@@ -19,31 +19,20 @@
 		$security->validacion_sesion();
 	};
 
-	
 
 
 
-$app->group('/juridico',$auth,$rol,function() use($app,$controller){
+
+$app->group('/juridico',$auth,function() use($app,$controller){
+
+/*-----------------Home--------------------------*/
 
 	$app->get('/Volantes',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
-	$app->get('/Volantes/all',function() use ($controller){
+	$app->get('/Volantes/All',function() use ($controller){
 		$controller->tabla();
-	});
-
-	$app->get('/Volantes/add',function() use ($controller){
-		$controller->nuevo_registro();
-	});
-
-
-	$app->get('/Volantes/:id',function($id) use ($controller){
-		$controller->update_template($id);
-	});
-
-	$app->get('/Volantes/Register/:id',function($id) use ($controller){
-		$controller->registro($id);
 	});
 
 	$app->get('/Volantes/Export',function() use ($controller){
@@ -51,8 +40,24 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->post('/Volantes/save',function() use ($controller,$app){
+/*------------------Insert--------------------------*/
+
+	$app->get('/Volantes/Add',function() use ($controller){
+		$controller->insert_template();
+	});
+
+	$app->post('/Volantes/Save',function() use ($controller,$app){
 		$controller->guardar($app->request->post(),$_FILES);
+	});
+
+/*----------------Update-----------------------------*/
+
+	$app->get('/Volantes/Update',function() use ($controller){
+		$controller->update_template();
+	});
+
+	$app->get('/Volantes/Update/:id',function($id) use ($controller){
+		$controller->registro($id);
 	});
 
 	$app->post('/Volantes/Update',function() use ($controller,$app){

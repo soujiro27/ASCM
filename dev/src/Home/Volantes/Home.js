@@ -8,11 +8,13 @@ const Home = (props) => {
 
   return(
     <div className="MainContainer">
-        <Header modulo='Volantes' />
-        <Table data={props.data} />
+        <Header modulo={props.modulo} />
+        <Table {...props} />
     </div>
   )
 }
 
+
+Home.defaultProps = { modulo:'Volantes' };
 
 export default Home;

@@ -29,11 +29,11 @@ function acciones(){
 
 axios.all([doc(),caracteres(),areas(),acciones()])
 .then(axios.spread(function(documentos,caracteres,areas,acciones){
-    render(<Home 
+    render(<Home
             documentos={documentos.data}
             caracteres={caracteres.data}
             areas={areas.data}
             acciones={acciones.data}
     />,root);
-    
+
 }))

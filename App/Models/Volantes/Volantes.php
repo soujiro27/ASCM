@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Jur\App\Models\Volantes;
 
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +28,8 @@ class Volantes extends Model {
         'usrModificacion',
         'fModificacion',
         'fAlta',
-        'estatus'
+        'estatus',
     ];
-
 
 
  }

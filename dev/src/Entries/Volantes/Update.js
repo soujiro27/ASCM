@@ -4,12 +4,13 @@ import Home from './../../Home/Volantes/Update'
 import axios from 'axios';
 
 const  root = document.getElementById('root');
+let id = localStorage.getItem('idVolante');
+localStorage.removeItem('idVolante');
+
 let caracteres_url = '/SIA/juridico/Api/Caracteres';
 let areas_url = '/SIA/juridico/Api/Turnados';
 let acciones_url = '/SIA/juridico/Api/Acciones';
-let element = document.getElementById('root')
-let id = element.dataset.id
-let url = `/SIA/juridico/Volantes/Register/${id}`
+let url = `/SIA/juridico/Volantes/Update/${id}`
 
 
 function caracteres(){
@@ -30,11 +31,11 @@ function data () {
 
 axios.all([data(),caracteres(),areas(),acciones()])
 .then(axios.spread(function(datos,caracteres,areas,acciones,){
-    render(<Home 
+    render(<Home
             data={datos.data}
             caracteres={caracteres.data}
             areas={areas.data}
             acciones={acciones.data}
     />,root);
-    
+
 }))

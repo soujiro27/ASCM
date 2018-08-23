@@ -4,18 +4,18 @@ import Modal from 'react-responsive-modal';
 import './modal.styl'
 
 class DictamenModal extends Component {
-    
-    state = {
+
+    cuenta = {
         cuenta:2016
     }
 
     HandleCloseModal = () => {
-        this.props.close(this.state.cuenta)
+        this.props.close('cuenta',this.cuenta.cuenta);
     }
 
     HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.setState({cuenta:value})
+        let value = event.target.value;
+        this.cuenta['cuenta'] = value;
     }
 
 
@@ -23,13 +23,13 @@ class DictamenModal extends Component {
 
   render(){
     return ReactDom.createPortal(
-      <Modal 
-        open={this.props.visible} 
+      <Modal
+        open={this.props.visible}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':'answer'}}>
-        
+
         <div className="row">
             <div className="col-lg-7">
                 <h3><i className="fas fa-archive"></i> Seleccione Cuenta Publica</h3>

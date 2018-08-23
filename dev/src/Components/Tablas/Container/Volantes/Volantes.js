@@ -6,18 +6,18 @@ import columnas from './columns.js'
 
 class TableContainer extends Component{
 
-    state = {
-        load:false,
-        data:{}
+    columns = () =>{
+      if(this.props.modulo === 'VolantesDiversos'){
+          columnas.splice(7,0);
+      }
+      return columnas;
     }
-
-    columns = columnas;
-
 
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/Volantes/${rowInfo.original.idVolante}`
+                localStorage.setItem('idVolante',rowInfo.original.idVolante);
+                location.href = `/SIA/juridico/${this.props.modulo}/Update`;
             }
         }
     }
@@ -26,7 +26,7 @@ class TableContainer extends Component{
       return(
         <ReactTable
           data={this.props.data}
-          columns={this.columns}
+          columns={this.columns()}
           pageSizeOptions={[15,20,25,30]}
           defaultPageSize={10}
           className="-highlight"
