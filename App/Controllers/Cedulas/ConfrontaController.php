@@ -39,6 +39,24 @@ class ConfrontaController extends TwigController {
 		]);
 	}
 
+
+
+	public function Home_internos(){
+
+		$notificaciones = new NotificacionesController();
+		$base = new BaseController();
+		$menu = $base->menu();
+
+
+		echo $this->render('HomeLayout/HomeContainer.twig',[
+			'js' => 'ConfrontaInternos',
+			'session' => $_SESSION,
+			'nombre' => $this->nombre,
+			'notificaciones' => $notificaciones->get_notificaciones(),
+			'menu' => $menu['modulos']
+		]);
+	}
+
 	public function tabla(){
 
 
@@ -56,6 +74,29 @@ class ConfrontaController extends TwigController {
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idTipoTurnado','V')
             ->get();
+				//var_dump($ifa);
+
+		echo json_encode($ifa);
+	}
+
+
+	public function tabla_internos(){
+
+
+				$area = $_SESSION['idArea'];
+
+
+				$ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado','vd.notaConfronta')
+						->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+						->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+						->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+						->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+						->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+						->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+						->where('sub.nombre','=','CONFRONTA')
+						->where('t.idAreaRecepcion','=',"$area")
+						->where('t.idTipoTurnado','I')
+						->get();
 				//var_dump($ifa);
 
 		echo json_encode($ifa);
@@ -158,7 +199,7 @@ class ConfrontaController extends TwigController {
 			'fOficio' => $data['fecha_documento'],
 			'hConfronta' => $data['hora_confronta'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		];
 
 		if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
@@ -169,7 +210,7 @@ class ConfrontaController extends TwigController {
 		Espacios::where('idVolante',"$idVolante")->update([
       'sigla' => $data['e_siglas'],
 			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 		]);
 
 			 $validate[0] = 'OK';

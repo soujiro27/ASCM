@@ -119,7 +119,11 @@ class ModulosController {
 					'rubro' => $datos[0]['rubros'],
 					'id' => $datos[0]['idAuditoria'],
 					'idArea' => $datos[0]['idArea'],
+<<<<<<< HEAD
 					'clave' => $datos[0]['clave']
+=======
+					'auditoria' => $cveAuditoria
+>>>>>>> nuevo
 				);
 			}
 		}

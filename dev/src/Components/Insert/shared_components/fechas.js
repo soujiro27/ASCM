@@ -13,14 +13,13 @@ export default class fechas extends Component {
     state = {
         day:''
     }
-    
+
     HandleDayClicK = (day) => {
         //this.setState({day})
     }
 
     componentDidMount(){
         let input = document.getElementsByClassName('DayPickerInput');
-        //console.log(input[0].children)
         input[0].children[0].setAttribute('name','fecha_documento')
         input[1].children[0].setAttribute('name','fecha_recepcion')
 
@@ -31,22 +30,22 @@ export default class fechas extends Component {
     render(){
         return(
             <div className="row">
-            <div className="col-lg-3">
-                <label>Fecha Documento</label>
-                <DayPickerInput 
+            <div className="col-lg-4">
+                <label>Fecha del Documento</label>
+                <DayPickerInput
                     onDayChange={this.HandleDayClicK}
                 />
             </div>
-            <div className="col-lg-3">
-                <label>Fecha Recepcion</label>
-                 <DayPickerInput 
+            <div className="col-lg-4">
+                <label>Fecha de Recepcion</label>
+                 <DayPickerInput
                     onDayChange={this.HandleDayClicK}
                 />
             </div>
-            <div className="col-lg-3">
-                <label>Hora Recepcion</label>
+            <div className="col-lg-2">
+                <label>Hora de Recepcion</label>
                 <ToolTip placement="right" overlay={<span>Formato 24 Horas</span>}>
-                    <input type="time" className="form-control"  name="hora_recepcion" required 
+                    <input type="time" className="form-control"  name="hora_recepcion" required
                         patter="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}" placeholder="HH:MM" />
                 </ToolTip>
             </div>

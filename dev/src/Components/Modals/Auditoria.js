@@ -15,7 +15,11 @@ class AuditoriaModal extends Component {
             sujeto:'',
             tipo:'',
             turno:'',
+<<<<<<< HEAD
             clave:''
+=======
+            auditoria:''
+>>>>>>> nuevo
         },
         tableTurno:{
             visible:false,
@@ -25,7 +29,11 @@ class AuditoriaModal extends Component {
 
     HandleCloseModal = () => {
         let datos = this.state.tableData
+<<<<<<< HEAD
         this.props.close(datos.area,datos.cveAuditoria,datos.clave)
+=======
+        this.props.close(datos.area,datos.cveAuditoria,datos.auditoria)
+>>>>>>> nuevo
     }
 
 
@@ -57,7 +65,11 @@ class AuditoriaModal extends Component {
                     sujeto:datos.data.sujeto,
                     tipo:datos.data.tipo,
                     cveAuditoria:datos.data.id,
+<<<<<<< HEAD
                     clave:datos.data.clave
+=======
+                    auditoria:datos.data.auditoria
+>>>>>>> nuevo
                 },
                 tableTurno:{
                     visible:true,

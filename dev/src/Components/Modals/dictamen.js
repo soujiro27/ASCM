@@ -5,17 +5,21 @@ import './modal.styl'
 
 class DictamenModal extends Component {
 
+<<<<<<< HEAD
     state = {
+=======
+    cuenta = {
+>>>>>>> nuevo
         cuenta:2016
     }
 
     HandleCloseModal = () => {
-        this.props.close(this.state.cuenta)
+        this.props.close('cuenta',this.cuenta.cuenta);
     }
 
     HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.setState({cuenta:value})
+        let value = event.target.value;
+        this.cuenta['cuenta'] = value;
     }
 
 

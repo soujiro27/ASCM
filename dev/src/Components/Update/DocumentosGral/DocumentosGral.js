@@ -8,7 +8,7 @@ import Formulario from './form';
 import './../../shared_styles/insert.styl';
 
 class Update extends Component{
-    
+
     state = {
         modals:{
             table:false,
@@ -17,7 +17,7 @@ class Update extends Component{
         data:''
     }
 
-    
+
     CloseModalFile = () => {
        location.href = '/SIA/juridico/DocumentosGral'
     }
@@ -30,21 +30,23 @@ class Update extends Component{
     componentDidMount(){
         let url = `/SIA/juridico/DocumentosGral/Register/${this.props.id}`
         axios.get(url).then(response => {
+          console.log(response.data)
             this.setState({
                 table:true,
                 data:response.data
+
             })
         })
     }
 
     render(){
-        
+
         return(
         <div className="table-documentos-container">
             {
                 this.state.table &&
-                <Formulario 
-                    data={this.state.data}  
+                <Formulario
+                    data={this.state.data}
                     cancel={this.HandleCancel}
                     open={this.OpenModalFile}
                 />
@@ -53,7 +55,7 @@ class Update extends Component{
                 this.state.modals.file &&
                 <FileModal close={this.CloseModalFile} visible={true} data={this.state.data}/>
             }
-        
+
         </div>
     )
     }

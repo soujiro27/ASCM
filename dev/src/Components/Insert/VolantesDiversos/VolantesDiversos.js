@@ -1,17 +1,50 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import submit from './../../functions/submit';
+import Formulario from './form';
 
-import Modal from './../../Modals/form'
 import AddRemitenteModal from './../../Modals/Add-Remitente';
 import RemitentesModal from './../../Modals/remitentes';
 
 import './../../shared_styles/insert.styl'
 
-import Formulario from './form';
+class Insert extends Component{
 
 
-import submit from './../../functions/submit';
+  state = {
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false,
+  }
 
+  formData = {
+    idRemitenteJuridico:'',
+    idRemitente:'',
+  }
+
+
+  OpenModal = () =>{
+    if(this.state.nombre === 'REMITENTE'){ return <RemitentesModal  close={this.closeModalRemitente}/>}
+    else if (this.state.nombre === 'REMITENTEADD') { return <NotaModal visible={true} close={this.closeModalBolean}/>}
+    else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+  }
+
+  closeModalRemitente = (value) => {
+    this.formData = value;
+    this.setState({modal:false});
+  }
+
+  closeModalBolean = () => {
+    this.setState({modal:false});
+  }
+
+  HandleOpenModal = (nombre) =>{
+    this.setState({ modal:true, nombre});
+  }
+
+<<<<<<< HEAD
 class Insert extends Component{
 
 
@@ -35,6 +68,8 @@ class Insert extends Component{
         }
 
     }
+=======
+>>>>>>> nuevo
 
     HandleSubmit = (event) => {
         event.preventDefault();
@@ -58,6 +93,7 @@ class Insert extends Component{
         location.href = '/SIA/juridico/VolantesDiversos'
     }
 
+<<<<<<< HEAD
     HandleCloseModal = () =>{
 
         if(this.state.modal.success){
@@ -109,10 +145,14 @@ class Insert extends Component{
 
     render(){
 
+=======
+    render(){
+>>>>>>> nuevo
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
                 <Formulario
                     cancel={this.HandleCancel}
+<<<<<<< HEAD
                     documentos={this.props.data}
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
@@ -121,12 +161,17 @@ class Insert extends Component{
                     addRemitente={this.OpenModalAddRemitente}
                     remitente={this.OpenModalRemitentes}
                     dataRemitente={this.state.formData}
+=======
+                    openModal={this.HandleOpenModal}
+                    {...this.props}
+>>>>>>> nuevo
                 />
                 {
-                    this.state.modal.visible &&
-                    <Modal data={this.state.modal}  close={this.HandleCloseModal}/>
+                  this.state.modal &&
+                  <this.OpenModal />
                 }
 
+<<<<<<< HEAD
                 {
                     this.state.modals.addRemitente &&
                     <AddRemitenteModal visible={true} close={this.HandleCloseModalAddRemitente} />
@@ -140,6 +185,8 @@ class Insert extends Component{
                     />
                 }
 
+=======
+>>>>>>> nuevo
             </form>
 
         )

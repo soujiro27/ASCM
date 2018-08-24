@@ -4,7 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class VolantesDocumentos extends Model {
     public $timestamps = false;
-     protected $primaryKey = 'idVolanteDocumento';
+    protected $primaryKey = 'idVolanteDocumento';
     protected $table = 'sia_VolantesDocumentos';
     protected $fillable = [
         'idVolante',
@@ -16,5 +16,6 @@ class VolantesDocumentos extends Model {
         'fAlta',
         'estatus'
     ];
+
 
 }

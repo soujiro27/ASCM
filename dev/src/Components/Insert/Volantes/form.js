@@ -3,23 +3,23 @@ import axios from 'axios';
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
 import Combos from './../shared_components/Combos'
+<<<<<<< HEAD
 
 import ToolTip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap.css'
 
+=======
+import ToolTip from 'rc-tooltip';
+import 'rc-tooltip/assets/bootstrap.css'
+>>>>>>> nuevo
 import './../form.styl'
 
 class Form extends Component {
 
     state = {
-        subDocumentos:[],
-        cuenta:2016,
-        Numero_Documento:100,
-        asunto:500,
-        formData:{
-            fDocumento:'',
-            fREcepcion:''
-        }
+      subDocumentos:[],
+      Numero_Documento:100,
+      asunto:3000
     }
 
 
@@ -35,6 +35,7 @@ class Form extends Component {
                 }
             })
             .then((response) => {
+                document.getElementById('subDocumento').removeAttribute('disabled')
                 this.setState({subDocumentos:response.data})
             })
         }
@@ -47,7 +48,11 @@ class Form extends Component {
 
     HandleClickAuditoria = (event) => {
         event.preventDefault();
+<<<<<<< HEAD
         this.props.openModal('AUDITORIA')
+=======
+        this.props.btnAuditoria('AUDITORIA')
+>>>>>>> nuevo
     }
 
     CountCaracterText = (input) =>{
@@ -64,9 +69,13 @@ class Form extends Component {
 
 
     render(){
+<<<<<<< HEAD
       const numero = this.props.numeroAuditoria
       const numeroAuditoria = numero === undefined || numero === ''  ? 'No has seleccionado Auditoria' : `Auditoria selccionada: ${this.props.numeroAuditoria}`
       return(
+=======
+        return(
+>>>>>>> nuevo
             <div className="form-container">
                 <div className="row">
                     <div className="col-lg-3">
@@ -83,7 +92,7 @@ class Form extends Component {
 
                     <div className="form-group col-lg-3">
                         <label>Sub-Documento</label>
-                        <select className="form-control" required  name="subDocumento" onChange={this.HandleChangeSubDocumento} id="subDocumento">
+                        <select className="form-control" required  name="subDocumento" onChange={this.HandleChangeSubDocumento} id="subDocumento" disabled>
                         <option value="">Escoja Opcion</option>
                         {
                             this.state.subDocumentos.map((item) =>(
@@ -111,8 +120,13 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-2">
                     <label>Auditoria</label>
+<<<<<<< HEAD
                         <ToolTip placement="bottom" overlay={numeroAuditoria}>
                         <button className='btn-primary btn form-control' onClick={this.HandleClickAuditoria}>
+=======
+                      <ToolTip placement="bottom" overlay={this.props.auditoria}>
+                        <button className="btn btn-primary  form-control" onClick={this.HandleClickAuditoria}>
+>>>>>>> nuevo
                             Agregar  <i className="fas fa-plus-circle"></i>
                         </button>
                       </ToolTip>
@@ -129,7 +143,7 @@ class Form extends Component {
                 <div className="row">
                     <div className="col-lg-12" >
                         <label>Asunto ({this.state.asunto})</label>
-                        <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="500"></textarea>
+                        <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="3000"></textarea>
                     </div>
                 </div>
 
@@ -150,7 +164,6 @@ class Form extends Component {
 
                 <div className="form-hidden">
 
-                </div>
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
                     <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
@@ -162,6 +175,7 @@ class Form extends Component {
 
 
 export default Form;
+<<<<<<< HEAD
 
 
 /*
@@ -171,3 +185,5 @@ export default Form;
 <input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
 
 */
+=======
+>>>>>>> nuevo

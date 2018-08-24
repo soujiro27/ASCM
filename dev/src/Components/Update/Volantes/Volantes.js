@@ -1,40 +1,39 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
-import Modal from './../../Modals/form'
+import submit from './../../functions/submit';
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
+import Formulario from './form';
 
 import './../../shared_styles/insert.styl'
 
-import Formulario from './form';
+class Update extends Component{
 
-import submit from './../../functions/submit';
+  state = {
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false
+  }
 
-class Insert extends Component{
-    
-    state = {
-        "modal":{
-            "visible":false,
-            "message":"",
-            "class":"",
-            "icon":"",
-            "success":false
-        }
-    }
+
+  OpenModal = () =>{
+    if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+  }
 
     HandleSubmit = (event) => {
+      console.log(this.props)
         event.preventDefault();
-        console.log(this.props)
         let form_functions = new submit()
-        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idVolante',this.props.data[0].idVolante)
-        let url = '/SIA/juridico/Volantes/Update'
-        
-        axios.post(url,data)
+        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idVolante',this.props.datos[0].idVolante)
+
+        axios.post('/SIA/juridico/Volantes/Update',data)
         .then(response =>{
-            let state_response = form_functions.resolve_request(response)
-            this.setState(state_response)
-        
+          let respuesta = form_functions.resolve_request(response);
+          this.setState(respuesta);
         })
-        
+
 
     }
 
@@ -44,40 +43,28 @@ class Insert extends Component{
     }
 
     HandleCloseModal = () =>{
-        
-        if(this.state.modal.success){
 
-            location.href = '/SIA/juridico/Volantes'
-        } else{
+      this.state.response ? location.href = '/SIA/juridico/Volantes' : this.setState({modal:false})
 
-            this.setState({
-                modal:{visible:false}
-            })
-        }
-        
-    
     }
-
 
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario 
-                    cancel={this.HandleCancel}   
-                    datos={this.props.data}
-                    caracteres={this.props.caracteres}
-                    areas={this.props.areas}
-                    acciones={this.props.acciones}
+                <Formulario
+                    cancel={this.HandleCancel}
+                    {...this.props}
                     />
-                {
-                    this.state.modal.visible &&
-                    <Modal data={this.state.modal} close={this.HandleCloseModal}/>
-                }
-            
+                    {
+                      this.state.modal &&
+                      <this.OpenModal />
+                    }
+
+
             </form>
 
         )
     }
 }
 
-export default Insert;
+export default Update;

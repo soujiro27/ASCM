@@ -6,7 +6,7 @@ import ModalError from '../../Components/Modals/ErrorLoad';
 
 const root = document.getElementById('root');
 
-axios.get('/SIA/juridico/Volantes/all')
+axios.get('/SIA/juridico/Volantes/All')
 .then((response)=>{
   let datos = response.data;
 

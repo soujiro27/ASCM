@@ -8,6 +8,8 @@ use Carbon\Carbon;
 
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\BaseController;
+use Jur\App\Controllers\ErrorsController;
+use Jur\App\Models\Volantes\AnexosJuridico;
 
 use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Volantes\VolantesDocumentos;
@@ -17,54 +19,72 @@ class VolantesDiversosController extends TwigController {
 
 	private $js = 'VolantesDiversos';
 	private $nombre = 'Volantes-Diversos';
+	private $date = 'Y-m-d H:i:s';
 
 
-	public function Home(){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
+	/*----------------Carga de Templates ------------------*/
 
 
-		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
-	}
+		public function load_data_templates(){
+
+			$notificaciones = new NotificacionesController();
+			$base = new BaseController();
+			$menu = $base->menu();
+
+			$data = [
+				'js' => $this->js,
+				'session' => $_SESSION,
+				'nombre' => $this->nombre,
+				'notificaciones' => $notificaciones->get_notificaciones(),
+				'menu' => $menu['modulos']
+			];
+
+			return $data;
+
+		}
+
+		public function home_template(){
+			$data = $this->load_data_templates();
+			echo $this->render('HomeLayout/HomeContainer.twig',$data);
+		}
+
+		public function insert_template(){
+
+			$data = $this->load_data_templates();
+			echo $this->render('HomeLayout/InsertContainer.twig',$data);
+
+		}
+
+		public function update_template(){
+
+			$data = $this->load_data_templates();
+			echo $this->render('HomeLayout/UpdateContainer.twig',$data);
+		}
+
+
 
 	public function tabla(){
 
-		$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente')
-		->leftJoin('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
-		->leftJoin('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
-		->leftJoin('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-		->where('sub.auditoria','NO')
-		->where('t.idTipoTurnado','V')
-		->where('t.estatus','ACTIVO')
-		->orderBy("folio","ASC")
-		->get();
-		echo json_encode($volantes);
+		try {
+			$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion','t.idAreaRemitente')
+			->leftJoin('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
+			->leftJoin('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
+			->leftJoin('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+			->where('sub.auditoria','NO')
+			->where('t.idTipoTurnado','V')
+			->where('t.estatus','ACTIVO')
+			->orderBy("folio","ASC")
+			->get();
+				echo json_encode(array('status'=>true,'data' => $volantes));
+
+		} catch(\Illuminate\Database\QueryException $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
+		}
 	}
 
-	public function nuevo_registro(){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/InsertContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
-
-	}
 
 	public function guardar(array $data,$file){
 
@@ -129,7 +149,6 @@ class VolantesDiversosController extends TwigController {
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
 		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
         		]);
 
         		$turno->save();
@@ -193,6 +212,7 @@ class VolantesDiversosController extends TwigController {
 				'idRemitente' => $data['idRemitente'],
 				'idRemitenteJuridico' => $data['idRemitenteJuridico'],
 				'asunto' => $data['asunto'],
+				'extemporaneo' => $data['extemporaneo'],
 				'idCaracter' => $data['caracter'],
 				'idAccion' => $data['accion'],
 				'usrModificacion' => $_SESSION['idUsuario'],
@@ -216,7 +236,7 @@ class VolantesDiversosController extends TwigController {
 		            'comentario' => 'SIN COMENTARIOS',
 		            'usrAlta' => $_SESSION['idUsuario'],
 		            'estatus' => 'ACTIVO',
-		            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+
         		]);
 
         		$turno->save();
@@ -234,22 +254,6 @@ class VolantesDiversosController extends TwigController {
 
 	}
 
-	public function update_template($id){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
-	}
 
 
 	public function registro($id){
@@ -342,6 +346,7 @@ class VolantesDiversosController extends TwigController {
 			'fecha_recepcion' => 'required',
 			'asunto' => 'max_len,200|alpha_space',
 			'caracter' => 'required|max_len,2|numeric',
+			'extemporaneo' =>'required|max_len,2|alpha',
 			'turnado' => 'required|max_len,30',
 			'accion' => 'required|max_len,2|numeric'
 

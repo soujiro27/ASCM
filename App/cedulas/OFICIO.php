@@ -1,6 +1,7 @@
 <?php
 session_start();
 // Include the main TCPDF library (search for installation path).
+
 require_once('./tcpdf/tcpdf.php');
 
 $idVolante = $_GET['param'];
@@ -51,11 +52,10 @@ $id = $datos[0]['idRemitente'];
 $sql = "select * from sia_RemitentesJuridico where idRemitenteJuridico='$id'";
 $db=conecta();
 $datosNombre=consultaRetorno($sql, $db);
-//var_dump($datosNombre);
 $saludo=$datosNombre[0]['saludo'];
-$nombrel = mb_strtoupper($datosNombre[0]['nombre'],'utf-8');
+$nombrel = strtoupper($datosNombre[0]['nombre']);
 $name = $saludo.' '.$nombrel;
-$puesto = mb_strtoupper($datosNombre[0]['puesto'],'utf-8');
+$puesto = strtoupper($datosNombre[0]['puesto']);
 $texto = $datos[0]['texto'];
 $siglas = $datos[0]['siglas'];
 $asunto = $datos[0]['asunto'];
@@ -84,7 +84,7 @@ $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Auditoria Superior de la Ciudad de México');
 $pdf->SetTitle('OFICIO GENERICO');
- 
+
  $pdf->setPrintHeader(false);
 $pdf->setPrintFooter(false);
 
@@ -131,10 +131,10 @@ $header = '<table  border="0" width="100%">
         <td width="308"><p style="text-align:justify;"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO</b></p>
           <p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p>
           <p><b>OFICIO NÚM. ' .$datos[0]["numFolio"] .'</b></p>
-          
+
             <span style="border:1px solid red"><b>ASUNTO:</b></span>
-              <span style="text-align:justify">'.$datos[0]['asunto'].'</span> 
-       
+              <span style="text-align:justify">'.$datos[0]['asunto'].'</span>
+
           <p>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'.</p>
           <p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p>
         </td>
@@ -152,11 +152,11 @@ $pdf->SetFont('helvetica', '', 11);
 $textoPuesto = <<<EOD
 <br><br>
 <table cellspacing="0" cellpadding="0" border="0" width="395" >
-    
+
     <tr>
         <td colspan="1" style="line-height:15px"><b>{$name} <br>{$puesto}<br>P R E S E N T E</b></td>
-        
-        
+
+
     </tr>
 </table><br><br><br>
 EOD;
@@ -166,7 +166,7 @@ $pdf->writeHTML($textoPuesto, true, false, false, false, '');
 // -------------------------------------------------------------------
 $textoCuerpo = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
-    
+
     <tr>
         <td align="justify" style="line-height:14px">$texto</td>
     </tr>
@@ -185,7 +185,7 @@ $sql = "select * from sia_EspaciosJuridico where idVolante ='$idVolante'";
     $datos=consultaRetorno($sql, $db);
     $espaciosFirma = $datos[0]['atte'];
 $tbl='';
-for ($i=0; $i <$espaciosFirma ; $i++) { 
+for ($i=0; $i <$espaciosFirma ; $i++) {
     # code...
 $tbl .= <<<EOD
 <br>
@@ -233,9 +233,9 @@ for($i=0;$i<$total;$i++){
 }
 
 $tbl = <<<EOD
-    
+
     $to
-       
+
 EOD;
 
 $pdf -> writeHTML($tbl,true,false,false,false,'');
@@ -257,7 +257,7 @@ foreach ($arreglo  as $valor){
     $db=conecta();
     $datos=consultaRetorno($sql, $db);
     $puesto = $datos[0]['puesto'];
-    $nombre = mb_strtoupper($datos[0]['nombre'],'utf-8');
+    $nombre = strtoupper($datos[0]['nombre']);
     $saludo = $datos[0]['saludo'];
 
     $tr .=  '<b>' .$saludo .' '. $nombre.', '.'</b>' . $puesto .'. Presente. Para su conocimiento.<br>';
@@ -268,7 +268,7 @@ foreach ($arreglo  as $valor){
 $tbl = <<<EOD
 <table cellspacing="0" cellpadding="0" border="0">
     <tr>
-      <td width="30">c.c.p.</td> 
+      <td width="30">c.c.p.</td>
       <td width="555">$tr </td>
     </tr>
 </table>
