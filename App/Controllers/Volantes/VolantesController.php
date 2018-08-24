@@ -61,7 +61,6 @@ class VolantesController extends TwigController {
 		echo $this->render('HomeLayout/UpdateContainer.twig',$data);
 	}
 
-
 /*-------------------Tabla-----------------------------*/
 
 	public function tabla(){
