@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\BaseController;
 use Jur\App\Controllers\ErrorsController;
+use Jur\App\Models\Volantes\AnexosJuridico;
 
 use Jur\App\Models\Volantes\Volantes;
 use Jur\App\Models\Volantes\VolantesDocumentos;
@@ -18,6 +19,7 @@ class VolantesController extends TwigController {
 
 	private $js = 'Volantes';
 	private $nombre = 'Volantes';
+	private $date = 'Y-m-d H:i:s';
 
 
 /*----------------Carga de Templates ------------------*/
@@ -195,47 +197,69 @@ class VolantesController extends TwigController {
 
 	public function update(array $data){
 
-		$data['estatus'] =  'ACTIVO';
+		try {
+
 		$id = $data['idVolante'];
 
 		$validate = $this->validate_update($data);
 		$base = new BaseController();
 		$datos_director_area = $base->get_data_area($data['turnado']);
 
-		if(empty($validate)){
+		if($validate['status']){
 
 			$vd = VolantesDocumentos::where('idVolante',"$id")->get();
 			$data['idSubTipoDocumento'] = $vd[0]['idSubTipoDocumento'];
 
 
-			Volantes::find($id)->update([
-				'numDocumento' => $data['Numero_Documento'],
-				'anexos' => $data['anexos'],
-				'fDocumento' => $data['fecha_documento'],
-				'fRecepcion' => $data['fecha_recepcion'],
-				'asunto' => $data['asunto'],
-				'idCaracter' => $data['caracter'],
-				'idAccion' => $data['accion'],
-				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
-			]);
+				Volantes::find($id)->update([
+					'numDocumento' => $data['Numero_Documento'],
+					'anexos' => $data['anexos'],
+					'fDocumento' => $data['fecha_documento'],
+					'fRecepcion' => $data['fecha_recepcion'],
+					'asunto' => $data['asunto'],
+					'idCaracter' => $data['caracter'],
+					'idAccion' => $data['accion'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format($this->date),
+				]);
 
-			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
-				'idAreaRecepcion' => $data['turnado'],
-				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-				'idTipoPrioridad' => $data['caracter'],
-				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
+				TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+					'idAreaRecepcion' => $data['turnado'],
+					'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
+					'idTipoPrioridad' => $data['caracter'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format($this->date),
+				]);
 
-			]);
+				$turnados = TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->get();
+				$idTurnado = $turnados[0]['idTurnadoJuridico'];
 
-			$base->notifications_complete('Volante',$data['turnado'],$id);
+				$anexosJuridico = AnexosJuridico::where('idTurnadoJuridico',"$idTurnado")->get();
 
-			$validate[0] = 'OK';
+				if($anexosJuridico->isNotEmpty()){
+						$idAnexos = $anexosJuridico[0]['idAnexoJuridico'];
+						AnexosJuridico::find($idAnexos)->update([
+							'areaRemitente' => 'DGAJ',
+							'areaRecepcion' => $data['turnado'],
+							'usrModificacion' => $_SESSION['idUsuario'],
+							'fModificacion' => Carbon::now('America/Mexico_City')->format($this->date),
+						]);
+				}
 
+				$base->notifications_complete('Volante',$data['turnado'],$id);
+
+			}
+
+			echo json_encode($validate);
+
+
+		} catch (\Illuminate\Database\QueryException $e) {
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
 		}
 
-		echo json_encode($validate);
+
+
 
 
 
@@ -243,8 +267,6 @@ class VolantesController extends TwigController {
 
 
 /*------------- Validar Registros --------------------*/
-
-
 
 	public function validate($data){
 
@@ -324,38 +346,36 @@ class VolantesController extends TwigController {
 
 	public function validate_update(array $data){
 
-		$estatus = $data['estatus'];
-
-
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$is_valid = GUMP::is_valid($data,array(
 			'Numero_Documento' => 'required|max_len,50',
 			'anexos' => 'required|max_len,2|numeric',
 			'fecha_documento' => 'required',
 			'fecha_recepcion' => 'required',
-			'asunto' => 'max_len,200|alpha_space',
+			'asunto' => 'max_len,3000',
 			'caracter' => 'required|max_len,2|numeric',
 			'turnado' => 'required|max_len,10|alpha',
 			'accion' => 'required|max_len,2|numeric'
-
 		));
 
 		if($is_valid === true){
-			$is_valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $is_valid[0];
 		}
-
 
 
 		$base = new BaseController();
 		$datos_director_area = $base->get_data_area($data['turnado']);
 
 		if($datos_director_area->isEmpty()){
-
-			array_push($is_valid, 'El Director NO se encuentra dado de alta ');
+			$validacion['message'] =  'El Director NO se encuentra dado de alta ';
+			$validacion['status'] = false;
 		}
 
-
-		return $is_valid;
+		return $validacion;
 	}
 
 

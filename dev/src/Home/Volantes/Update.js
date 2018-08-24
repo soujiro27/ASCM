@@ -9,12 +9,12 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form data={this.props.data} 
+                <Form datos={this.props.data} 
                     caracteres={this.props.caracteres}
                     areas={this.props.areas}
                     acciones={this.props.acciones}
-                    
-                />   
+
+                />
             </div>
 
         )
@@ -26,5 +26,3 @@ Home.defaultProps = {
 }
 
 export default Home
-
-

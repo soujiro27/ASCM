@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const  root = document.getElementById('root');
 let id = localStorage.getItem('idVolante');
-localStorage.removeItem('idVolante');
+
 
 let caracteres_url = '/SIA/juridico/Api/Caracteres';
 let areas_url = '/SIA/juridico/Api/Turnados';
