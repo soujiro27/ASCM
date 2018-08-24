@@ -7,91 +7,79 @@ import axios from 'axios';
 import './modal.styl'
 
 class NotalModal extends Component {
-    
-    state = {
-        chose:'',
-        puesto:'',
-        idRemitente:'',
-        data:[],
-        tipo: this.props.tipo,
-        request:''
-       
+
+    state = { data:[] }
+
+    formData = {
+      idRemitenteJuridico:'',
+      idRemitente:''
     }
 
     columns = [
         {
             Header:'Saludo',
             accessor:'saludo',
+            width:70
         },
         {
             Header:'Nombre',
             accessor:'nombre',
-           
+            width:250
         },
         {
             Header:'puesto',
             accessor:'puesto',
-            
-
         },
         {
             Header:'Siglas',
             accessor:'siglasArea',
-           
+            width:100
         }
-       
+
     ]
 
     HandleCloseModal = () => {
-        //this.props.close(this.state.nota)
+      this.props.close(this.formData)
     }
 
-    HandleClickTr = (state, rowInfo, column) =>{
+    HandleClickTr = (state, rowInfo) =>{
         return {
             onClick:(e,handleOriginal) =>{
-                let nombre = rowInfo.original.saludo + ' ' + rowInfo.original.nombre
-               this.setState({
-                    chose: nombre,
-                    puesto:rowInfo.original.puesto,
-                    idRemitente:rowInfo.original.idRemitenteJuridico,
-                    request:rowInfo.original
-                })
-                
+              let datos = rowInfo.original
+              let nombre = datos.saludo + ' ' + datos.nombre;
+              let texto = nombre + ' - ' +datos.puesto;
+              document.getElementById('remitente_seleccion').innerHTML = texto;
+              this.formData['idRemitenteJuridico'] = datos.idRemitenteJuridico;
+              this.formData['idRemitente'] = datos.siglasArea;
             }
         }
     }
 
 
     componentDidMount(){
-        axios.get('/SIA/juridico/Api/Remitentes/Tipo',{
-            params:{
-                tipo:this.props.tipo
-            }
-        })
+      let tipo = localStorage.getItem('tipoRemitente');
+        axios.get('/SIA/juridico/Api/Remitentes/Tipo',{params:{tipo}})
         .then((response)=>{
-            
            this.setState({data:response.data})
-        })
+        });
     }
 
 
     HandleSubmit = () =>{
-        if(this.state.idRemitente != ''){
-            this.props.close(this.state.request)
-        }
+      this.formData.estatus ? this.props.close(this.formData) : document.getElementById('remitente_seleccion').innerHTML = 'No ha Seleccionado Remitente'
     }
 
   render(){
     return ReactDom.createPortal(
-    <Modal 
-        open={this.props.visible} 
+    <Modal
+        open={true}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
-        classNames={{'modal':'remitentes'}}>
-        <h4>Seleccione Remitente</h4>
+        classNames={{'modal':'auditoria'}}>
+        <h4><i className="fas fa-users"></i>  Seleccione Remitente</h4>
         <div className='col-lg-12'>
-            <ReactTable 
+            <ReactTable
                 data={this.state.data}
                 columns={this.columns}
                 pageSizeOptions={[8]}
@@ -105,11 +93,11 @@ class NotalModal extends Component {
                 resizable={true}
                 ofText= 'de'
                 getTrProps={this.HandleClickTr}
-        
+
             />
         </div>
         <div className='col-lg-12'>
-            <p className='form-control'>{this.state.chose} - {this.state.puesto}</p>
+            <p className='form-control' id="remitente_seleccion">-</p>
         </div>
         <div className='col-lg-12'>
         <button className='btn btn-sm btn-primary' onClick={this.HandleSubmit}>Aceptar</button>

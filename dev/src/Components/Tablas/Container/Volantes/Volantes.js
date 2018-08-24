@@ -8,7 +8,7 @@ class TableContainer extends Component{
 
     columns = () =>{
       if(this.props.modulo === 'VolantesDiversos'){
-          columnas.splice(7,0);
+          columnas.splice(7,1);
       }
       return columnas;
     }

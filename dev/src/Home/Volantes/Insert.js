@@ -7,12 +7,8 @@ class Home extends Component{
     render(){
         return(
             <div className="MainContainer">
-                <Header {...this.props} />
-                <Form
-                    documentos={this.props.documentos} 
-                    caracteres={this.props.caracteres}
-                    areas={this.props.areas}
-                    acciones={this.props.acciones}
+                <Header texto={this.props.texto} />
+                <Form {...this.props}
                 />
             </div>
 

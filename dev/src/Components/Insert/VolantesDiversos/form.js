@@ -10,13 +10,13 @@ import Combos from './../shared_components/combos';
 
 
 class Form extends Component {
-    
+
     state = {
         subDocumentos:[],
         Numero_Documento:50,
         asunto:500,
     }
-    
+
     HandleChangeSelect = (event) =>{
         let value = event.target.value
         if(value != '')
@@ -29,6 +29,7 @@ class Form extends Component {
                 }
             })
             .then((response) => {
+                document.getElementById('subDocumento').removeAttribute('disabled')
                 this.setState({subDocumentos:response.data})
             })
         }
@@ -41,7 +42,7 @@ class Form extends Component {
         let name = input.nativeEvent.target.name
         this.setState({
             [name]: max - value_length
-        })   
+        })
     }
 
     HandleClickRemitente = (event) =>{
@@ -52,17 +53,18 @@ class Form extends Component {
     HandleChangeRemitente = (event) =>{
         let value = event.target.value
         if(value != ''){
-            this.props.remitente(value)
+          localStorage.setItem('tipoRemitente',value);
+          this.props.openModal('REMITENTE');
         }
-        
+
     }
 
 
     render(){
         return(
-            <div className="form-container"> 
+            <div className="form-container">
                 <div className="row">
-                    <div className="col-lg-3">
+                    <div className="col-lg-4">
                         <label>Documento</label>
                         <select className="form-control" required onChange={this.HandleChangeSelect} name="documento">
                             <option value="">Escoja Opcion</option>
@@ -74,9 +76,9 @@ class Form extends Component {
                         </select>
                     </div>
 
-                    <div className="form-group col-lg-3">
+                    <div className="form-group col-lg-4">
                         <label>Sub-Documento</label>
-                        <select className="form-control" required  name="subDocumento" id="subDocumento">
+                        <select className="form-control" required  name="subDocumento" id="subDocumento" disabled>
                         <option value="">Escoja Opcion</option>
                         {
                             this.state.subDocumentos.map((item) =>(
@@ -100,44 +102,46 @@ class Form extends Component {
 
               <Fechas />
                 <div className="row">
-                        <div className="col-lg-2">
-                            <label>Remitente</label>
-                            <select className="form-control" onChange={this.HandleChangeRemitente}>
+                        <div className="col-lg-3">
+                            <label>Selecciona Remitente</label>
+                            <select className="form-control" onChange={this.HandleChangeRemitente} >
                                 <option value="">Escoja Opcion</option>
                                 <option value="I">Interno</option>
                                 <option value="E">Externo</option>
                             </select>
                         </div>
                         <div className="col-lg-2">
-                            <label>Agregar Remitente</label>
-                            <button className="btn btn-primary form-control" onClick={this.HandleClickRemitente}>Agregar</button>
+                            <label>Nuevo Remitente</label>
+                            <button className="btn btn-primary btn-remitente" onClick={this.HandleClickRemitente}>Agregar  <i className="fas fa-plus-circle"></i></button>
                         </div>
+
+
                 </div>
 
                 <div className="row">
                     <div className="col-lg-5" >
                         <label>Nombre</label>
-                        <p className="form-control">{this.props.dataRemitente.saludo} {this.props.dataRemitente.nombre}</p>
+                        <p className="form-control">nombre remitente</p>
                     </div>
-                    <div className="col-lg-7" >
+                    <div className="col-lg-5" >
                         <label>Puesto</label>
-                        <p className="form-control">{this.props.dataRemitente.puesto}</p>
+                        <p className="form-control">puesto Remietente</p>
                     </div>
                 </div>
 
-               
+
 
                 <div className="row">
-                    <div className="col-lg-12" >
+                    <div className="col-lg-10" >
                         <label>Asunto ({this.state.asunto})</label>
-                        <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="500"></textarea>
+                        <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="3000"></textarea>
                     </div>
                 </div>
 
-                
+
 
                 <div className="row">
-                    <div className="col-lg-12" >
+                    <div className="col-lg-10" >
                         <label>Anexar Documento</label>
                         <input type="file" className="form-control" name="file" id="file" />
                     </div>
@@ -149,11 +153,7 @@ class Form extends Component {
                         acciones={this.props.acciones}
                         multi={true}
                 />
-                
-                <div className="form-hidden">
-                        <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />
-                        <input type="hidden" name="idRemitente" value={this.props.dataRemitente.idRemitente} />
-                </div>
+
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
                     <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
@@ -165,4 +165,3 @@ class Form extends Component {
 
 
 export default Form;
-

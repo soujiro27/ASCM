@@ -100,8 +100,6 @@ class Insert extends Component{
                 this.state.modal &&
                 <this.OpenModal />
               }
-
-
             </form>
 
         )

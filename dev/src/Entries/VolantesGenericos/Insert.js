@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Home from './../../Home/VolantesGenericos/Insert'
+import Home from './../../Home/VolantesDiversos/Insert'
 import axios from 'axios';
 
 const  root = document.getElementById('root');
@@ -19,7 +19,7 @@ function caracteres(){
 }
 
 function areas(){
-    return axios.get(areas_url,{params:{tipo:'N'}});
+    return axios.get(areas_url,{params:{tipo:'S'}});
 }
 
 function acciones(){
@@ -29,11 +29,11 @@ function acciones(){
 
 axios.all([doc(),caracteres(),areas(),acciones()])
 .then(axios.spread(function(documentos,caracteres,areas,acciones){
-    render(<Home 
+    render(<Home
             documentos={documentos.data}
             caracteres={caracteres.data}
             areas={areas.data}
             acciones={acciones.data}
     />,root);
-    
+
 }))
