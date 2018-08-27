@@ -5,15 +5,15 @@ import 'react-select/dist/react-select.css';
 
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
-import Combos from './../shared_components/combos';
+import CombosInputs from './../shared_components/combos';
 
 
 class Form extends Component {
 
     state = {
         subDocumentos:[],
-        Numero_Documento:50,
-        asunto:500,
+        Numero_Documento:100,
+        asunto:3000,
     }
 
     HandleChangeSelect = (event) =>{
@@ -45,8 +45,8 @@ class Form extends Component {
     }
 
     HandleClickRemitente = (event) =>{
-        event.preventDefault()
-        this.props.addRemitente()
+        event.preventDefault();
+        this.props.openModal('REMITENTEADD');
     }
 
     HandleChangeRemitente = (event) =>{
@@ -98,7 +98,7 @@ class Form extends Component {
                 </div>
 
 
-                <Folio />
+                <Folio Numero_Documento={this.state.Numero_Documento} CountCaracterText={this.CountCaracterText}/>
 
               <Fechas />
                 <div className="row">
@@ -119,19 +119,6 @@ class Form extends Component {
                 </div>
 
                 <div className="row">
-                    <div className="col-lg-5" >
-                        <label>Nombre</label>
-                        <p className="form-control">nombre remitente</p>
-                    </div>
-                    <div className="col-lg-5" >
-                        <label>Puesto</label>
-                        <p className="form-control">puesto Remietente</p>
-                    </div>
-                </div>
-
-
-
-                <div className="row">
                     <div className="col-lg-10" >
                         <label>Asunto ({this.state.asunto})</label>
                         <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="3000"></textarea>
@@ -147,20 +134,13 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <Combos
+                <CombosInputs
                         caracteres={this.props.caracteres}
                         areas={this.props.areas}
                         acciones={this.props.acciones}
                         multi={true}
                 />
 
-<<<<<<< HEAD
-              <div className="form-hidden">
-                        <input type="hidden" name="idRemitenteJuridico" value={this.props.dataRemitente.idRemitenteJuridico} />
-                        <input type="hidden" name="idRemitente" value={this.props.dataRemitente.idRemitente} />
-                </div>
-=======
->>>>>>> nuevo
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
                     <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>

@@ -6,60 +6,50 @@ import './modal.styl'
 
 
 class AuditoriaModal extends Component {
-    
-    state = {
-        error:false
-    }
 
+
+    state = { error:false }
 
     HandleCloseModal = () =>{
         this.props.close()
     }
 
-    HandleSubmitRemitente = (event) =>{
-        event.preventDefault();
+    HandleSubmitRemitente = (event) => {
+      event.preventDefault();
+      let form = new FormData();
 
+      let inputs = ['tipo','saludo','nombre','puesto','siglasArea'];
+      for(let x in inputs){
+        let value = document.getElementsByName(inputs[x])[0].value
+        form.append(inputs[x],value)
+      }
 
-        let tipo = document.getElementsByName('tipo')[0].value
-        let saludo = document.getElementsByName('saludo')[0].value
-        let nombre = document.getElementsByName('nombre')[0].value
-        let puesto = document.getElementsByName('puesto')[0].value
-        let siglas = document.getElementsByName('siglasArea')[0].value
-
-        if(tipo === '' || saludo === '' || nombre === '' || puesto === '' || siglas === ''){
+      axios.post('/SIA/juridico/Api/Remitentes',form)
+      .then(response => {
+          if(!response.data.estatus){
             this.setState({error:true})
-        } else{
-            
-            let form = new FormData();
-            form.append('tipo',tipo)
-            form.append('saludo',saludo)
-            form.append('nombre',nombre)
-            form.append('puesto',puesto)
-            form.append('siglasArea',siglas)
+          } else {
+            this.props.close()
+          }
+      });
 
-            let url = '/SIA/juridico/Api/Remitentes'
-        
-            axios.post(url,form)
-            .then(response =>{
-                this.props.close()
-            })
-        }
-
-
-       
-        
-    }
+  }
 
   render(){
     return ReactDom.createPortal(
-      <Modal 
-        open={this.props.visible} 
+      <Modal
+        open={true}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':'auditoria'}}>
-        
-            <div >
+
+            <div id="add-remitente">
+              <div className="row">
+                <div className="col-lg-12">
+                  <h3><i className="fas fa-users"></i>  Agregar Remitente Nuevo</h3>
+                </div>
+              </div>
                 <div className="row">
                     <div className="col-lg-4">
                         <label>Tipo Remitente</label>
@@ -79,7 +69,7 @@ class AuditoriaModal extends Component {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-lg-8">
+                    <div className="col-lg-9">
                         <label>Puesto</label>
                         <input type="text" name="puesto" maxLength="120" required placeholder="Puestos" className="form-control"/>
                     </div>
@@ -88,15 +78,14 @@ class AuditoriaModal extends Component {
                         <input type="text" name="siglasArea" maxLength="20" required placeholder="Siglas Area"  className="form-control"/>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row submit-group">
                     <div className="col-lg-2">
                         <button className="btn btn-primary" onClick={this.HandleSubmitRemitente}>Guardar</button>
                     </div>
+                    <div className="col-lg-6">
+                      {this.state.error && <p id="error-text"><i className="fas fa-exclamation-circle"></i>  No puede Haber campos Vacios</p>}
+                    </div>
                 </div>
-                {
-                    this.state.error &&
-                    <p>Faltan datos por llenar</p>
-                }
             </div>
         </Modal>,
       document.getElementById('modal')

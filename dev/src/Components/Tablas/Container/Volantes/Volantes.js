@@ -6,18 +6,12 @@ import columnas from './columns.js'
 
 class TableContainer extends Component{
 
-<<<<<<< HEAD
-  
-    columns = columnas;
-
-=======
     columns = () =>{
       if(this.props.modulo === 'VolantesDiversos'){
           columnas.splice(7,1);
       }
       return columnas;
     }
->>>>>>> nuevo
 
     Handle_Click = (state, rowInfo, column) =>{
         return {

@@ -101,72 +101,6 @@ class VolantesController extends TwigController {
 
 	public function guardar(array $data,$file){
 
-<<<<<<< HEAD
-		$data['estatus'] = 'ACTIVO';
-		$validate = $this->validate($data);
-
-		$base = new BaseController();
-		$datos_director_area = $base->get_data_area($data['turnado']);
-
-		if(empty($validate)){
-
-
-			$volantes = new Volantes([
-				'idTipoDocto' =>$data['documento'],
-				'subFolio' => $data['subFolio'],
-				'extemporaneo' => $data['extemporaneo'],
-				'folio' => $data['folio'],
-				'numDocumento' => $data['Numero_Documento'],
-				'anexos' => $data['anexos'],
-				'fDocumento' => $data['fecha_documento'],
-				'fRecepcion' => $data['fecha_recepcion'],
-				'hRecepcion' => $data['hora_recepcion'],
-				'idRemitente' => $data['idRemitente'],
-				'destinatario' => 'DR. IVAN OLMOS CANSIANO',
-				'asunto' => $data['asunto'],
-				'idCaracter' => $data['caracter'],
-				'idAccion' => $data['accion'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
-
-			$volantes->save();
-
-			$max = Volantes::all()->max('idVolante');
-
-			$volantesDocumentos = new VolantesDocumentos([
-				'idVolante' => $max,
-				'promocion' => $data['promocion'],
-				'cveAuditoria' => $data['cveAuditoria'],
-				'idSubTipoDocumento' => $data['subDocumento'],
-				'notaConfronta' => $data['nota'],
-				'usrAlta' => $_SESSION['idUsuario'],
-				'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-			]);
-
-			$volantesDocumentos->save();
-
-			$turno = new TurnadosJuridico([
-	            'idVolante' => $max,
-	            'idAreaRemitente' => 'DGAJ',
-	            'idAreaRecepcion' => $data['turnado'],
-	            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-	            'idEstadoTurnado' => 'EN ATENCION',
-	            'idTipoTurnado' => 'V',
-	            'idTipoPrioridad' => $data['caracter'],
-	            'comentario' => 'SIN COMENTARIOS',
-	            'usrAlta' => $_SESSION['idUsuario'],
-	            'estatus' => 'ACTIVO',
-	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-        	]);
-
-        	$turno->save();
-        	$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
-
-
-			if(!empty($file)){
-
-				$base->upload_file_areas($file,$max,$value,'Areas','DGAJ',$data['turnado']);
-=======
 		try {
 
 			$base = new BaseController();
@@ -231,8 +165,6 @@ class VolantesController extends TwigController {
 				}
 
 				$base->notifications_complete('Volante',$data['turnado'],$idVolante);
->>>>>>> nuevo
-
 			}
 
 			echo json_encode($validate);
@@ -275,27 +207,6 @@ class VolantesController extends TwigController {
 			$vd = VolantesDocumentos::where('idVolante',"$id")->get();
 			$data['idSubTipoDocumento'] = $vd[0]['idSubTipoDocumento'];
 
-
-<<<<<<< HEAD
-			Volantes::find($id)->update([
-				'numDocumento' => $data['Numero_Documento'],
-				'anexos' => $data['anexos'],
-				'fDocumento' => $data['fecha_documento'],
-				'fRecepcion' => $data['fecha_recepcion'],
-				'asunto' => $data['asunto'],
-				'idCaracter' => $data['caracter'],
-				'idAccion' => $data['accion'],
-				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
-			]);
-
-			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
-				'idAreaRecepcion' => $data['turnado'],
-				'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-				'idTipoPrioridad' => $data['caracter'],
-				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
-=======
 				Volantes::find($id)->update([
 					'numDocumento' => $data['Numero_Documento'],
 					'anexos' => $data['anexos'],
@@ -332,22 +243,15 @@ class VolantesController extends TwigController {
 				}
 
 				$base->notifications_complete('Volante',$data['turnado'],$id);
->>>>>>> nuevo
 
 			}
 
 			echo json_encode($validate);
 
-
 		} catch (\Illuminate\Database\QueryException $e) {
 			$error = new ErrorsController();
 			$error->errores_load_table($e,'Volantes');
 		}
-
-
-
-
-
 
 	}
 

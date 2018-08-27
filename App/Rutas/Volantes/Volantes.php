@@ -19,13 +19,6 @@
 		$security->validacion_sesion();
 	};
 
-<<<<<<< HEAD
-
-=======
->>>>>>> nuevo
-
-
-
 
 $app->group('/juridico',$auth,function() use($app,$controller){
 

@@ -5,11 +5,8 @@ import './modal.styl'
 
 class DictamenModal extends Component {
 
-<<<<<<< HEAD
-    state = {
-=======
+
     cuenta = {
->>>>>>> nuevo
         cuenta:2016
     }
 

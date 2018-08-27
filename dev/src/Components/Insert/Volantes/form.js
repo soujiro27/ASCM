@@ -3,15 +3,9 @@ import axios from 'axios';
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
 import Combos from './../shared_components/Combos'
-<<<<<<< HEAD
 
 import ToolTip from 'rc-tooltip';
 import 'rc-tooltip/assets/bootstrap.css'
-
-=======
-import ToolTip from 'rc-tooltip';
-import 'rc-tooltip/assets/bootstrap.css'
->>>>>>> nuevo
 import './../form.styl'
 
 class Form extends Component {
@@ -48,11 +42,7 @@ class Form extends Component {
 
     HandleClickAuditoria = (event) => {
         event.preventDefault();
-<<<<<<< HEAD
-        this.props.openModal('AUDITORIA')
-=======
         this.props.btnAuditoria('AUDITORIA')
->>>>>>> nuevo
     }
 
     CountCaracterText = (input) =>{
@@ -69,13 +59,8 @@ class Form extends Component {
 
 
     render(){
-<<<<<<< HEAD
-      const numero = this.props.numeroAuditoria
-      const numeroAuditoria = numero === undefined || numero === ''  ? 'No has seleccionado Auditoria' : `Auditoria selccionada: ${this.props.numeroAuditoria}`
-      return(
-=======
         return(
->>>>>>> nuevo
+
             <div className="form-container">
                 <div className="row">
                     <div className="col-lg-3">
@@ -120,13 +105,8 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-2">
                     <label>Auditoria</label>
-<<<<<<< HEAD
-                        <ToolTip placement="bottom" overlay={numeroAuditoria}>
-                        <button className='btn-primary btn form-control' onClick={this.HandleClickAuditoria}>
-=======
                       <ToolTip placement="bottom" overlay={this.props.auditoria}>
                         <button className="btn btn-primary  form-control" onClick={this.HandleClickAuditoria}>
->>>>>>> nuevo
                             Agregar  <i className="fas fa-plus-circle"></i>
                         </button>
                       </ToolTip>
@@ -161,9 +141,6 @@ class Form extends Component {
                     multi={false}
                 />
 
-
-                <div className="form-hidden">
-
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
                     <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
@@ -172,18 +149,4 @@ class Form extends Component {
             )
     }
 }
-
-
 export default Form;
-<<<<<<< HEAD
-
-
-/*
-
-<input type="hidden" name="nota" value={this.props.formData.nota} />
-<input type="hidden" name="idRemitente" value={this.props.formData.idRemitente} />
-<input type="hidden" name="cveAuditoria" value={this.props.formData.cveAuditoria} />
-
-*/
-=======
->>>>>>> nuevo

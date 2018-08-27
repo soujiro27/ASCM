@@ -4,12 +4,12 @@ import 'react-select/dist/react-select.css';
 
 
 
-export default class Combos extends Component {
+export default class CombosInputs extends Component {
 
 	state = {
 		selectedOption:''
 	}
-	
+
 
 	componentDidMount(){
 		let optionSelectAreas = []
@@ -23,8 +23,8 @@ export default class Combos extends Component {
 	}
 
 	handleChangeSelectTurnado = (selectedOption) => {
-     
-        this.setState({ 
+
+        this.setState({
             selectedOption:selectedOption
         });
     }
@@ -41,9 +41,9 @@ export default class Combos extends Component {
                                     <option key={item.idCaracter} value={item.idCaracter}>{item.nombre}</option>
                                 ))
                             }
-                        </select>   
+                        </select>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-4">
                         <label>Turnado a:</label>
                        	 <SelectReact
 	                        name="turnado"
@@ -65,10 +65,10 @@ export default class Combos extends Component {
                                     <option key={item.idAccion} value={item.idAccion}>{item.nombre}</option>
                                 ))
                             }
-                        </select>   
+                        </select>
                     </div>
                 </div>
-                
+
 		)
 	}
 }

@@ -6,7 +6,6 @@ import axios from 'axios';
 const  root = document.getElementById('root');
 let id = localStorage.getItem('idVolante');
 
-
 let caracteres_url = '/SIA/juridico/Api/Caracteres';
 let areas_url = '/SIA/juridico/Api/Turnados';
 let acciones_url = '/SIA/juridico/Api/Acciones';
@@ -32,7 +31,7 @@ function data () {
 axios.all([data(),caracteres(),areas(),acciones()])
 .then(axios.spread(function(datos,caracteres,areas,acciones,){
     render(<Home
-            data={datos.data}
+            datos={datos.data}
             caracteres={caracteres.data}
             areas={areas.data}
             acciones={acciones.data}

@@ -12,7 +12,8 @@ class NotalModal extends Component {
 
     formData = {
       idRemitenteJuridico:'',
-      idRemitente:''
+      idRemitente:'',
+      estatus:false
     }
 
     columns = [
@@ -51,6 +52,7 @@ class NotalModal extends Component {
               document.getElementById('remitente_seleccion').innerHTML = texto;
               this.formData['idRemitenteJuridico'] = datos.idRemitenteJuridico;
               this.formData['idRemitente'] = datos.siglasArea;
+              this.formData['estatus'] = true;
             }
         }
     }

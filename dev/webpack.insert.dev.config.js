@@ -10,11 +10,9 @@ module.exports = {
     "Textos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Textos/Insert.js')],
     "Caracteres":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Caracteres/Insert.js')],
     "Volantes":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Volantes/Insert.js')],
-<<<<<<< HEAD
-    //"VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
-=======
+
     "VolantesDiversos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/VolantesGenericos/Insert.js')],
->>>>>>> nuevo
+
     "Asignacion":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Asignacion/Insert.js')],
     "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Insert.js')],
     "Irac":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac/Insert.js')],
@@ -22,11 +20,6 @@ module.exports = {
     "Confronta":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta/Insert.js')],
     "OficiosGenericos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/OficioGenericos/Insert.js')],
     "NotaGenerico":['babel-polyfill', path.resolve(__dirname, 'src/Entries/NotaGenericos/Insert.js')],
-<<<<<<< HEAD
-
-=======
-  //  "Irac-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac-internos/Insert.js')],
->>>>>>> nuevo
 
   },
   output: {

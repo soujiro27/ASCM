@@ -4,6 +4,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Carbon\Carbon;
 use GUMP;
+use Jur\App\Controllers\ErrorsController;
 use \Jur\App\Models\Modulos\TiposDocumentos;
 use \Jur\App\Models\Modulos\SubTipos;
 use \Jur\App\Models\Catalogos\Caracteres;
@@ -119,11 +120,8 @@ class ModulosController {
 					'rubro' => $datos[0]['rubros'],
 					'id' => $datos[0]['idAuditoria'],
 					'idArea' => $datos[0]['idArea'],
-<<<<<<< HEAD
-					'clave' => $datos[0]['clave']
-=======
+					'clave' => $datos[0]['clave'],
 					'auditoria' => $cveAuditoria
->>>>>>> nuevo
 				);
 			}
 		}
@@ -208,8 +206,9 @@ class ModulosController {
 
 	public function add_Remitentes(array $data){
 
+		try {
 		$validate = $this->validate_Remitentes($data);
-		if(!empty($validate)){
+		if($validate['estatus']){
 			$remitente = new Remitentes([
 				'tipoRemitente' => $data['tipo'],
 				'saludo' => $data['saludo'],
@@ -217,21 +216,24 @@ class ModulosController {
 				'puesto' => $data['puesto'],
 				'siglasArea' => $data['siglasArea'],
 				'usrAlta' => $_SESSION['idUsuario'],
-	            'estatus' => 'ACTIVO',
-	            'fAlta' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				'estatus' => 'ACTIVO',
 			]);
 
 			$remitente->save();
-			$validate[0] = 'OK';
+			}
+
+			echo json_encode($validate);
+
+
+		} catch (\Illuminate\Database\QueryException $e) {
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
 		}
-
-		echo json_encode($validate);
-
-
 	}
 
 	public function validate_Remitentes(array $data){
 
+		$validate['estatus'] = false;
 		$is_valid = GUMP::is_valid($data,array(
 			'tipo' => 'required|max_len,1|numeric',
 			'saludo'=> 'required|max_len,15',
@@ -241,10 +243,10 @@ class ModulosController {
 		));
 
 		if($is_valid === true){
-			$is_valid = [];
+			$validate['estatus'] = true;
 		}
 
-		return $is_valid;
+		return $validate;
 
 	}
 

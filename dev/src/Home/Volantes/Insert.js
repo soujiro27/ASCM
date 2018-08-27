@@ -8,12 +8,8 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header texto={this.props.texto} />
-<<<<<<< HEAD
-                <Form {...this.props} />
-=======
                 <Form {...this.props}
                 />
->>>>>>> nuevo
             </div>
 
         )

@@ -39,12 +39,17 @@ class Update extends Component{
 
     HandleCancel = (event) =>{
         event.preventDefault()
+        localStorage.removeItem('idVolante');
         location.href = '/SIA/juridico/Volantes'
     }
 
     HandleCloseModal = () =>{
-
-      this.state.response ? location.href = '/SIA/juridico/Volantes' : this.setState({modal:false})
+      if(this.state.response){
+        localStorage.removeItem('idVolante');
+        location.href = '/SIA/juridico/Volantes';
+      } else {
+        this.setState({modal:false});
+      }
 
     }
 
