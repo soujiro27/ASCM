@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Jur\App\Models\Volantes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,12 +14,13 @@ class AnexosJuridico extends Model {
      'comentario',
      'areaRemitente',
      'areaRecepcion',
+     'tipo',
      'idVolante',
      'usrAlta',
      'fAlta',
      'estatus'
      ];
-     
+
      public $timestamps = false;
 
  }

@@ -25,6 +25,12 @@ use Jur\App\Models\Modulos\Observaciones;
 
 class ModulosController {
 
+
+	public function get_cuenta(){
+		$anio = $_SESSION['aniocuenta'];
+		echo json_encode($anio);
+	}
+
 	public function get_tipos_documentos(){
 
 

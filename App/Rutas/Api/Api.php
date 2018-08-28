@@ -19,6 +19,9 @@
 
 $app->group('/juridico/Api',$auth,function() use($app,$controller){
 
+	$app->get('/Cuenta',function() use ($controller){
+		$controller->get_cuenta();
+	});
 
 	$app->get('/Documentos',function() use ($controller,$app){
 		$controller->get_tipos_documentos();

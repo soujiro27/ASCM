@@ -25,7 +25,7 @@ class Insert extends Component{
     }
 
     formData = {
-      cuenta:'2016',
+      cuenta:this.props.cuenta,
       nota:'NO',
       cveAuditoria:'',
       idRemitente:''

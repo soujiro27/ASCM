@@ -176,7 +176,7 @@ class Form extends Component {
                             value={this.state.selectedOption}
                             multi={true}
                             labelKey='value'
-                            joinValues={false}
+                            joinValues={true}
                             className='small-font'
                             onChange={this.handleChangeSelectTurnado}
                             options={this.state.options}

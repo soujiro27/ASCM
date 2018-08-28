@@ -32,18 +32,42 @@ class Update extends Component{
     this.setState({ modal:true, nombre});
   }
 
+  HandleCloseModal = () =>{
+    if(this.state.response){
+      localStorage.removeItem('idVolante');
+      location.href = '/SIA/juridico/VolantesDiversos';
+    } else {
+      this.setState({modal:false});
+    }
+
+  }
+
   closeModalRemitente = (value) => {
     this.formData = value;
     this.setState({modal:false});
   }
 
+  HandleSubmit = (event) => {
+    event.preventDefault();
+    let form_functions = new submit()
+    let data = form_functions.createDataUpdateFormData(document.getElementsByTagName('form'),'idVolante',this.props.datos[0].idVolante,this.formData)
+    axios.post('/SIA/juridico/VolantesDiversos/Update',data)
+    .then(response =>{
+      let respuesta = form_functions.resolve_request(response);
+      this.setState(respuesta);
+    })
+  }
+
+  HandleCancel = (event) =>{
+      event.preventDefault()
+      localStorage.removeItem('idVolante');
+      location.href = '/SIA/juridico/VolantesDiversos'
+  }
+
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario
-                    {...this.props}
-                      openModal={this.HandleOpenModal}
-                    />
+                <Formulario {...this.props} openModal={this.HandleOpenModal} cancel={this.HandleCancel} />
                     {
                       this.state.modal &&
                       <this.OpenModal />

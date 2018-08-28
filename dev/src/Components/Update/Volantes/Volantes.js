@@ -23,7 +23,6 @@ class Update extends Component{
   }
 
     HandleSubmit = (event) => {
-      console.log(this.props)
         event.preventDefault();
         let form_functions = new submit()
         let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idVolante',this.props.datos[0].idVolante)

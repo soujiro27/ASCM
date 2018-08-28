@@ -160,8 +160,20 @@ class VolantesController extends TwigController {
 				$turno->save();
 				$idTurnadoJuridico =  $turno->idTurnadoJuridico;
 
+
+
 				if(!empty($file)){
-					$base->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Areas','DGAJ',$data['turnado']);
+
+					$file_data = [
+						'idVolante' => $idVolante,
+						'idTurnadoJuridico' => $idTurnadoJuridico,
+						'carpeta' => 'Areas',
+						'areaRemitente' => 'DGAJ',
+						'tipo' => 'V',
+						'areaRecepcion' => $data['turnado']
+					];
+
+					$base->upload_file_areas($file,$file_data);
 				}
 
 				$base->notifications_complete('Volante',$data['turnado'],$idVolante);

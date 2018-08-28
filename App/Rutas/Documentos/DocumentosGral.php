@@ -25,13 +25,19 @@
 
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
+/*--------------------- Home  ----------------------------*/
+
 	$app->get('/DocumentosGral',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
-	$app->get('/DocumentosGral/all',function() use ($controller){
+
+	$app->get('/DocumentosGral/All',function() use ($controller){
 		$controller->tabla();
 	});
+
+
+
 
 	$app->get('/DocumentosGral/add',function() use ($controller){
 		$controller->nuevo_registro();

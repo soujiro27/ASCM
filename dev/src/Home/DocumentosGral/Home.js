@@ -1,25 +1,18 @@
 import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-text';
 import Table from '../../Components/Tablas/Container/Documentos/DocumentosGral';
-class Home extends Component{
 
-    render(){
-        return(
-            <div className="MainContainer">
-                <Header {...this.props} />
-                <Table/>
-            </div>
 
-        )
-    }
+const Home = (props) => {
+
+  return(
+    <div className="MainContainer">
+        <Header modulo={props.modulo} />
+        <Table {...props} />
+    </div>
+  )
 }
 
-Home.defaultProps = {
-    texto:'Registros Documentos',
-    textoButton:'Nuevo Registro',
-    'modulo':'Acciones'
-}
+Home.defaultProps = { modulo:'DocumentosGral' };
 
-export default Home
-
-
+export default Home;

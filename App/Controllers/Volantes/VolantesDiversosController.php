@@ -175,7 +175,17 @@ public function registro($id){
 				if(!empty($file)){
 
 					foreach ($idTurnado as $key => $value) {
-						$base->upload_file_areas($file,$idVolante,$value,'Areas','DGAJ',$areaRecepcion[$key]);
+
+						$file_data = [
+							'idVolante' => $idVolante,
+							'idTurnadoJuridico' => $value,
+							'carpeta' => 'Areas',
+							'areaRemitente' => 'DGAJ',
+							'tipo' => 'V',
+							'areaRecepcion' => $areaRecepcion[$key]
+						];
+
+						$base->upload_file_areas($file,$file_data);
 					}
 				}
 
@@ -189,7 +199,7 @@ public function registro($id){
 
 			echo json_encode($validate);
 
-		} catch (\Exception $e) {
+		} catch (\Illuminate\Database\QueryException $e) {
 			$error = new ErrorsController();
 			$error->errores_load_table($e,'VolantesDiversos');
 
@@ -215,73 +225,104 @@ public function registro($id){
 
 
 
-/*------------------ Actualizar REgistro ----------------*/
+/*------------------ Actualizar Registro ----------------*/
 
 	public function update(array $data){
 
+		try {
 
-		$data['estatus'] =  'ACTIVO';
-		$id = $data['idVolante'];
+			$id = $data['idVolante'];
 
-		$validate = $this->validate_update($data);
-		$base = new BaseController();
+			$validate = $this->validate_update($data);
 
-		if(empty($validate)){
+			if($validate['status']){
+
+				$insertAnexo = false;
+
+				TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
+					'estatus' => 'INACTIVO'
+				]);
+
+				$anexos = AnexosJuridico::where('idVolante',"$id")->where('tipo','V')->get();
+				if($anexos->isNotEmpty()){
+
+					$anexosArray = $anexos->toArray();
+					$datosAnexos = $anexosArray[0];
+					AnexosJuridico::where('idVolante',"$id")->where('tipo','V')->delete();
+					$insertAnexo = true;
+				}
+
+				Volantes::find($id)->update([
+					'numDocumento' => $data['Numero_Documento'],
+					'anexos' => $data['anexos'],
+					'fDocumento' => $data['fecha_documento'],
+					'fRecepcion' => $data['fecha_recepcion'],
+					'idRemitente' => $data['idRemitente'],
+					'idRemitenteJuridico' => $data['idRemitenteJuridico'],
+					'hRecepcion' => $data['hora_recepcion'],
+					'asunto' => $data['asunto'],
+					'extemporaneo' => $data['extemporaneo'],
+					'idCaracter' => $data['caracter'],
+					'idAccion' => $data['accion'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s'),
+				]);
 
 
-			TurnadosJuridico::where('idVolante',"$id")->where('idTipoTurnado','V')->update([
-				'estatus' => 'INACTIVO'
-			]);
-
-			$vd = VolantesDocumentos::where('idVolante',"$id")->get();
-			$data['idSubTipoDocumento'] = $vd[0]['idSubTipoDocumento'];
-
-
-			Volantes::find($id)->update([
-				'numDocumento' => $data['Numero_Documento'],
-				'anexos' => $data['anexos'],
-				'fDocumento' => $data['fecha_documento'],
-				'fRecepcion' => $data['fecha_recepcion'],
-				'idRemitente' => $data['idRemitente'],
-				'idRemitenteJuridico' => $data['idRemitenteJuridico'],
-				'asunto' => $data['asunto'],
-				'extemporaneo' => $data['extemporaneo'],
-				'idCaracter' => $data['caracter'],
-				'idAccion' => $data['accion'],
-				'usrModificacion' => $_SESSION['idUsuario'],
-				'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s'),
-			]);
-
-			$areas = explode(',',$data['turnado']);
+				$areas = explode(',',$data['turnado']);
+				$base = new BaseController();
 
 			foreach ($areas as $key => $value) {
 
-				$datos_director_area = $base->get_data_area($value);
+					$datos_director_area = $base->get_data_area($value);
 
-				$turno = new TurnadosJuridico([
-		            'idVolante' => $id,
-		            'idAreaRemitente' => 'DGAJ',
-		            'idAreaRecepcion' => $value,
-		            'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
-		            'idEstadoTurnado' => 'EN ATENCION',
-		            'idTipoTurnado' => 'V',
-		            'idTipoPrioridad' => $data['caracter'],
-		            'comentario' => 'SIN COMENTARIOS',
-		            'usrAlta' => $_SESSION['idUsuario'],
-		            'estatus' => 'ACTIVO',
+					$turno = new TurnadosJuridico([
+							          'idVolante' => $id,
+							          'idAreaRemitente' => 'DGAJ',
+							          'idAreaRecepcion' => $value,
+							          'idUsrReceptor' => $datos_director_area[0]['idUsuario'],
+							          'idEstadoTurnado' => 'EN ATENCION',
+							          'idTipoTurnado' => 'V',
+							          'idTipoPrioridad' => $data['caracter'],
+							          'comentario' => 'SIN COMENTARIOS',
+							          'usrAlta' => $_SESSION['idUsuario'],
+							          'estatus' => 'ACTIVO',
+	        						]);
 
-        		]);
+	        $turno->save();
 
-        		$turno->save();
-				$base->notifications_complete('Volante',$value,$id);
-        	}
+					$idTurnadoJuridico = $turno->idTurnadoJuridico;
 
+					if($insertAnexo){
 
-			$validate[0] = 'OK';
+						$anexo = new AnexosJuridico([
+				  		'idTurnadoJuridico' => $idTurnadoJuridico,
+				  		'archivoOriginal' => $datosAnexos['archivoOriginal'],
+				  		'archivoFinal' => $datosAnexos['archivoOriginal'],
+				  		'idTipoArchivo' => $datosAnexos['idTipoArchivo'],
+				  		'idVolante' => $datosAnexos['idVolante'],
+				  		'areaRemitente' => $datosAnexos['areaRemitente'],
+				  		'areaRecepcion' => $datosAnexos['areaRecepcion'],
+							'tipo' => $datosAnexos['tipo'],
+				  		'usrAlta' => $_SESSION['idUsuario'],
+				      'estatus' => 'ACTIVO'
+			      ]);
 
+			  		$anexo->save();
+					}
+
+					$base->notifications_complete('Volante',$value,$id);
+	      }
+
+			}
+
+			echo json_encode($validate);
+
+		} catch (\Illuminate\Database\QueryException $e) {
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
 		}
 
-		echo json_encode($validate);
 
 
 
@@ -362,7 +403,8 @@ public function registro($id){
 
 	public function validate_update(array $data){
 
-		$estatus = $data['estatus'];
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$is_valid = GUMP::is_valid($data,array(
 			'Numero_Documento' => 'required|max_len,50',
@@ -373,13 +415,19 @@ public function registro($id){
 			'caracter' => 'required|max_len,2|numeric',
 			'extemporaneo' =>'required|max_len,2|alpha',
 			'turnado' => 'required|max_len,30',
-			'accion' => 'required|max_len,2|numeric'
+			'accion' => 'required|max_len,2|numeric',
+			'idRemitente' => 'required|max_len,10',
+			'idRemitenteJuridico' => 'required|numeric',
+			'hora_recepcion' => 'required|max_len,5',
 
 		));
 
 		if($is_valid === true){
-			$is_valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $is_valid[0];
 		}
+
 
 		$base = new BaseController();
 
@@ -392,12 +440,12 @@ public function registro($id){
 			$datos_director_area = $base->get_data_area($value);
 
 			if($datos_director_area->isEmpty()){
-
-				array_push($is_valid, 'El Director de: '.$value.' NO se encuentra dado de alta ');
+				$validacion['message'] =  'El Director NO se encuentra dado de alta ';
+				$validacion['status'] = false;
 			}
 		}
 
-		return $is_valid;
+		return $validacion;
 	}
 
 

@@ -28,10 +28,33 @@ export default class submit {
 
         for(let x = 0;x<elementos.length-2;x++){
             formData.append(elementos[x].name,elementos[x].value)
-
+            if(elementos[x].type == 'file' && elementos[x].files.length > 0 ){
+              formulario.append(elementos[x].name,elementos[x].files[0])
+            }
         }
         formData.append(nombre,id)
         return formData
+    }
+
+    createDataUpdateFormData(form,nombre,id,formData){
+        let elementos = form[0].elements
+        let formulario = new FormData()
+
+        for(let x = 0;x<elementos.length-2;x++){
+            formulario.append(elementos[x].name,elementos[x].value)
+            if(elementos[x].type == 'file' && elementos[x].files.length > 0 ){
+              formulario.append(elementos[x].name,elementos[x].files[0])
+            }
+        }
+
+        let keys = Object.keys(formData);
+        keys.map(item => {
+          formulario.append(item,formData[item])
+        });
+
+        formulario.append(nombre,id)
+
+        return formulario
     }
 
     resolve_request(response){

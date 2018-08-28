@@ -2,25 +2,21 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import axios from 'axios'
 import 'react-table/react-table.css';
-import { GridLoader } from 'react-spinners';
-import './../spiner.styl'
 import './../Table.styl'
 
 class TableContainer extends Component{
-   
-    state = {
-        load:false,
-        data:{}
-    }
+
 
     columns = [
         {
             Header:'Folio',
-            accessor:'folio'
+            accessor:'folio',
+            width:60
         },
         {
             Header:'SubFolio',
-            accessor:'subFolio'
+            accessor:'subFolio',
+            width:60
         },
         {
             Header:'Oficio',
@@ -28,7 +24,8 @@ class TableContainer extends Component{
         },
         {
             Header:'Turnado',
-            accessor:'idAreaRecepcion'
+            accessor:'idAreaRecepcion',
+            width:100
         },
         {
             Header:'Fecha Recepcion',
@@ -45,17 +42,6 @@ class TableContainer extends Component{
     ]
 
 
-    componentDidMount(){
-        let url = `/SIA/juridico/DocumentosGral/all`;
-
-        axios.get(url).then(response => {
-            if(response.status === 200){
-                let data = response.data
-                this.setState({data,load:true})
-            }
-        })
-
-    }
 
     Handle_Click = (state, rowInfo, column) =>{
         return {
@@ -66,10 +52,10 @@ class TableContainer extends Component{
     }
 
     render(){
-        if(this.state.load){
-            return( 
+
+            return(
                 <ReactTable
-                data={this.state.data}
+                data={this.props.data}
                 columns={this.columns}
                 pageSizeOptions={[15,20,25,30]}
                 defaultPageSize={10}
@@ -83,20 +69,8 @@ class TableContainer extends Component{
                 resizable={true}
                 ofText= 'de'
                 getTrProps={this.Handle_Click}
-            /> 
-
+            />
             )
-        } else {
-            return(  
-                <div className="spiner">
-                    <GridLoader
-                        color={'#851B07'} 
-                        loading={!this.state.load} 
-                    />
-                </div>
-            )
-        }
-        
     }
 }
 

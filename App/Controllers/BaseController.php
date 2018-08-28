@@ -80,19 +80,17 @@ class BaseController extends TwigController{
 	}
 
 
-	public function upload_file_areas($file,$idVolante,$idTurnadoJuridico,$tipo,$areaRemitente,$areaRecepcion){
+	public function upload_file_areas($file,array $data){
 
 
 		$time = Carbon::now('America/Mexico_City')->format('H:i:s');
 		$formatTime = str_replace(':', '-', $time);
 
-
-
 		$nombre_file = $file['file']['name'];
 		$extension = explode('.',$nombre_file);
 		$nombre_final = $formatTime.'.'.$extension[1];
 
-		$directory ='jur/files/'.$idVolante.'/'.$tipo;
+		$directory ='jur/files/'.$data['idVolante'].'/'.$data['carpeta'];
 
         $extension = explode('.',$nombre_file);
 
@@ -101,24 +99,22 @@ class BaseController extends TwigController{
             mkdir($directory,0777,true);
         }
 
+    move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final);
 
+      $anexo = new AnexosJuridico([
+  		'idTurnadoJuridico' => $data['idTurnadoJuridico'],
+  		'archivoOriginal' => $nombre_file,
+  		'archivoFinal' => $nombre_final,
+  		'idTipoArchivo' => $extension[1],
+  		'idVolante' => $data['idVolante'],
+  		'areaRemitente' => $data['areaRemitente'],
+  		'areaRecepcion' => $data['areaRecepcion'],
+			'tipo' => $data['tipo'],
+  		'usrAlta' => $_SESSION['idUsuario'],
+      'estatus' => 'ACTIVO'
+          ]);
 
-        move_uploaded_file($file['file']['tmp_name'],$directory.'/'.$nombre_final);
-
-
-	        $anexo = new AnexosJuridico([
-	    		'idTurnadoJuridico' => $idTurnadoJuridico,
-	    		'archivoOriginal' => $nombre_file,
-	    		'archivoFinal' => $nombre_final,
-	    		'idTipoArchivo' => $extension[1],
-	    		'idVolante' => $idVolante,
-	    		'areaRemitente' => $areaRemitente,
-	    		'areaRecepcion' => $areaRecepcion,
-	    		'usrAlta' => $_SESSION['idUsuario'],
-	            'estatus' => 'ACTIVO'
-	            ]);
-
-	    	$anexo->save();
+  	$anexo->save();
 
 
 	}
