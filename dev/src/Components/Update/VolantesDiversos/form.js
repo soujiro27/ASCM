@@ -77,7 +77,6 @@ class Form extends Component {
     }
 
     render(){
-      console.log(this.props)
       let datos = this.props.datos[0]
         return(
             <div className="form-container">
