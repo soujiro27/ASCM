@@ -1,61 +1,49 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
 import FileModal from './../../Modals/File'
-
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
+import EstatusModal from './../../Modals/EstatusFile';
 import Formulario from './form';
+
 
 import './../../shared_styles/insert.styl';
 
 class Update extends Component{
 
-    state = {
-        modals:{
-            table:false,
-            file:false
-        },
-        data:''
-    }
+  state = {
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false
+  }
 
+
+  OpenModal = () =>{
+    if (this.state.nombre === 'ERROR') { return <ErrorForm  message={this.state.message} close={this.CloseModalFile}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm   close={this.CloseModalFile} /> }
+    else if (this.state.nombre === 'ESTATUS') { return <EstatusModal  close={this.CloseModalFile} /> }
+    else if (this.state.nombre === 'FILE') { return <FileModal  close={this.CloseModalFile} modulo='DocumentosGral' /> }
+  }
 
     CloseModalFile = () => {
-       location.href = '/SIA/juridico/DocumentosGral'
-    }
-
-    OpenModalFile = () => {
-        this.setState({modals:{file:true}})
+      this.setState({modal:false})
     }
 
 
-    componentDidMount(){
-        let url = `/SIA/juridico/DocumentosGral/Register/${this.props.id}`
-        axios.get(url).then(response => {
-          console.log(response.data)
-            this.setState({
-                table:true,
-                data:response.data
-
-            })
-        })
+    Open = (nombre) => {
+        this.setState({modal:true,nombre})
     }
+
 
     render(){
-
         return(
         <div className="table-documentos-container">
+          <Formulario data={this.props.data} open={this.Open} />
             {
-                this.state.table &&
-                <Formulario
-                    data={this.state.data}
-                    cancel={this.HandleCancel}
-                    open={this.OpenModalFile}
-                />
+              this.state.modal &&
+              <this.OpenModal />
             }
-            {
-                this.state.modals.file &&
-                <FileModal close={this.CloseModalFile} visible={true} data={this.state.data}/>
-            }
-
         </div>
     )
     }

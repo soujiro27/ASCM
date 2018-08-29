@@ -21,43 +21,72 @@ class IracController extends TwigController {
 	private $js = 'Irac';
 	private $nombre = 'Irac';
 
-
-	public function Home(){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
+/*------------------ Carga de Templates -------------*/
 
 
-		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
+public function load_data_templates(){
+
+	$notificaciones = new NotificacionesController();
+	$base = new BaseController();
+	$menu = $base->menu();
+
+	$data = [
+		'js' => $this->js,
+		'session' => $_SESSION,
+		'nombre' => $this->nombre,
+		'notificaciones' => $notificaciones->get_notificaciones(),
+		'menu' => $menu['modulos']
+	];
+
+	return $data;
+
+}
+
+public function home_template(){
+	$data = $this->load_data_templates();
+	echo $this->render('HomeLayout/HomeContainer.twig',$data);
+}
+
+public function load_cedula_template($id){
+
+	$data = $this->load_data_templates();
+	$ds = DocumentosSiglas::where('idVolante',"$id")->get();
+	if($ds->isEmpty()){
+				echo $this->render('HomeLayout/InsertContainer.twig',$data);
+	} else {
+			echo $this->render('HomeLayout/UpdateContainer.twig',$data);
 	}
 
+}
+
+/*-------------------- Tabla ---------------------*/
+
+
 	public function tabla(){
+		try {
+
+			$area = $_SESSION['idArea'];
+	    $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+	        ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+	        ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+	        ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+	        ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+	        ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+	        ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+	        ->where('sub.nombre','=','IRAC')
+	        ->where('t.idAreaRecepcion','=',"$area")
+	        ->where('t.idTipoTurnado','V')
+	        ->get();
 
 
-        $area = $_SESSION['idArea'];
+			echo json_encode(array('status'=>true,'data' => $ifa));
 
+		}catch(\Illuminate\Database\QueryException $e){
 
-        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
-            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
-            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
-            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
-            ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
-            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-            ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-            ->where('sub.nombre','=','IRAC')
-            ->where('t.idAreaRecepcion','=',"$area")
-            ->where('t.idTipoTurnado','V')
-            ->get();
-				//var_dump($ifa);
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
 
-		echo json_encode($ifa);
+		}
 	}
 
 
@@ -83,29 +112,7 @@ class IracController extends TwigController {
 		//echo json_encode($ifa);
 	}
 
-	public function load_cedula_template($id){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-		$template = [
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		];
-
-		$ds = DocumentosSiglas::where('idVolante',"$id")->get();
-		if($ds->isEmpty()){
-					echo $this->render('HomeLayout/InsertContainer.twig',$template);
-		} else {
-				$template['id'] = $id;
-				echo $this->render('HomeLayout/UpdateContainer.twig',$template);
-		}
-
-	}
 
 
 

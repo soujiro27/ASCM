@@ -19,10 +19,6 @@
 		$security->validacion_sesion();
 	};
 
-
-
-
-
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
 /*--------------------- Home  ----------------------------*/
@@ -36,34 +32,28 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->tabla();
 	});
 
+	/*----------------- Insert --------------------------*/
 
+		$app->post('/DocumentosGral/Save',function() use ($controller,$app){
+			$controller->guardar($app->request->post(),$_FILES);
+		});
 
+	/*---------------- Update ------------------------------*/
 
-	$app->get('/DocumentosGral/add',function() use ($controller){
-		$controller->nuevo_registro();
+	$app->get('/DocumentosGral/Update',function() use ($controller){
+		$controller->update_template();
 	});
 
-
-	$app->get('/DocumentosGral/:id',function($id) use ($controller){
-		$controller->update_template($id);
-	});
-
-	$app->get('/DocumentosGral/Register/:id',function($id) use ($controller){
+	$app->get('/DocumentosGral/Update/:id',function($id) use ($controller){
 		$controller->registro($id);
 	});
 
-	$app->post('/DocumentosGral/save',function() use ($controller,$app){
-		$controller->guardar($app->request->post(),$_FILES);
-	});
 
 	$app->post('/DocumentosGral/Update',function() use ($controller,$app){
 		$controller->Update($app->request->post());
 	});
 
+
 });
-
-
-
-
 
 ?>

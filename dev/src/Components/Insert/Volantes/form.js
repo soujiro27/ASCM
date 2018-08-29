@@ -16,9 +16,13 @@ class Form extends Component {
       asunto:3000
     }
 
+    formData = {
+      documento:''
+    }
 
     HandleChangeSelect = (event) =>{
         let value = event.target.value
+        this.formData['documento'] = value;
         if(value != '')
         {
             let url = '/SIA/juridico/Api/SubDocumentos'
@@ -36,8 +40,10 @@ class Form extends Component {
     }
 
     HandleChangeSubDocumento = (event) =>{
-        let texto = event.nativeEvent.target[event.nativeEvent.target.selectedIndex].text
-        this.props.openModal(texto)
+      if(this.formData.documento === 'OFICIO'){
+        let texto = event.nativeEvent.target[event.nativeEvent.target.selectedIndex].text;
+        this.props.modalSubDocumento(texto);
+      }
     }
 
     HandleClickAuditoria = (event) => {

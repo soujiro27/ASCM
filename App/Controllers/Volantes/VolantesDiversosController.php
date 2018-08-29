@@ -298,7 +298,7 @@ public function registro($id){
 						$anexo = new AnexosJuridico([
 				  		'idTurnadoJuridico' => $idTurnadoJuridico,
 				  		'archivoOriginal' => $datosAnexos['archivoOriginal'],
-				  		'archivoFinal' => $datosAnexos['archivoOriginal'],
+				  		'archivoFinal' => $datosAnexos['archivoFinal'],
 				  		'idTipoArchivo' => $datosAnexos['idTipoArchivo'],
 				  		'idVolante' => $datosAnexos['idVolante'],
 				  		'areaRemitente' => $datosAnexos['areaRemitente'],

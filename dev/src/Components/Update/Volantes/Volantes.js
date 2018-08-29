@@ -55,16 +55,11 @@ class Update extends Component{
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario
-                    cancel={this.HandleCancel}
-                    {...this.props}
-                    />
+                <Formulario cancel={this.HandleCancel} {...this.props} />
                     {
                       this.state.modal &&
                       <this.OpenModal />
                     }
-
-
             </form>
 
         )

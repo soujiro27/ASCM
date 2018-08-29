@@ -9,8 +9,8 @@ use Jur\App\Models\Modulos\Observaciones;
 class SecurityController {
 
 	public function validacion_sesion(){
-		if($_SESSION['logueado'] == 0){
 
+		if($_SESSION["idUsuario"] =='Undefined' || $_SESSION["sCuentaActual"] =='Undefined' || $_SESSION["sUsuario"] == 'Undefined '){
 			$app = \Slim\Slim::getInstance();
 			$app->redirect('/SIA');
 

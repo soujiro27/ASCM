@@ -4,18 +4,12 @@ import Form from './../../Components/Update/DocumentosGral/DocumentosGral';
 
 class Home extends Component{
 
-    state = {
-        modalAnexo:false,
-    }
-
     render(){
-        
+
         return(
             <div className="MainContainer">
-                <Header {...this.props}  />
-                <Form 
-                    id={this.props.id}
-                />   
+                <Header texto={this.props.texto}  />
+                <Form {...this.props} />
             </div>
 
         )
@@ -27,5 +21,3 @@ Home.defaultProps = {
 }
 
 export default Home
-
-

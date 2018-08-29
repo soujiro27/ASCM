@@ -15,25 +15,21 @@ export default class FileModal extends Component {
 
         let form = new FormData()
         form.append('file', document.getElementById('file').files[0]);
-        form.append('idVolante',this.props.data[0].idVolante)
-        form.append('idTurnadoJuridico',this.props.data[0].idTurnadoJuridico)
-        form.append('areaRecepcion',this.props.data[0].idAreaRecepcion)
-        let url = '/SIA/juridico/Documentos/save'
+        form.append('idTurnadoJuridico',sessionStorage.getItem('turnado'));
+        let url = `/SIA/juridico/${this.props.modulo}/Save`
 
         axios.post(url,form)
         .then(response =>{
-            if(response.status == 200 ){
-                this.HandleCloseModal()
-            }
-
+          if(response.data.status){
+            location.href = '/SIA/juridico/DocumentosGral/Update'
+          }
         })
     }
 
   render(){
-console.log(this.props)
     return ReactDom.createPortal(
       <Modal
-        open={!this.props.status}
+        open={true}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
@@ -41,7 +37,7 @@ console.log(this.props)
             <form className="form" onSubmit={this.HandleSubmit}>
                 <div className="row">
                     <div className="col-lg-12">
-                        <label>Anexar Documento</label>
+                        <h4><i className="far fa-file-pdf"></i>  Anexar Documento</h4>
                         <input type="file" name="file" required className="form-control" id="file"/>
                     </div>
                 </div>

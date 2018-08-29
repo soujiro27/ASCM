@@ -42,7 +42,7 @@ class AuditoriaModal extends Component {
 
     HandleChangeInput = (event) =>{
 
-        let clave= event.target.value
+        let clave= document.getElementById('auditoria').value
         let cuenta = this.props.cuenta
 
         axios.all([this.DatosAuditoria(clave,cuenta),this.DatosTurnadoAuditoria(clave,cuenta)])
@@ -84,8 +84,11 @@ class AuditoriaModal extends Component {
             <div className="col-lg-12">
                 <h3><i className="fas fa-archive"></i> Escriba el numero de Auditoria solicitado</h3>
             </div>
-            <div className="col-lg-12">
-                <input type="number" id="auditoria" onChange={this.HandleChangeInput} placeholder="Numero de Auditoria" className="form-control"/>
+            <div className="col-lg-10">
+                <input type="number" id="auditoria"  placeholder="Numero de Auditoria" className="form-control"/>
+            </div>
+            <div className="col-lg-2">
+              <button className="btn btn-primary" onClick={this.HandleChangeInput}>Buscar  <i className="fas fa-search"></i></button>
             </div>
         </div>
         {

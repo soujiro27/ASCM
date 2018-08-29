@@ -8,10 +8,6 @@
     "build:home": "webpack --config ./webpack.home.dev.config.js --watch",
     "build:insert": "webpack --config ./webpack.insert.dev.config.js --watch",
     "build:update": "webpack --config ./webpack.update.config.js --watch",
-    "build:obs": "webpack --config ./webpack.observaciones.config.js --watch",
-    "build:cedulas": "webpack --config ./webpack.cedulas.dev.config.js --watch",
-    "build:asig": "webpack --config ./webpack.asignacion.config.js --watch",
-    "build:res": "webpack --config ./webpack.respuestas.config.js --watch",
     "build": "webpack",
     "build:local": "webpack --env.NODE_ENV=local",
     "build:prod": "webpack -p --env.NODE_ENV=production"

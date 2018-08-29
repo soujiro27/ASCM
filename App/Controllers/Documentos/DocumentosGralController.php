@@ -45,12 +45,8 @@ public function home_template(){
 	echo $this->render('HomeLayout/HomeContainer.twig',$data);
 }
 
-public function nuevo_registro(){
-	$data = $this->load_data_templates();
-	echo $this->render('HomeLayout/InsertContainer.twig',$data);
-}
 
-public function update_template($id){
+public function update_template(){
 	$data = $this->load_data_templates();
 	echo $this->render('HomeLayout/UpdateContainer.twig',$data);
 }
@@ -76,76 +72,96 @@ public function update_template($id){
 		}catch(\Illuminate\Database\QueryException $e){
 
 			$error = new ErrorsController();
-			$error->errores_load_table($e,'Volantes');
+			$error->errores_load_table($e,'DocumentosGral');
 		}
 	}
 
 
-	public function guardar(array $data, $file){
+/*------------------- Obtener REgistro ----------------*/
 
-		$data['estatus'] = 'ACTIVO';
-		$idVolante = $data['idVolante'];
-		$idTurnado = $data['idTurnadoJuridico'];
-		$areaRecepcion = $data['areaRecepcion'];
+	public function registro($id){
 
-		$validate = [];
-		array_push($validate, 'Error');
+		try {
+			$documentos = AnexosJuridico::where('idTurnadoJuridico',"$id")->orderBy('idAnexoJuridico','DESC')->get();
+			echo json_encode(array('status'=>true,'data' => $documentos));
 
-		if(!empty($file)){
+		} catch(\Illuminate\Database\QueryException $e){
 
-			$base = new BaseController();
-			$base->upload_file_areas($file,$idVolante,$idTurnado,'Areas','DGAJ',$areaRecepcion);
-			$validate[0] = 'OK';
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'DocumentosGral');
 		}
 
-
-		echo json_encode($validate);
 	}
 
+	/*------------- Update -----------------*/
 
-	public function update($data){
+	public function update(array $data){
+		try {
+			$validate = $this->validate($data);
+			if($validate['status']){
 
-		$id = $data['id'];
-
-		$validate = $this->validate($data);
-			if(empty($validate)){
-
+				$id = $data['id'];
 				AnexosJuridico::find($id)->update([
 					'estatus' => $data['estatus'],
 					'usrModificacion' => $_SESSION['idUsuario'],
 					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 				]);
-				$validate[0] = 'OK';
 
+				}
+				echo json_encode($validate);
+
+		} catch (\Illuminate\Database\QueryException $e) {
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'DocumentosGral');
+		}
+	}
+
+
+/*----------------- Insertar -------------------*/
+
+	public function guardar(array $data, $file){
+		try {
+
+			$idTurnado = $data['idTurnadoJuridico'];
+
+			$validacion['status'] = false;
+
+			if(!empty($file)){
+
+				$turnado = TurnadosJuridico::find($idTurnado);
+				$anexo = AnexosJuridico::select('areaRecepcion')->where('idTurnadoJuridico',"$idTurnado")->get();
+				$areaRecepcion = $anexo[0]['areaRecepcion'];
+
+				$data_file = [
+					'idVolante' => $turnado->idVolante,
+					'idTurnadoJuridico' => $idTurnado,
+					'carpeta' => 'Areas',
+					'areaRemitente' => 'DGAJ',
+					'areaRecepcion' => $areaRecepcion,
+					'tipo' => 'V'
+				];
+
+				$base = new BaseController();
+				$base->upload_file_areas($file,$data_file);
+				$validacion['status'] = true;
 			}
 
-			echo json_encode($validate);
+			echo json_encode($validacion);
 
-	}
-
-
-
-
-	public function registro($id){
-
-		//$documentos = AnexosJuridico::where('idTurnadoJuridico',"$id")->get();
-		$documentos = AnexosJuridico::select('sia_anexosJuridico.*','t.idVolante')
-					->join('sia_TurnadosJuridico as t','t.idTurnadoJuridico','=','sia_anexosJuridico.idTurnadoJuridico')
-					->where('sia_anexosJuridico.idTurnadoJuridico',"$id")
-					->orderBy('sia_anexosJuridico.idAnexoJuridico','DESC')
-					->get();
-
-		if($documentos->isEmpty()){
-
-			$documentos = TurnadosJuridico::where('idTurnadoJuridico',"$id")->get();
+		} catch (\Illuminate\Database\QueryException $e) {
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'DocumentosGral');
 		}
-		echo json_encode($documentos);
+
+
 	}
 
+/*------------------- Validacion --------------*/
 
 	public function validate($data){
 
-
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$valid = GUMP::is_valid($data,array(
 			'id' => 'required|numeric',
@@ -153,10 +169,12 @@ public function update_template($id){
 		));
 
 		if($valid === true){
-			$valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $valid[0];
 		}
 
-		return $valid;
+		return $validacion;
 	}
 
 }
