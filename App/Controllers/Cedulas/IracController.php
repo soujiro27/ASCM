@@ -66,7 +66,7 @@ public function load_cedula_template($id){
 		try {
 
 			$area = $_SESSION['idArea'];
-	    $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+	    $irac = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
 	        ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
 	        ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
 	        ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
@@ -79,12 +79,12 @@ public function load_cedula_template($id){
 	        ->get();
 
 
-			echo json_encode(array('status'=>true,'data' => $ifa));
+			echo json_encode(array('status'=>true,'data' => $irac));
 
 		}catch(\Illuminate\Database\QueryException $e){
 
 			$error = new ErrorsController();
-			$error->errores_load_table($e,'Volantes');
+			$error->errores_load_table($e,'Irac');
 
 		}
 	}

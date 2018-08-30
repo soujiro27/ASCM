@@ -12,7 +12,7 @@ class RespuestasController extends TwigController {
 	private $js = 'Respuestas';
 	private $nombre = 'Respuestas';
 
-  public function load_respuestas_home_template(){
+  public function home_template(){
     $notificaciones = new NotificacionesController();
     $base = new BaseController();
     $menu = $base->menu();

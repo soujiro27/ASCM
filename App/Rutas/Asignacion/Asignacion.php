@@ -20,24 +20,15 @@
 	};
 
 
-
-
-
 $app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolante){
 
-
-
-	$app->get('/Asignacion/:id',function($id) use ($controller,$validate_idVolante){
-    $validate_idVolante($id);
+	$app->get('/Asignacion',function() use ($controller){
 		$controller->load_asignacion_insert_template();
 	});
 
 	$app->post('/Asignacion/Add',function() use ($controller,$app){
 		$controller->insert_asignacion($app->request->post(),$_FILES);
 	});
-
-
-
 
 });
 

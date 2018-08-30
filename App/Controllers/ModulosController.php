@@ -270,11 +270,18 @@ class ModulosController {
 		$area = $_SESSION['idArea'];
 		$rpe = $_SESSION['idEmpleado'];
 
-		$rpe_parse = intval($rpe);
+
 
 		$puestos = Puestos::where('idArea',"$area")->where('estatus','ACTIVO')->orderBy('idPuestoJuridico','DESC')->get();
+		$puestos_array = $puestos->toArray();
+		$puestos_final=[];
+		foreach ($puestos_array as $key => $value) {
+				if($value['rpe'] != $rpe ){
+					array_push($puestos_final,$value);
+				}
+		}
 
-		echo json_encode($puestos);
+		echo json_encode($puestos_final);
 	}
 
 	public function get_puestos_cedula(){

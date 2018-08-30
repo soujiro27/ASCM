@@ -6,10 +6,7 @@ import './table.styl'
 
 export default class Respuestas extends Component {
 
-  state = {
-    empleados:[],
-    data : []
-  }
+  state = { data : [] }
 
   columns = [
       {
@@ -58,15 +55,6 @@ export default class Respuestas extends Component {
       }
   ]
 
-  componentDidMount(){
-
-    axios.get('/SIA/juridico/Api/Puestos/Asignacion')
-    .then(response =>  {
-      let empleados = response.data
-      this.setState({empleados})
-    })
-  }
-
 
   HandleChangeSelect = (event) => {
     let value = event.target.value
@@ -76,7 +64,7 @@ export default class Respuestas extends Component {
         axios.get(url,{
           params:{
             empleado:value,
-            idVolante:this.props.id
+            idVolante:this.props.idVolante
           }
         })
         .then((response) => {
@@ -86,7 +74,6 @@ export default class Respuestas extends Component {
   }
 
   render(){
-
     return(
       <div className="form-container">
         <div className="row">
@@ -96,7 +83,7 @@ export default class Respuestas extends Component {
             <select name="empleado" required className="form-control" onChange={this.HandleChangeSelect}>
               <option value="">Escoja Opcion</option>
               {
-                this.state.empleados.map(item => (
+                this.props.puestos.map(item => (
                   <option key={item.idPuestoJuridico} value={item.idPuestoJuridico}>
                     {item.saludo} {item.nombre} {item.paterno} {item.materno}
                   </option>
@@ -122,7 +109,6 @@ export default class Respuestas extends Component {
           rowsText='Registros'
           resizable={true}
           ofText= 'de'
-          getTrProps={this.Handle_Click}
         />
       </div>
       </div>

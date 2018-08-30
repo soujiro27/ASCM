@@ -5,7 +5,6 @@ use Jur\App\Controllers\TwigController;
 use GUMP;
 use Carbon\Carbon;
 
-
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\BaseController;
 
@@ -41,8 +40,9 @@ class AsignacionController extends TwigController {
 
 	public function insert_asignacion(array $data,$file){
 
+		try {
 		$validate = $this->validate_insert_asignacion($data);
-		if(empty($validate)){
+		if($validate['status']){
 
 			$idVolante = $data['idVolante'];
 			$idPuesto = $data['empleado'];
@@ -67,26 +67,35 @@ class AsignacionController extends TwigController {
 
 	    	$turno->save();
 
-				$idTurnadoJuridico =  TurnadosJuridico::all()->max('idTurnadoJuridico');
+				$idTurnadoJuridico =  $turno->idTurnadoJuridico;
 				$base = new BaseController();
 
 				if(!empty($file)){
-					$base->upload_file_areas($file,$idVolante,$idTurnadoJuridico,'Internos',$_SESSION['idArea'],$_SESSION['idArea']);
+					$file_data = [
+						'idVolante' => $idVolante,
+						'idTurnadoJuridico' => $idTurnadoJuridico,
+						'carpeta' => 'Internos',
+						'areaRemitente' => $_SESSION['idArea'],
+						'tipo' => 'I',
+						'areaRecepcion' => $_SESSION['idArea']
+					];
+					$base->upload_file_areas($file,$file_data);
 				}
-
-
 				$base->notifications_turnados('Turnado Interno',$rpe,$idVolante);
-
-				$validate[0] = 'OK';
-
 		}
 
 		echo json_encode($validate);
-
+	} catch (\Illuminate\Database\QueryException $e) {
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Asignacion');
 	}
+
+}
 
 
 	public function validate_insert_asignacion($data){
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$is_valid = GUMP::is_valid($data,array(
 			'empleado' => 'required|max_len,10|numeric',
@@ -96,10 +105,13 @@ class AsignacionController extends TwigController {
 		));
 
 		if($is_valid === true){
-			$is_valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $is_valid[0];
 		}
 
-		return $is_valid;
+
+		return $validacion;
 
 	}
 

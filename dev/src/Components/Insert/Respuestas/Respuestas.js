@@ -54,7 +54,7 @@ export default class Asignacion extends Component {
 
   render(){
     return (<form onSubmit={this.HandleSubmit}>
-      <Formulario cancel={this.HandleCancel} id={this.props.id}/>
+      <Formulario cancel={this.HandleCancel} {...this.props}/>
       {
           this.state.modal.visible &&
           <Modal data={this.state.modal} close={this.HandleCloseModal}/>

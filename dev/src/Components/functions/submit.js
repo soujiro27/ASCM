@@ -14,6 +14,8 @@ export default class submit {
       }
 
       let keys = Object.keys(formData);
+
+
       keys.map(item => {
         formulario.append(item,formData[item])
       });

@@ -1,36 +1,10 @@
 import React,{Component} from 'react';
-import axios from 'axios';
 import './../form.styl'
 
 export default  class formAsignacion extends Component {
 
-  state = {
-    empleados:[],
-    caracteres:[]
-  }
-
-  getPuestos = () =>{
-    return axios.get('/SIA/juridico/Api/Puestos/Asignacion')
-  }
-
-  getCaracteres = () => {
-    return axios.get('/SIA/juridico/Api/Caracteres')
-  }
-
-  componentDidMount(){
-
-    axios.all([this.getPuestos(),this.getCaracteres()])
-    .then(axios.spread((puestos,caracteres) => {
-        this.setState({
-          empleados:puestos.data,
-          caracteres:caracteres.data
-        })
-    }));
-  }
-
 
   render(){
-    //console.log(this.state)
     return(
       <div className="form-container">
         <div className="row">
@@ -40,7 +14,7 @@ export default  class formAsignacion extends Component {
             <select name="empleado" required className="form-control">
               <option value="">Escoja Opcion</option>
               {
-                this.state.empleados.map(item => (
+                this.props.puesto.map(item => (
                   <option key={item.idPuestoJuridico} value={item.idPuestoJuridico}>
                     {item.saludo} {item.nombre} {item.paterno} {item.materno}
                   </option>
@@ -54,7 +28,7 @@ export default  class formAsignacion extends Component {
             <select name="prioridad" required className="form-control">
               <option value="">Escoja Opcion</option>
               {
-                this.state.caracteres.map(item => (
+                this.props.caracteres.map(item => (
                   <option key={item.idCaracter} value={item.idCaracter}>{item.nombre}</option>
                 ))
               }
@@ -78,8 +52,6 @@ export default  class formAsignacion extends Component {
             <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
             <button className="btn btn-danger btn-sm" onClick={this.props.cancel} >Cancelar</button>
         </div>
-
-
 
       </div>
     )

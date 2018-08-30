@@ -20,24 +20,13 @@
 	};
 
 
+$app->group('/juridico',$auth,function() use($app,$controller){
 
-
-
-$app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolante){
-
-
-
-	$app->get('/Respuestas/:id',function($id) use ($controller,$validate_idVolante){
-    $validate_idVolante($id);
-		$controller->load_respuestas_home_template();
+	$app->get('/Respuestas',function() use ($controller){
+		$controller->home_template();
 	});
 
-
-
 });
-
-
-
 
 
 ?>

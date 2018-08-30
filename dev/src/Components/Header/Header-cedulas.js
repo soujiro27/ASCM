@@ -1,13 +1,20 @@
 import React from 'react';
 import './Header.styl';
 const HeaderCedula = (props) => {
-
+	let cedula = `Cedula/${props.modulo}`
+	let menu = ['Asignacion','Respuestas','Observaciones','Cedula'];
+	let url = ['Asignacion','Respuestas','Observaciones',cedula];
+	if(props.modulo === 'Confronta' || props.modulo === 'DocumentosDiversos'){
+		cedula.splice(2,1);
+		url.splice(2,1);
+	}
 	return(
+
 		<ul className="menu-cedulas row Header">
-		{props.menu.map( (item,index) => (
+		{menu.map( (item,index) => (
 
 			<li className={props.active==item ? 'active': undefined} key={item}>
-				<a href={`/SIA/juridico/${props.url[index]}/${props.id}`}>
+				<a href={`/SIA/juridico/${url[index]}`}>
 					{item}
 				</a>
 			</li>
