@@ -26,18 +26,28 @@
 
 
 
-$app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolante,$validate_update){
+$app->group('/juridico',$auth,function() use($app,$controller){
 
 
-	$app->get('/Observaciones/:id',function($id) use ($controller,$validate_idVolante){
-		$validate_idVolante($id);
-		$controller->load_observaciones_home();
+	/*------------------- Home ---------------------*/
+
+	$app->get('/Observaciones',function() use ($controller){
+		$controller->home_template();
+	});
+
+	$app->get('/Observaciones/All',function() use ($controller,$app){
+		$controller->table($app->request->get());
 	});
 
 
-	$app->get('/Observaciones/add/:id',function($id) use ($controller,$validate_idVolante){
-		$validate_idVolante($id);
-		$controller->load_observaciones_insert_template();
+	  $app->get('/Observaciones/Register/:id',function($id) use ($controller){
+	    $controller->registro($id);
+	  });
+
+/*-------------------- Insert ------------------------*/
+
+	$app->get('/Observaciones/add/:id',function($id) use ($controller){
+		$controller->insert_template();
 	});
 
 
@@ -45,8 +55,10 @@ $app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolant
 		$controller->guardar($app->request->post());
 	});
 
-	$app->get('/Observaciones/Update/:id',function($id) use ($controller,$validate_update){
-		//$validate_update($id);
+
+	/*----------------------- Update ------------------*/
+
+	$app->get('/Observaciones/Update/:id',function($id) use ($controller){
     $controller->update_template($id);
   });
 
@@ -55,10 +67,6 @@ $app->group('/juridico',$auth,function() use($app,$controller,$validate_idVolant
     $controller->update($app->request->post());
   });
 
-
-  $app->get('/Observaciones/Register/:id',function($id) use ($controller){
-    $controller->registro($id);
-  });
 
 
 /*	$app->post('/Acciones/Update',function() use ($controller,$app){

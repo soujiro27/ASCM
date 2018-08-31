@@ -88,10 +88,6 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_respuestas($app->request->get());
 	});
 
-	$app->get('/Observaciones',function() use ($controller,$app){
-		$controller->tabla_observaciones($app->request->get());
-	});
-
 
 
 });

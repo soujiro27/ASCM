@@ -18,37 +18,83 @@ class ObservacionesController extends TwigController {
 	private $nombre = 'Observaciones';
 
 
-	public function load_observaciones_home(){
-		$notificaciones = new NotificacionesController();
-    $base = new BaseController();
-    $menu = $base->menu();
+/*------------------ Templates -------------------------*/
 
 
-    echo $this->render('HomeLayout/HomeContainer.twig',[
-      'js' => $this->js,
-      'session' => $_SESSION,
-      'nombre' => $this->nombre,
-      'notificaciones' => $notificaciones->get_notificaciones(),
-      'menu' => $menu['modulos']
-    ]);
+public function load_data_templates(){
+
+	$notificaciones = new NotificacionesController();
+	$base = new BaseController();
+	$menu = $base->menu();
+
+	$data = [
+		'js' => $this->js,
+		'session' => $_SESSION,
+		'nombre' => $this->nombre,
+		'notificaciones' => $notificaciones->get_notificaciones(),
+		'menu' => $menu['modulos']
+	];
+
+	return $data;
+
+}
+
+	public function home_template(){
+		$data = $this->load_data_templates();
+    echo $this->render('HomeLayout/HomeContainer.twig',$data);
 	}
 
 
-	public function load_observaciones_insert_template(){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/InsertContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
+	public function insert_template(){
+		$data = $this->load_data_templates();
+		echo $this->render('HomeLayout/InsertContainer.twig',$data);
 	}
+
+
+
+	public function update_template($id){
+		$data = $this->load_data_templates();
+		echo $this->render('HomeLayout/UpdateContainer.twig',$data);
+	}
+
+
+
+/*------------- Tabla ---------------------*/
+
+public function table(array $data){
+
+	try {
+		$idVolante = $data['idVolante'];
+		$observaciones = Observaciones::where('idVolante',"$idVolante")->get();
+		echo json_encode(array('status'=>true,'data' => $observaciones ));
+
+	} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Observaciones');
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+  public function registro($id){
+    $observacion = Observaciones::find($id);
+    echo json_encode($observacion);
+  }
+
+
+
+
+
+
 
 
 	public function guardar($data){
@@ -85,31 +131,6 @@ class ObservacionesController extends TwigController {
 
 
 
-  public function update_template($id){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id,
-		]);
-	}
-
-
-  public function registro($id){
-    $observacion = Observaciones::find($id);
-    echo json_encode($observacion);
-  }
-
-
-
 
 	public function update($data){
 
@@ -136,12 +157,6 @@ class ObservacionesController extends TwigController {
 
 
 /*----------------------viejos ---------------------*/
-
-
-
-
-
-
 
 
 

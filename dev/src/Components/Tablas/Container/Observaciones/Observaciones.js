@@ -37,17 +37,6 @@ class TableContainer extends Component{
         }
     ]
 
-
-    componentDidMount(){
-        let url = `/SIA/juridico/Api/Observaciones`;
-        axios.get(url,{params:{idVolante:this.props.id}}).then(response =>{
-            if(response.status === 200){
-                let data = response.data
-                this.setState({data,load:true})
-            }
-        })
-    }
-
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {

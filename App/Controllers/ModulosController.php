@@ -322,12 +322,7 @@ class ModulosController {
 
 	}
 
-	public function tabla_observaciones(array $data){
 
-		$idVolante = $data['idVolante'];
-		$observaciones = Observaciones::where('idVolante',"$idVolante")->get();
-		echo json_encode($observaciones);
-	}
 
 	public function get_firmas_nota_generico(){
 		$puestos = Puestos::where('firmaNota','SI')->get();
