@@ -53,6 +53,10 @@ export default class Asignacion extends Component {
     }
   }
 
+  prevObvs = (event) => {
+    event.preventDefault()
+  }
+
   HandleSubmit = (event) => {
     event.preventDefault();
 
@@ -74,14 +78,14 @@ export default class Asignacion extends Component {
   render(){
     return (
       <div className="cedula-container row">
-        <form onSubmit={this.HandleSubmit} className="col-lg-6">
-          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal} prevOficio={this.prevOficio}/>
+        <form onSubmit={this.HandleSubmit} className="col-lg-7">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal} prevOficio={this.prevOficio} data={this.props.data[0]} prevObvs={this.prevObvs}/>
             {
               this.state.modal &&
               <this.OpenModal />
             }
         </form>
-        <div className="col-lg-6 prev-cedula" id="prev-cedula">
+        <div className="col-lg-5 prev-cedula" id="prev-cedula">
           <h2><i className="fas fa-file-pdf"></i></h2>
           <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
         </div>
