@@ -32,11 +32,14 @@ export default  class formAsignacion extends Component {
                   base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
                   fullscreenP={true}
                   listsP={true}
+                  alignP={true}
+                  charCounterP={true}
+                  fontSizeP={true}
+                  fontFamilyP={true}
+                  quickInsertP={true}       
                   options={{placeholderText: 'Escriba aqui la Observacion',}}
                   />
           </div>
-
-
         </div>
 
         <div className="row">

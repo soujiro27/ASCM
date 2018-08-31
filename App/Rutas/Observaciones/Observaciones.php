@@ -46,20 +46,20 @@ $app->group('/juridico',$auth,function() use($app,$controller){
 
 /*-------------------- Insert ------------------------*/
 
-	$app->get('/Observaciones/add/:id',function($id) use ($controller){
+	$app->get('/Observaciones/Add',function() use ($controller){
 		$controller->insert_template();
 	});
 
 
-	$app->post('/Observaciones/save',function() use ($controller,$app){
+	$app->post('/Observaciones/Save',function() use ($controller,$app){
 		$controller->guardar($app->request->post());
 	});
 
 
 	/*----------------------- Update ------------------*/
 
-	$app->get('/Observaciones/Update/:id',function($id) use ($controller){
-    $controller->update_template($id);
+	$app->get('/Observaciones/Update',function() use ($controller){
+    $controller->update_template();
   });
 
 

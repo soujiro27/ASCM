@@ -8,7 +8,7 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form id={this.props.id} modulo={this.props.modulo}/>
+                <Form />
             </div>
 
         )
@@ -17,8 +17,6 @@ class Home extends Component{
 
 Home.defaultProps = {
     texto:'Agregar Nueva Observacion',
-    id:localStorage.getItem('idVolante'),
-    modulo:localStorage.getItem('modulo')
 }
 
 export default Home

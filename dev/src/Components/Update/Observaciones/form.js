@@ -6,12 +6,6 @@ import FroalaEditor from 'react-froala-editor'
 export default  class formAsignacion extends Component {
 
 
-  state = {
-      text:this.props.data.observacion
-  }
-
-
-
   render(){
     return(
       <div className="form-container">
@@ -35,8 +29,13 @@ export default  class formAsignacion extends Component {
                 <FroalaEditor
                   base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
                   fullscreenP={true}
+                  value={this.props.data.observacion}
                   listsP={true}
-                  value={this.state.text}
+                  alignP={true}
+                  charCounterP={true}
+                  fontSizeP={true}
+                  fontFamilyP={true}
+                  quickInsertP={true}
                   options={{placeholderText: 'Escriba aqui la Observacion',}}
                   />
           </div>

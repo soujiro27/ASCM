@@ -2,25 +2,21 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import axios from 'axios'
 import 'react-table/react-table.css';
-import { GridLoader } from 'react-spinners';
-import './../spiner.styl'
+
 import './Table.styl'
 
-class TableContainer extends Component{
-
-    state = {
-        load:false,
-        data:{}
-    }
+class TableObservaciones extends Component{
 
     columns = [
         {
             Header:'Pagina',
-            accessor:'pagina'
+            accessor:'pagina',
+            width:65
         },
         {
             Header:'Parrafo',
-            accessor:'parrafo'
+            accessor:'parrafo',
+            width:65
         },
         {
             Header:'Observacion',
@@ -33,57 +29,49 @@ class TableContainer extends Component{
         },
         {
             Header:'Estatus',
-            accessor:'estatus'
+            accessor:'estatus',
+            width:70
         }
     ]
 
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/Observaciones/Update/${rowInfo.original.idObservacionDoctoJuridico}`
+              sessionStorage.removeItem('idObservacion');
+              sessionStorage.setItem('idObservacion',rowInfo.original.idObservacionDoctoJuridico);
+                location.href = `/SIA/juridico/Observaciones/Update`
             }
         }
     }
 
-    render(){
-        if(this.state.load){
-            return(
-              <div className="table-container">
-                <div className="row">
-                  <div className="col-lg-2">
-                    <a href={`/SIA/juridico/Observaciones/add/${this.props.id}`} className="btn btn-success btn-sm">Agregar Observacion</a>
-                  </div>
-                  <div className="col-lg-12">
-                    <ReactTable
-                    data={this.state.data}
-                    columns={this.columns}
-                    pageSizeOptions={[10,15]}
-                    defaultPageSize={10}
-                    className="-highlight"
-                    previousText='Anterior'
-                    nextText='Siguiente'
-                    noDataText='Sin Datos'
-                    pageText='Pagina'
-                    ofText= 'de'
-                    getTrProps={this.Handle_Click}
-                />
-              </div>
-              </div>
-              </div>
-
-            )
-        } else {
-            return(
-                <div className="spiner">
-                    <GridLoader
-                        color={'#851B07'}
-                        loading={!this.state.load}
-                    />
-                </div>
-            )
-        }
+  render(){
+    console.log(this.props)
+    return(
+      <div className="table-container">
+        <div className="row">
+          <div className="col-lg-2">
+            <a href='/SIA/juridico/Observaciones/Add' className="btn btn-success btn-sm">Agregar Observacion</a>
+          </div>
+        <div className="col-lg-12">
+          <ReactTable
+            data={this.props.data}
+            columns={this.columns}
+            pageSizeOptions={[10,15]}
+            defaultPageSize={10}
+            className="-highlight"
+            previousText='Anterior'
+            nextText='Siguiente'
+            noDataText='Sin Datos'
+            pageText='Pagina'
+            ofText= 'de'
+            getTrProps={this.Handle_Click}
+          />
+        </div>
+      </div>
+    </div>
+  )
 
     }
 }
 
-export default TableContainer;
+export default TableObservaciones;

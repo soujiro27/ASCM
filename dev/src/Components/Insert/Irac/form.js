@@ -12,82 +12,110 @@ export default class Cedula extends Component {
       input[0].children[0].setAttribute('name','fecha_documento')
   }
 
+  HandleClickModal = (event) =>{
+    event.preventDefault();
+    this.props.open('FIRMAS');
+  }
+
   render(){
     return(
       <div className="form-container">
-        <div className="row">
-
-          <div className="col-lg-3">
+        <div className="row datos_oficio">
+          <div className="col-lg-12"><h4>Datos Cedula </h4></div>
+          <div className="col-lg-4">
             <label>Siglas</label>
             <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Numero de Folio</label>
+          <div className="col-lg-4">
+            <label>Folio</label>
             <input type="text" name="folio" required maxLength="50" placeholder="Folio"  className="form-control"/>
           </div>
 
-          <div className="col-lg-2">
+          <div className="col-lg-4">
             <label>Fecha Documento</label>
             <DayPickerInput />
           </div>
 
-            <div className="col-lg-2">
-              <label>Añadir Firmas</label>
-              <button className="btn btn-success" onClick={this.props.OpenModalFirmas}>Agregar</button>
+          <div className="col-lg-12">
+            <label>Nombre Remitente</label>
+            <input type="text" name="nombre_remitente" required maxLength="100" placeholder="Nombre Remitente"  className="form-control"/>
+          </div>
+
+          <div className="col-lg-12">
+            <label>Puesto Remitente</label>
+            <input type="text" name="puesto_remitente" required maxLength="100" placeholder="Puesto Remitente"  className="form-control"/>
+          </div>
+
+          <div className="col-lg-7">
+            <button className="btn btn-success" onClick={this.HandleClickModal}>Añadir Firmas  <i className="fas fa-plus-circle"></i></button>
+          </div>
+        </div>
+
+
+        <div className="row espacios_oficio">
+          <div className="col-lg-12"><h4>Espacios Cedula Oficio</h4></div>
+
+            <div className="col-lg-4">
+              <label>Atentamente</label>
+              <input type="number" min='0' max='100' name="e_atte" className="form-control" defaultValue="0" id="atte"/>
+            </div>
+
+            <div className="col-lg-4">
+              <label>Copias</label>
+              <input type="number" min='0' max='100' name="e_copias_oficio" className="form-control" defaultValue="0" id="e_copias"/>
+            </div>
+
+            <div className="col-lg-4">
+              <label>Espacios Siglas</label>
+              <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue="0"id="siglas" />
+            </div>
+            <div className="col-lg-5">
+              <button className="btn btn-warning btn-prev" onClick={this.props.prevOficio}>Previsualizar Oficio</button>
             </div>
 
         </div>
 
-        <div className="row">
-          <div className="col-lg-3">
-            <label>Espacios Observaciones</label>
+        <div className="row espacios_observaciones">
+          <div className="col-lg-12"><h4>Espacios Cedula Observaciones</h4></div>
+          <div className="col-lg-4">
+            <label>Observaciones</label>
             <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue="0"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Texto</label>
+          <div className="col-lg-4">
+            <label>Texto</label>
             <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue="0"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Firmas</label>
+          <div className="col-lg-4">
+            <label>Firmas</label>
             <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue="0"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Copias Cedula</label>
+          <div className="col-lg-4">
+            <label>Copias</label>
             <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue="0"/>
           </div>
 
-        </div>
-
-        <div className="row">
-          <div className="col-lg-3">
-            <label>Espacios Atentamente</label>
-            <input type="number" min='0' max='100' name="e_atte" className="form-control" defaultValue="0"/>
+          <div className="col-lg-4">
+            <label>fecha</label>
+            <input type="number" min='0' max='100' name="e_fecha" className="form-control" defaultValue="0"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Copias</label>
-            <input type="number" min='0' max='100' name="e_copias_oficio" className="form-control" defaultValue="0"/>
+          <div className="col-lg-12">
+              <button className="btn btn-warning btn-prev" onClick={this.props.cancel}>Previsualizar Obervaciones</button>
           </div>
-
-          <div className="col-lg-3">
-            <label>Espacios Siglas</label>
-            <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue="0"/>
-          </div>
-
-
 
         </div>
 
 
-        <div className="col-lg-4 submit-group">
-            <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
-            <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
+        <div className="col-lg-12 submit-group">
+            <input type="submit" value="Guardar" className="btn btn-primary" />
+            <button className="btn btn-danger " onClick={this.props.cancel}>Cancelar</button>
 
         </div>
+
 
 
       </div>

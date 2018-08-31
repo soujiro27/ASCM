@@ -52,7 +52,7 @@ public function load_data_templates(){
 
 
 
-	public function update_template($id){
+	public function update_template(){
 		$data = $this->load_data_templates();
 		echo $this->render('HomeLayout/UpdateContainer.twig',$data);
 	}
@@ -74,106 +74,109 @@ public function table(array $data){
 	}
 }
 
+/*----------------- Insertar --------------------*/
 
 
+public function guardar(array $data){
 
-
-
-
-
-
-
-
-
-  public function registro($id){
-    $observacion = Observaciones::find($id);
-    echo json_encode($observacion);
-  }
-
-
-
-
-
-
-
-
-	public function guardar($data){
-
-		$data['estatus'] = 'ACTIVO';
+	try {
 		$validate = $this->validate($data);
-		if(empty($validate)){
+		if($validate['status']){
 
-      $idVolante = $data['idVolante'];
+			$idVolante = $data['idVolante'];
 
-      $volantesDocumentos = VolantesDocumentos::where('idvolante',"$idVolante")->get();
-      $subTipo = $volantesDocumentos[0]['idSubTipoDocumento'];
-      $cveAuditoria = $volantesDocumentos[0]['cveAuditoria'];
+			$volantesDocumentos = VolantesDocumentos::where('idvolante',"$idVolante")->get();
+			$subTipo = $volantesDocumentos[0]['idSubTipoDocumento'];
+			$cveAuditoria = $volantesDocumentos[0]['cveAuditoria'];
 
 
-      $observaciones = new Observaciones([
-        'idVolante' => $data['idVolante'],
-        'idSubTipoDocumento' => $subTipo,
-        'cveAuditoria' => $cveAuditoria,
-        'pagina' => $data['hoja'],
-        'parrafo' => $data['parrafo'],
-        'observacion' => $data['texto'],
-        'usrAlta' => $_SESSION['idUsuario'],
-      ]);
+			$observaciones = new Observaciones([
+				'idVolante' => $data['idVolante'],
+				'idSubTipoDocumento' => $subTipo,
+				'cveAuditoria' => $cveAuditoria,
+				'pagina' => $data['hoja'],
+				'parrafo' => $data['parrafo'],
+				'observacion' => $data['texto'],
+				'usrAlta' => $_SESSION['idUsuario'],
+			]);
 
-      $observaciones->save();
-
-			$validate[0] = 'OK';
-
+			$observaciones->save();
 		}
 
 		echo json_encode($validate);
+	} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Observaciones');
 	}
 
+}
 
 
 
+/*--------------- Obtener Registro -------------------*/
+
+  public function registro($id){
+		try {
+			$observacion = Observaciones::find($id);
+			echo json_encode(array('status'=>true,'data' => $observacion ));
+
+		} catch(\Illuminate\Database\QueryException $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Observaciones');
+		}
+
+  }
+
+
+/*------------- Update -------------------------------*/
 	public function update($data){
 
-		$id = $data['idObservacionDoctoJuridico'];
+		try {
+			$id = $data['idObservacionDoctoJuridico'];
 
-		$validate = $this->validate($data);
-			if(empty($validate)){
+			$validate = $this->validate($data);
+				if($validate['status']){
 
-				Observaciones::find($id)->update([
-          'pagina' => $data['hoja'],
-          'parrafo' => $data['parrafo'],
-          'observacion' => $data['texto'],
-					'estatus' => $data['estatus'],
-					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-				]);
-				$validate[0] = 'OK';
+					Observaciones::find($id)->update([
+	          'pagina' => $data['hoja'],
+	          'parrafo' => $data['parrafo'],
+	          'observacion' => $data['texto'],
+						'estatus' => $data['estatus'],
+						'usrModificacion' => $_SESSION['idUsuario'],
+						'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
+					]);
+				}
 
-			}
+				echo json_encode($validate);
 
-			echo json_encode($validate);
+		} catch(\Illuminate\Database\QueryException $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Observaciones');
+		}
 
 	}
 
 
-/*----------------------viejos ---------------------*/
+/*----------------------validar ---------------------*/
+	public function validate(array $data){
 
+		$validacion = [];
+		$validacion['status'] = false;
 
-
-	public function validate($data){
-
-		$valid = GUMP::is_valid($data,array(
+		$is_valid = GUMP::is_valid($data,array(
 			'hoja' => 'required|max_len,3|numeric',
 			'parrafo' => 'required|max_len,3|numeric',
       'texto' =>'required',
-      'estatus' => 'required|max_len,8|alpha',
 		));
 
-		if($valid === true){
-			$valid = [];
+		if($is_valid === true){
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $is_valid[0];
 		}
 
-		return $valid;
+
+		return $validacion;
 	}
 
 }

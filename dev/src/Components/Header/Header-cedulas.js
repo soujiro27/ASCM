@@ -1,7 +1,7 @@
 import React from 'react';
 import './Header.styl';
 const HeaderCedula = (props) => {
-	let cedula = `Cedula/${props.modulo}`
+	let cedula = `${props.modulo}/Cedula/${props.idVolante}`
 	let menu = ['Asignacion','Respuestas','Observaciones','Cedula'];
 	let url = ['Asignacion','Respuestas','Observaciones',cedula];
 	if(props.modulo === 'Confronta' || props.modulo === 'DocumentosDiversos'){

@@ -14,6 +14,7 @@ class Espacios extends Model {
 		'atte',
 		'copia',
 		'copiaCedula',
+    'fechaDocto',
 		'sigla',
 		'usrAlta',
 		'usrModificacion',

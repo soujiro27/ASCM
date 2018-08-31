@@ -19,34 +19,32 @@
 		$security->validacion_sesion();
 	};
 
-
-
-
-
 $app->group('/juridico',$auth,function() use($app,$controller){
 
-/*------------------ Home ---------------------------*/
+/*------------------ Templates ---------------------------*/
 
 	$app->get('/Irac',function() use ($controller){
 		$controller->home_template();
 	});
 
+	$app->get('/Irac/Cedula/:id',function($id) use ($controller){
+		$controller->cedula_template($id);
+	});
 
+/*------------------- Tablas ---------------------------*/
 	$app->get('/Irac/All',function() use ($controller){
 		$controller->tabla();
 	});
 
-	$app->get('/Irac/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id);
-	});
-
 	/*----------------- Insert -------------------*/
-
-
-
 
 	$app->post('/Irac/Cedula/add',function() use ($controller,$app){
 		$controller->insert_cedula($app->request->post());
+	});
+
+
+	$app->get('/Irac/Remitente',function() use ($controller,$app){
+		$controller->get_remitente($app->request->get());
 	});
 
 	/*--------------------- UPdate -----------------------*/

@@ -47,7 +47,7 @@ public function home_template(){
 	echo $this->render('HomeLayout/HomeContainer.twig',$data);
 }
 
-public function load_cedula_template($id){
+public function cedula_template($id){
 
 	$data = $this->load_data_templates();
 	$ds = DocumentosSiglas::where('idVolante',"$id")->get();

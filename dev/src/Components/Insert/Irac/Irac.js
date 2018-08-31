@@ -3,28 +3,54 @@ import axios from 'axios';
 import Formulario from './form.js';
 import Modal from './../../Modals/form'
 import ModalFirmas from './../../Modals/FirmasCedula'
-import ModalTextos from './../../Modals/TextoPromocion'
 
 import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
 
 export default class Asignacion extends Component {
-
   state = {
-      "modal":{
-          "visible":false,
-          "message":"",
-          "class":"",
-          "icon":"",
-          "success":false
-      },
-      modals:{
-        firmas:false,
-      },
-      textos:false,
-      formData:{
-        firmas:[],
-      }
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false,
+  }
+
+  formData = {
+    firmas:''
+  }
+
+  OpenModal = () =>{
+    if(this.state.nombre === 'FIRMAS'){ return <ModalFirmas visible={true} close={this.closeModalBolean} closeModalFirmas={this.closeModalFirmas}/>}
+    else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+  }
+
+  closeModalBolean = () => {
+    this.setState({modal:false});
+  }
+
+  HandleOpenModal = (nombre) =>{
+    this.setState({ modal:true, nombre});
+  }
+
+  HandleCancel = (event) => {
+    event.preventDefault()
+    location.href = '/SIA/juridico/Irac'
+  }
+
+  closeModalFirmas = (firmas) => {
+    if(firmas.length > 0 ) this.formData['firmas'] = firmas;
+    this.setState({modal:false});
+  }
+
+  prevOficio = (event) => {
+    event.preventDefault();
+    let atte = document.getElementById('atte').value
+    let copias = document.getElementById('e_copias').value
+    let siglas = document.getElementById('siglas').value
+    if(atte != '' && copias != '' && siglas != '' ){
+      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/oficio_irac_preview.php?atte=${atte}&copias=${copias}&siglas=${siglas}"></iframe>`)
+    }
   }
 
   HandleSubmit = (event) => {
@@ -45,55 +71,21 @@ export default class Asignacion extends Component {
 
   }
 
-  HandleCancel = (event) => {
-    event.preventDefault()
-    location.href = '/SIA/juridico/Irac'
-  }
-
-  HandleCloseModal = () => {
-    if(this.state.modal.success){
-        window.open('/SIA/jur/App/cedulas/irac_.php?param='+this.props.id)
-        window.open('/SIA/jur/App/cedulas/oficio_irac.php?param='+this.props.id)
-        location.href = `/SIA/juridico/Irac`
-    } else{
-
-        this.setState({
-            modal:{visible:false}
-        })
-    }
-
-  }
-
-  OpenModalFirmas = (event) => {
-    event.preventDefault()
-    this.setState({modals:{firmas:true}})
-  }
-
-  CloseModalFirmas = (firmas) => {
-      this.setState({
-          modals:{firmas:false}
-          ,formData:{firmas}
-      })
-  }
-
   render(){
-    return (<form onSubmit={this.HandleSubmit}>
-    <Formulario
-      cancel={this.HandleCancel}
-      OpenModalFirmas={this.OpenModalFirmas}
-      />
-      {
-          this.state.modal.visible &&
-          <Modal data={this.state.modal} close={this.HandleCloseModal}/>
-      }
-      {
-        this.state.modals.firmas &&
-        <ModalFirmas visible={true} close={this.CloseModalFirmas} />
-      }
-      {
-        this.state.modals.textos &&
-        <ModalTextos visible={true} close={this.CloseModalTextos} />
-      }
-    </form>)
+    return (
+      <div className="cedula-container row">
+        <form onSubmit={this.HandleSubmit} className="col-lg-6">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal} prevOficio={this.prevOficio}/>
+            {
+              this.state.modal &&
+              <this.OpenModal />
+            }
+        </form>
+        <div className="col-lg-6 prev-cedula" id="prev-cedula">
+          <h2><i className="fas fa-file-pdf"></i></h2>
+          <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
+        </div>
+      </div>
+    )
   }
 }
