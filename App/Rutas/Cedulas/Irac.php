@@ -38,7 +38,7 @@ $app->group('/juridico',$auth,function() use($app,$controller){
 
 	/*----------------- Insert -------------------*/
 
-	$app->post('/Irac/Cedula/add',function() use ($controller,$app){
+	$app->post('/Irac/Save',function() use ($controller,$app){
 		$controller->insert_cedula($app->request->post());
 	});
 

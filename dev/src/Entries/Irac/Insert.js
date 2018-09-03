@@ -12,7 +12,7 @@ axios.get('/SIA/juridico/Irac/Remitente',{params:{idVolante}})
   let datos = response.data;
 
   if(datos.status){
-    render(<Home data={datos.data} />,root);
+    render(<Home data={datos.data} idVolante={idVolante} />,root);
   } else {
     render(<ModalError {...response.data} />,root);
   }

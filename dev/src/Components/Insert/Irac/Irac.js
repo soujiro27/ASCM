@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import Formulario from './form.js';
-import Modal from './../../Modals/form'
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
+
 import ModalFirmas from './../../Modals/FirmasCedula'
 
 import './../../shared_styles/insert.styl'
@@ -16,7 +18,8 @@ export default class Asignacion extends Component {
   }
 
   formData = {
-    firmas:''
+    firmas:'',
+    idVolante:this.props.idVolante
   }
 
   OpenModal = () =>{
@@ -43,39 +46,55 @@ export default class Asignacion extends Component {
     this.setState({modal:false});
   }
 
+  HandleCloseModal = () =>{
+    if(this.state.response){
+      window.open(`/SIA/jur/App/cedulas/oficio_irac.php?param=${this.props.idVolante}`);
+      window.open(`/SIA/jur/App/cedulas/Irac_.php?param=${this.props.idVolante}`);
+      location.href = '/SIA/juridico/Irac';
+    } else {
+      this.setState({modal:false})
+    }
+  }
+
   prevOficio = (event) => {
     event.preventDefault();
-    let atte = document.getElementById('atte').value
-    let copias = document.getElementById('e_copias').value
-    let siglas = document.getElementById('siglas').value
+    let atte = document.getElementById('atte').value;
+    let copias = document.getElementById('e_copias').value;
+    let siglas = document.getElementById('siglas').value;
     if(atte != '' && copias != '' && siglas != '' ){
       document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/oficio_irac_preview.php?atte=${atte}&copias=${copias}&siglas=${siglas}"></iframe>`)
     }
   }
 
   prevObvs = (event) => {
-    event.preventDefault()
+    event.preventDefault();
+    let obvs = document.getElementById('obvs').value;
+    let texto = document.getElementById('texto').value;
+    let firmas = document.getElementById('firmas').value;
+    let copias = document.getElementById('copias').value;
+    let fecha = document.getElementById('fecha').value;
+    if( obvs != '' && texto != '' && firmas != '' && copias != ''){
+      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/irac_preview.php?obvs=${obvs}&copias=${copias}&texto=${texto}&firmas=${firmas}&fecha=${fecha}&param=${this.props.idVolante}"></iframe>`)
+    }
   }
 
   HandleSubmit = (event) => {
     event.preventDefault();
 
     let form_functions = new submit()
-    let data = form_functions.createData(document.getElementsByTagName('form'))
-    data.append('idVolante',this.props.id)
-    data.append('firmas',this.state.formData.firmas)
-    data.append('texto',this.state.formData.texto)
-    let url = '/SIA/juridico/Irac/Cedula/add'
+    let data = form_functions.createData_complete(document.getElementsByTagName('form'),this.formData)
+    let url = '/SIA/juridico/Irac/Save'
 
     axios.post(url,data)
     .then(response =>{
-        let state_response = form_functions.resolve_request(response)
-        this.setState(state_response)
+      let respuesta = form_functions.resolve_request(response);
+      this.setState(respuesta);
     })
 
   }
 
   render(){
+    console.log(this.props)
     return (
       <div className="cedula-container row">
         <form onSubmit={this.HandleSubmit} className="col-lg-7">

@@ -83,28 +83,30 @@ export default class Cedula extends Component {
           <div className="col-lg-12"><h4>Espacios Cedula Observaciones</h4></div>
           <div className="col-lg-3">
             <label>Observaciones</label>
-            <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue="0"/>
+            <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue="0" id="obvs"/>
           </div>
 
           <div className="col-lg-2">
             <label>Texto</label>
-            <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue="0"/>
-          </div>
-
-          <div className="col-lg-2">
-            <label>Firmas</label>
-            <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue="0"/>
-          </div>
-
-          <div className="col-lg-2">
-            <label>Copias</label>
-            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue="0"/>
+            <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue="0" id="texto"/>
           </div>
 
           <div className="col-lg-2">
             <label>fecha</label>
-            <input type="number" min='0' max='100' name="e_fecha" className="form-control" defaultValue="0"/>
+            <input type="number" min='0' max='100' name="e_fecha" className="form-control" defaultValue="0" id="fecha"/>
           </div>
+
+
+          <div className="col-lg-2">
+            <label>Firmas</label>
+            <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue="0" id="firmas"/>
+          </div>
+
+          <div className="col-lg-2">
+            <label>Copias</label>
+            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue="0" id="copias"/>
+          </div>
+
 
           <div className="col-lg-12 btn-obvs">
               <button className="btn btn-warning btn-prev" onClick={this.props.prevObvs}>Previsualizar Observaciones</button>

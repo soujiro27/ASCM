@@ -11,7 +11,7 @@ class NotificacionesController{
 
 		$idUsuario = $_SESSION['idUsuario'];
 
-		$notificaciones = Notificaciones::where('idUsuario',"$idUsuario")->get();
+		$notificaciones = Notificaciones::where('idUsuario',"$idUsuario")->where('situacion','NUEVO')->get();
 
 		return($notificaciones->count());
 

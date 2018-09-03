@@ -4,14 +4,12 @@ import Form from './../../Components/Update/Irac/Irac';
 
 class Home extends Component{
 
-
     render(){
         return(
             <div className="MainContainer">
-                <Header {...this.props} />
-                <Form data={this.props.data}/>
+                <Header texto={this.props.texto} />
+                <Form {...this.props}/>
             </div>
-
         )
     }
 }

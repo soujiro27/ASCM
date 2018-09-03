@@ -135,23 +135,32 @@ public function get_remitente(array $data){
 
 	}
 
-
 }
 
+/*------------------ Obtener el Registro -----------------*/
 
 	public function get_register_cedula($id){
-			$idVolante =$id;
+
+		try {
 			$cedula = DocumentosSiglas::select('sia_documentosSiglas.*','e.*')
 							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_documentosSiglas.idVolante')
-							->where('sia_documentosSiglas.idVolante',"$idVolante")->get();
-			echo json_encode($cedula);
+							->where('sia_documentosSiglas.idVolante',"$id")->get();
+			echo json_encode(array('status'=>true,'data' => $cedula));
+
+		}catch(\Illuminate\Database\QueryExcepton $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Irac');
+		}
+
 	}
+
+/*--------------------- Insert Cedula -------------------*/
 
 
 	public function insert_cedula(array $data){
 
 		$validate =  $this->validate($data);
-		if(empty($validate)){
+		if($validate['status']){
 
 			$idVolante = $data['idVolante'];
 
@@ -165,6 +174,8 @@ public function get_remitente(array $data){
 				'fOficio' => $data['fecha_documento'],
 				'siglas' => $data['siglas'],
         'numFolio' => $data['folio'],
+				'nombreRemitente' => $data['nombre_remitente'],
+				'puestoRemitente' => $data['puesto_remitente'],
 				'usrAlta' => $_SESSION['idUsuario'],
 			]);
 
@@ -172,22 +183,23 @@ public function get_remitente(array $data){
 
 			$espacios = new Espacios([
 				'idVolante' => $idVolante,
+				'atte' => $data['e_atte'],
+				'copia' => $data['e_copias_oficio'],
+				'sigla' => $data['e_siglas'],
 				'encabezado' => $data['e_observaciones'],
 				'cuerpo' => $data['e_texto'],
 				'pie' => $data['e_firmas'],
 				'copiaCedula' => $data['e_copias'],
-        'atte' => $data['e_atte'],
-        'copia' => $data['e_copias_oficio'],
-        'sigla' => $data['e_siglas'],
+				'fechaDocto' => $data['e_fecha'],
 				'usrAlta' => $_SESSION['idUsuario']
 			]);
 
 				$espacios->save();
-				$validate[0] = 'OK';
-
 		}
 		echo json_encode($validate);
 	}
+
+
 
 
 	public function update_cedula(array $data){
@@ -229,11 +241,21 @@ public function get_remitente(array $data){
 	}
 
 
+
+/*------------------------ Validacion ---------------------------*/
+
 	public function validate(array $data){
+
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$valid = GUMP::is_valid($data,array(
 			'siglas' => 'required|max_len,150',
+			'folio' => 'required|max_len,50' ,
 			'fecha_documento' => 'required|max_len,10',
+			'nombre_remitente' => 'required|max_len,100',
+			'puesto_remitente' => 'required|max_len,100',
+			'firmas' => 'required|max_len,50',
 			'e_observaciones' => 'required|max_len,2|numeric',
 			'e_texto' => 'required|max_len,2|numeric',
 			'e_firmas' => 'required|max_len,2|numeric',
@@ -241,15 +263,15 @@ public function get_remitente(array $data){
       'e_atte' => 'required|max_len,2|numeric',
       'e_copias_oficio' => 'required|max_len,2|numeric',
       'e_siglas' => 'required|max_len,2|numeric',
-      'folio' => 'required|max_len,50' ,
-			'firmas' => 'required|max_len,50',
+			'e_fecha' => 'required|max_len,2|numeric',
 		));
-
 		if($valid === true){
-			$valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $valid[0];
 		}
 
-		return $valid;
+		return $validacion;
 	}
 
 
