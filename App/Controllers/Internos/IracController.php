@@ -22,7 +22,7 @@ class IracController extends TwigController {
 	private $nombre = 'Irac-Internos';
 
 
-	public function Home(){
+	public function home_template(){
 
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
@@ -40,30 +40,29 @@ class IracController extends TwigController {
 
 
 
-	public function tabla_internos(){
+	public function tabla(){
 
-			$area =  $_SESSION['idArea'];
+		$area =  $_SESSION['idArea'];
 
-        $idUsuario = $_SESSION['idUsuario'];
+  	$idUsuario = $_SESSION['idUsuario'];
 
+  	$iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
+      ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
+      ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
+      ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
+      ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
+      ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
+      ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
+      ->where('sub.nombre','=','IRAC')
+      ->where('t.idAreaRecepcion','=',"$area")
+      ->where('t.idUsrReceptor',"$idUsuario")
+      ->where('t.idTipoTurnado','I')
+      ->orderBy('t.idTurnadoJuridico','DESC')
+      ->first();
 
-         $iracs = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
-            ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
-            ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
-            ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
-            ->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
-            ->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-            ->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-            ->where('sub.nombre','=','IRAC')
-            ->where('t.idAreaRecepcion','=',"$area")
-            ->where('t.idUsrReceptor',"$idUsuario")
-            ->where('t.idTipoTurnado','I')
-            ->orderBy('t.idTurnadoJuridico','DESC')
-            ->first();
+      $res[0] = $iracs;
 
-            $res[0] = $iracs;
-
-		echo json_encode($res);
+		echo json_encode(array('status'=>true,'data' => $res));
 }
 
 	public function load_cedula_template($id){

@@ -7,7 +7,8 @@ import './modal.styl'
 class FirmasModal extends Component {
 
     state =  {
-      data:[]
+      data:[],
+      select:false
     }
 
     HandleCloseModal = () => {
@@ -24,15 +25,51 @@ class FirmasModal extends Component {
     componentDidMount(){
         let url = '/SIA/juridico/Api/Puestos/Cedula'
         axios.get(url).then(response => {
-          this.setState({data:response.data})
+          this.setState({data:response.data,select:true})
         })
     }
 
 
+    loadOptions = () => {
+      let datos = this.state.data;
+      let firmas = this.props.firmas
+      if(firmas != undefined){
+        let firmasArray = firmas.split(',')
+        for(let x in firmasArray){
+          for(let y in datos){
+            if(datos[y].idPuestoJuridico == firmasArray[x]){
+              datos[y].selected = true;
+            }
+          }
+        }
+
+
+        return datos.map(item => {
+          return (<tr key={item.idPuestoJuridico}>
+            <td><input type="checkbox" value={item.idPuestoJuridico} name="puestos" className="form-control" defaultChecked={item.selected} /></td>
+            <td>{item.saludo} {item.nombre} {item.paterno} {item.materno} </td>
+            <td>{item.puesto}</td>
+          </tr>)
+        })
+
+
+      } else{
+        return datos.map(item => {
+          return (<tr key={item.idPuestoJuridico}>
+            <td><input type="checkbox" value={item.idPuestoJuridico} name="puestos" className="form-control" /></td>
+            <td>{item.saludo} {item.nombre} {item.paterno} {item.materno} </td>
+            <td>{item.puesto}</td>
+          </tr>)
+        })
+      }
+    }
+
+
   render(){
+
     return ReactDom.createPortal(
       <Modal
-        open={this.props.visible}
+        open={true}
         onClose={this.props.close}
         closeOnOverlayClick={false}
         center
@@ -48,15 +85,10 @@ class FirmasModal extends Component {
                       <td><strong>Nombre</strong></td>
                       <td><strong>Puesto</strong></td>
                     </tr>
-                      {
-                        this.state.data.map(item => (
-                          <tr key={item.idPuestoJuridico}>
-                            <td><input type="checkbox" value={item.idPuestoJuridico} name="puestos" className="form-control" /></td>
-                            <td>{item.saludo} {item.nombre} {item.paterno} {item.materno} </td>
-                            <td>{item.puesto}</td>
-                          </tr>
-                        ))
-                      }
+                    {
+                      this.state.select &&
+                      <this.loadOptions />
+                    }
                   </tbody>
                 </table>
             </div>
@@ -71,3 +103,19 @@ class FirmasModal extends Component {
 }
 
 export default FirmasModal;
+
+
+
+/*
+
+{
+  this.state.data.map(item => (
+    <tr key={item.idPuestoJuridico}>
+      <td><input type="checkbox" value={item.idPuestoJuridico} name="puestos" className="form-control" /></td>
+      <td>{item.saludo} {item.nombre} {item.paterno} {item.materno} </td>
+      <td>{item.puesto}</td>
+    </tr>
+  ))
+}
+
+*/

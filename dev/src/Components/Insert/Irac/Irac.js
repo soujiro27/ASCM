@@ -48,8 +48,8 @@ export default class Asignacion extends Component {
 
   HandleCloseModal = () =>{
     if(this.state.response){
-      window.open(`/SIA/jur/App/cedulas/oficio_irac.php?param=${this.props.idVolante}`);
-      window.open(`/SIA/jur/App/cedulas/Irac_.php?param=${this.props.idVolante}`);
+      window.open('/SIA/jur/App/cedulas/OFICIO_IRAC.php?param='+this.props.idVolante);
+      window.open('/SIA/jur/App/cedulas/CEDULA_IRAC.php?param='+this.props.idVolante);
       location.href = '/SIA/juridico/Irac';
     } else {
       this.setState({modal:false})

@@ -164,6 +164,7 @@ class BaseController extends TwigController{
 	public function send_notification_complete($rpe_recibe,$idVolante,$datosArea,$tipo){
 
 		$notifica = new NotificacionesController();
+/*	-envia notificaciones a dos usuarios el que recibe y el que asiste
 
 		$rpeAll = $notifica->get_rpe_asiste($rpe_recibe);
 		array_push($rpeAll,$rpe_recibe);
@@ -174,8 +175,10 @@ class BaseController extends TwigController{
 		foreach ($rpeAll as $key => $value) {
 			array_push($idusuarios,$this->get_id_usr($value));
 		}
+*/
 
 
+		$idUsuario = $this->get_id_usr($rpe_recibe);
 
 		$datosVolante = $this->get_datos_Volante($idVolante);
 
@@ -190,9 +193,11 @@ class BaseController extends TwigController{
 
 
 
-		foreach ($idusuarios as $key => $value) {
+		/*foreach ($idusuarios as $key => $value) {
 			$notifica->send_notifications($value,$mensaje);
-		}
+		}*/
+
+		$notifica->send_notifications($idUsuario,$mensaje);
 	}
 
 

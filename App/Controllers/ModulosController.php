@@ -310,9 +310,19 @@ class ModulosController {
 		$usuarios = Usuarios::where('idEmpleado',"$rpe")->get();
 		$usrReceptor = $usuarios[0]['idUsuario'];
 
-		$turnados = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal')
+		$turnadosUsuario = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal')
 		->leftJoin('sia_AnexosJuridico as a ','a.idTurnadoJuridico','=','sia_TurnadosJuridico.idTurnadoJuridico')
-		->whereIn('idUsrReceptor',[$idUsuario,$usrReceptor])->where('idTipoTurnado','I')->where('sia_TurnadosJuridico.idVolante',"$idVolante")->get();
+		->where('sia_TurnadosJuridico.idUsrReceptor',"$idUsuario")->where('sia_TurnadosJuridico.usrAlta',"$usrReceptor")
+		->where('idTipoTurnado','I')->where('sia_TurnadosJuridico.idVolante',"$idVolante")->get();
+
+
+		$turnadosReceptor = TurnadosJuridico::select('sia_TurnadosJuridico.*','a.archivoFinal')
+		->leftJoin('sia_AnexosJuridico as a ','a.idTurnadoJuridico','=','sia_TurnadosJuridico.idTurnadoJuridico')
+		->where('sia_TurnadosJuridico.idUsrReceptor',"$usrReceptor")->where('sia_TurnadosJuridico.usrAlta',"$idUsuario")
+		->where('idTipoTurnado','I')->where('sia_TurnadosJuridico.idVolante',"$idVolante")->get();
+
+		$merge = $turnadosUsuario->merge($turnadosReceptor);
+		$turnados = $merge->all();
 
 	foreach ($turnados as $key => $value) {
 			$turnados[$key]['usrActual'] = $idUsuario;

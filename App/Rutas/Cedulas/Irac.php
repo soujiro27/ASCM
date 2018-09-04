@@ -53,7 +53,7 @@ $app->group('/juridico',$auth,function() use($app,$controller){
 		$controller->get_register_cedula($id);
 	});
 
-	$app->post('/Irac/Cedula/Update',function() use ($controller,$app){
+	$app->post('/Irac/Update',function() use ($controller,$app){
 		$controller->update_cedula($app->request->post());
 	});
 

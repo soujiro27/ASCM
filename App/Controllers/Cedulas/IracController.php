@@ -90,28 +90,6 @@ public function cedula_template($id){
 	}
 
 
-	public function tabla_internos(){
-
-
-				$area = $_SESSION['idArea'];
-				var_dump($area);
-
-				$ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado')
-						->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
-						->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
-						->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
-						->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
-						->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-						->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-						->where('sub.nombre','=','IRAC')
-						->where('t.idAreaRecepcion','=',"$area")
-						->where('t.idTipoTurnado','V')
-						->get();
-				var_dump($ifa);
-
-		//echo json_encode($ifa);
-	}
-
 
 /*------------------   Obtiene el Remitente del Irac -----------------*/
 
@@ -159,44 +137,53 @@ public function get_remitente(array $data){
 
 	public function insert_cedula(array $data){
 
-		$validate =  $this->validate($data);
-		if($validate['status']){
+		try {
 
-			$idVolante = $data['idVolante'];
+			$validate =  $this->validate($data);
+			if($validate['status']){
 
-			$volantesDocumentos = VolantesDocumentos::where('idVolante',"$idVolante")->get();
-			$subTipo = $volantesDocumentos[0]['idSubTipoDocumento'];
+				$idVolante = $data['idVolante'];
 
-			$documento = new DocumentosSiglas([
-				'idVolante' => $idVolante,
-				'idSubTipoDocumento' => $subTipo,
-				'idPuestosJuridico' => $data['firmas'],
-				'fOficio' => $data['fecha_documento'],
-				'siglas' => $data['siglas'],
-        'numFolio' => $data['folio'],
-				'nombreRemitente' => $data['nombre_remitente'],
-				'puestoRemitente' => $data['puesto_remitente'],
-				'usrAlta' => $_SESSION['idUsuario'],
-			]);
+				$volantesDocumentos = VolantesDocumentos::where('idVolante',"$idVolante")->get();
+				$subTipo = $volantesDocumentos[0]['idSubTipoDocumento'];
 
-			$documento->save();
+				$documento = new DocumentosSiglas([
+					'idVolante' => $idVolante,
+					'idSubTipoDocumento' => $subTipo,
+					'idPuestosJuridico' => $data['firmas'],
+					'fOficio' => $data['fecha_documento'],
+					'siglas' => $data['siglas'],
+	        'numFolio' => $data['folio'],
+					'nombreRemitente' => $data['nombre_remitente'],
+					'puestoRemitente' => $data['puesto_remitente'],
+					'usrAlta' => $_SESSION['idUsuario'],
+				]);
 
-			$espacios = new Espacios([
-				'idVolante' => $idVolante,
-				'atte' => $data['e_atte'],
-				'copia' => $data['e_copias_oficio'],
-				'sigla' => $data['e_siglas'],
-				'encabezado' => $data['e_observaciones'],
-				'cuerpo' => $data['e_texto'],
-				'pie' => $data['e_firmas'],
-				'copiaCedula' => $data['e_copias'],
-				'fechaDocto' => $data['e_fecha'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
+				$documento->save();
 
-				$espacios->save();
+				$espacios = new Espacios([
+					'idVolante' => $idVolante,
+					'atte' => $data['e_atte'],
+					'copia' => $data['e_copias_oficio'],
+					'sigla' => $data['e_siglas'],
+					'encabezado' => $data['e_observaciones'],
+					'cuerpo' => $data['e_texto'],
+					'pie' => $data['e_firmas'],
+					'copiaCedula' => $data['e_copias'],
+					'fechaDocto' => $data['e_fecha'],
+					'usrAlta' => $_SESSION['idUsuario']
+				]);
+
+					$espacios->save();
+			}
+			echo json_encode($validate);
+
+		} catch(\Illuminate\Database\QueryExcepton $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Irac');
 		}
-		echo json_encode($validate);
+
+
 	}
 
 
@@ -204,39 +191,48 @@ public function get_remitente(array $data){
 
 	public function update_cedula(array $data){
 
-		$validate = $this->validate($data);
-
-		if(empty($validate)){
-
-		$id = $data['idDocumentoSiglas'];
-		$idVolante = $data['idVolante'];
-
-		DocumentosSiglas::find($id)->update([
-      'numFolio' => $data['folio'],
-			'idPuestosJuridico' => $data['firmas'],
-			'fOficio' => $data['fecha_documento'],
-			'siglas' => $data['siglas'],
-			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		]);
+		try {
 
 
-		Espacios::where('idVolante',"$idVolante")->update([
-			'encabezado' => $data['e_observaciones'],
-			'cuerpo' => $data['e_texto'],
-			'pie' => $data['e_firmas'],
-			'copiaCedula' => $data['e_copias'],
-      'atte' => $data['e_atte'],
-      'copia' => $data['e_copias_oficio'],
-      'sigla' => $data['e_siglas'],
-			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		]);
+					$validate = $this->validate($data);
 
-			 $validate[0] = 'OK';
+					if($validate['status']){
 
+					$id = $data['idDocumentoSiglas'];
+					$idVolante = $data['idVolante'];
+
+					DocumentosSiglas::find($id)->update([
+						'siglas' => $data['siglas'],
+			      'numFolio' => $data['folio'],
+						'fOficio' => $data['fecha_documento'],
+						'nombreRemitente' => $data['nombre_remitente'],
+						'puestoRemitente' => $data['puesto_remitente'],
+						'idPuestosJuridico' => $data['firmas'],
+						'usrModificacion' => $_SESSION['idUsuario'],
+						'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					]);
+
+
+					Espacios::where('idVolante',"$idVolante")->update([
+						'atte' => $data['e_atte'],
+						'copia' => $data['e_copias_oficio'],
+						'sigla' => $data['e_siglas'],
+						'encabezado' => $data['e_observaciones'],
+						'cuerpo' => $data['e_texto'],
+						'pie' => $data['e_firmas'],
+						'copiaCedula' => $data['e_copias'],
+						'fechaDocto' => $data['e_fecha'],
+						'usrModificacion' => $_SESSION['idUsuario'],
+						'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					]);
+
+					}
+					echo json_encode($validate);
+
+		} catch(\Illuminate\Database\QueryExcepton $e){
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Irac');
 		}
-		echo json_encode($validate);
 
 	}
 

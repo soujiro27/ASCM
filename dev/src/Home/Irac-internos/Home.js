@@ -6,18 +6,13 @@ class Home extends Component{
     render(){
         return(
             <div className="MainContainer">
-                <Header {...this.props} />
-                <Table/>
+                <Header texto={this.props.texto} />
+                <Table {...this.props} />
             </div>
 
         )
     }
 }
 
-Home.defaultProps = {
-    texto:'Registros Irac',
-    textoButton:'Nuevo Registro',
-    'modulo':'Irac'
-}
-
+Home.defaultProps = { texto:'Irac' };
 export default Home

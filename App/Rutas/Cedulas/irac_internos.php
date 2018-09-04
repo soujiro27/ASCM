@@ -25,14 +25,19 @@
 
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
+/*------------------- HOME -----------------*/
+
 	$app->get('/Irac-Internos',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
+	});
+
+/*-------------------- Tabla -------------------*/
+
+	$app->get('/Irac-Internos/All',function() use ($controller){
+		$controller->tabla();
 	});
 
 
-	$app->get('/Irac-Internos/all',function() use ($controller){
-		$controller->tabla_internos();
-	});
 
 
 	$app->get('/Irac-Internos/Cedula/:id',function($id) use ($controller){

@@ -2,16 +2,40 @@
 namespace Jur\App\Controllers;
 
 use Jur\App\Models\Notificaciones\Notificaciones;
+use Jur\App\Models\Notificaciones\Usuarios;
 use Jur\App\Models\Modulos\Puestos;
+
 use Carbon\Carbon;
 
 class NotificacionesController{
+
+	/* Obtiene las notificaciones cuando son a dos registros
 
 	public function get_notificaciones(){
 
 		$idUsuario = $_SESSION['idUsuario'];
 
 		$notificaciones = Notificaciones::where('idUsuario',"$idUsuario")->where('situacion','NUEVO')->get();
+
+		return($notificaciones->count());
+
+
+	}
+
+	*/
+
+	public function get_notificaciones(){
+
+		$idUsuario = $_SESSION['idUsuario'];
+		$rpe = $_SESSION['idEmpleado'];
+
+		$puestos = Puestos::where('rpe',"$rpe")->get();
+		$asiste = $puestos[0]['usrAsisteA'];
+
+		$usuarios = Usuarios::where('idEmpleado',"$asiste")->get();
+		$idUsuarioAsiste = $usuarios[0]['idUsuario'];
+
+		$notificaciones = Notificaciones::whereIn('idUsuario',[$idUsuario,$idUsuarioAsiste])->where('situacion','NUEVO')->get();
 
 		return($notificaciones->count());
 
