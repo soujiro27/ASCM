@@ -1,6 +1,6 @@
-<?php  
+<?php
 	namespace App\Rutas;
-	
+
 	use Jur\App\Controllers\SecurityController;
 
 	use Jur\App\Controllers\Catalogos\CaracteresController;
@@ -19,34 +19,34 @@
 		$security->validacion_sesion();
 	};
 
-	
+
 
 
 
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
 	$app->get('/Caracteres',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
-	$app->get('/Caracteres/all',function() use ($controller){
+	$app->get('/Caracteres/All',function() use ($controller){
 		$controller->tabla();
 	});
 
-	$app->get('/Caracteres/add',function() use ($controller){
+	$app->get('/Caracteres/Add',function() use ($controller){
 		$controller->nuevo_registro();
 	});
 
 
-	$app->get('/Caracteres/:id',function($id) use ($controller){
-		$controller->update_template($id);
+	$app->get('/Caracteres/Update',function() use ($controller){
+		$controller->update_template();
 	});
 
 	$app->get('/Caracteres/Register/:id',function($id) use ($controller){
 		$controller->registro($id);
 	});
 
-	$app->post('/Caracteres/save',function() use ($controller,$app){
+	$app->post('/Caracteres/Add',function() use ($controller,$app){
 		$controller->guardar($app->request->post());
 	});
 

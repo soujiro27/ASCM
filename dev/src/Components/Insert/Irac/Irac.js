@@ -94,7 +94,6 @@ export default class Asignacion extends Component {
   }
 
   render(){
-    console.log(this.props)
     return (
       <div className="cedula-container row">
         <form onSubmit={this.HandleSubmit} className="col-lg-7">

@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace Jur\App\Controllers\Catalogos;
 use Jur\App\Controllers\TwigController;
@@ -16,116 +16,127 @@ class AccionesController extends TwigController {
 	private $js = 'Acciones';
 	private $nombre = 'Acciones';
 
+/*-------------- Templates --------------*/
 
-	public function Home(){
+public function load_data_templates(){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
+	$notificaciones = new NotificacionesController();
+	$base = new BaseController();
+	$menu = $base->menu();
 
+	$data = [
+		'js' => $this->js,
+		'session' => $_SESSION,
+		'nombre' => $this->nombre,
+		'notificaciones' => $notificaciones->get_notificaciones(),
+		'menu' => $menu['modulos']
+	];
 
-		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
+	return $data;
+
+}
+
+	public function home_template(){
+		$data = $this->load_data_templates();
+		echo $this->render('HomeLayout/HomeContainer.twig',$data);
 	}
 
-	public function tabla(){
 
-		$datos = Acciones::all();
-		echo json_encode($datos);
-	}
 
 	public function nuevo_registro(){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/InsertContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
+		$data = $this->load_data_templates();
+		echo $this->render('HomeLayout/InsertContainer.twig',$data);
 
 	}
 
-	public function guardar($data){
-	
-		$data['estatus'] = 'ACTIVO';
-		$validate = $this->validate($data);
-		if(empty($validate)){
-			
-			$accion = new Acciones([
-				'nombre' => $data['nombre'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
+	public function update_template(){
+		$data = $this->load_data_templates();
 
-			$accion->save();
-			$validate[0] = 'OK';	
-			
+		echo $this->render('HomeLayout/UpdateContainer.twig',$data);
+	}
+
+/*---------------------- Tabla ---------------------*/
+
+	public function tabla(){
+
+		try {
+			$datos = Acciones::all();
+
+			echo json_encode(array('status'=>true,'data' => $datos));
+
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
 		}
 
-		echo json_encode($validate);
 	}
 
 
+	/*------------------ Insertar -----------------------*/
+	public function guardar($data){
+
+		try{
+			$data['estatus'] = 'ACTIVO';
+			$validate = $this->validate($data);
+			if($validate['status']){
+
+				$accion = new Acciones([
+					'nombre' => $data['nombre'],
+					'usrAlta' => $_SESSION['idUsuario']
+				]);
+				$accion->save();
+			}
+			echo json_encode($validate);
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
+	}
+
+
+/*----------------------- Actualizar ----------------*/
 	public function update($data){
 
-		$id = $data['idAccion'];
+		try {
+			$id = $data['idAccion'];
 
-		$validate = $this->validate($data);
-			if(empty($validate)){
-				
-				Acciones::find($id)->update([
-					'nombre' => $data['nombre'],
-					'estatus' => $data['estatus'],
-					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+			$validate = $this->validate($data);
+				if($validate['status']){
 
+					Acciones::find($id)->update([
+						'nombre' => $data['nombre'],
+						'estatus' => $data['estatus'],
+						'usrModificacion' => $_SESSION['idUsuario'],
+						'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					]);
+				}
 
-				]);
-				$validate[0] = 'OK';	
-				
-			}
+				echo json_encode($validate);
 
-			echo json_encode($validate);
-
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
 	}
 
-	public function update_template($id){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
-	}
-
-	
+/*----------------------- Obtener REgistro----------------*/
 	public function registro($id){
-		$accion = Acciones::find($id);
-		echo json_encode($accion);
+		try {
+			$accion = Acciones::find($id);
+			echo json_encode(array('status'=>true,'data' => $accion));
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
+
 	}
 
-
+/*----------------------- Validar -------------------------*/
 	public function validate($data){
 
-		
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$valid = GUMP::is_valid($data,array(
 			'nombre' => 'required|max_len,5|alpha_space',
@@ -133,10 +144,12 @@ class AccionesController extends TwigController {
 		));
 
 		if($valid === true){
-			$valid = [];	
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $valid[0];
 		}
 
-		return $valid;
+		return $validacion;
 	}
 
 }

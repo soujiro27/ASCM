@@ -7,7 +7,7 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Table/>
+                <Table {...this.props}/>
             </div>
 
         )
@@ -20,6 +20,4 @@ Home.defaultProps = {
     'modulo':'Caracteres'
 }
 
-export default Home
-
-
+export default Home;

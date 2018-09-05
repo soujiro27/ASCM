@@ -1,4 +1,4 @@
-<?php  
+<?php
 
 namespace Jur\App\Controllers\Catalogos;
 use Jur\App\Controllers\TwigController;
@@ -17,118 +17,140 @@ class subDocumentosController extends TwigController {
 	private $nombre = 'Sub-Documentos';
 
 
-	public function Home(){
+	/*-------------- Templates --------------*/
+
+	public function load_data_templates(){
 
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
 		$menu = $base->menu();
 
-
-		echo $this->render('HomeLayout/HomeContainer.twig',[
+		$data = [
 			'js' => $this->js,
 			'session' => $_SESSION,
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos']
-		]);
-	}
+		];
 
-	public function tabla(){
-
-		$datos = SubDocumentos::all();
-		echo json_encode($datos);
-	}
-
-	public function nuevo_registro(){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/InsertContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
+		return $data;
 
 	}
 
-	public function guardar($data){
-	
-		$data['estatus'] = 'ACTIVO';
-		$validate = $this->validate($data);
-		if(empty($validate)){
-			
-			$accion = new SubDocumentos([
-				'idTipoDocto' => $data['documento'],
-				'tipo' => 'JURIDICO',
-				'nombre' => $data['nombre'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
-
-			$accion->save();
-			$validate[0] = 'OK';	
-			
+		public function home_template(){
+			$data = $this->load_data_templates();
+			echo $this->render('HomeLayout/HomeContainer.twig',$data);
 		}
 
-		echo json_encode($validate);
+
+		public function nuevo_registro(){
+
+			$data = $this->load_data_templates();
+			echo $this->render('HomeLayout/InsertContainer.twig',$data);
+
+		}
+
+		public function update_template(){
+			$data = $this->load_data_templates();
+
+			echo $this->render('HomeLayout/UpdateContainer.twig',$data);
+		}
+
+	/*---------------------- Tabla ---------------------*/
+	public function tabla(){
+		try {
+				$datos = SubDocumentos::all();
+
+			echo json_encode(array('status'=>true,'data' => $datos));
+
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
+
 	}
 
 
-	public function update($data){
+/*----------------------- Obtener el Registro ----------------*/
 
-		$id = $data['idSubTipoDocumento'];
 
-		$validate = $this->validate($data);
-			if(empty($validate)){
-				
-				SubDocumentos::find($id)->update([
+
+	public function registro($id){
+
+		try {
+			$accion = SubDocumentos::find($id);
+			echo json_encode(array('status'=>true,'data' => $accion));
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
+	}
+
+/*------------------ Insertar --------------------*/
+
+	public function guardar($data){
+
+		try {
+			$data['estatus'] = 'ACTIVO';
+			$validate = $this->validate($data);
+			if($validate['status']){
+
+				$accion = new SubDocumentos([
 					'idTipoDocto' => $data['documento'],
+					'tipo' => 'JURIDICO',
 					'nombre' => $data['nombre'],
-					'estatus' => $data['estatus'],
-					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-
-
+					'usrAlta' => $_SESSION['idUsuario']
 				]);
-				$validate[0] = 'OK';	
-				
+
+				$accion->save();
 			}
 
 			echo json_encode($validate);
 
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
+
+
+
 	}
 
-	public function update_template($id){
+/*-------------------- Update ---------------------*/
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
+	public function update($data){
 
+		try {
+			$id = $data['idSubTipoDocumento'];
 
-		echo $this->render('HomeLayout/UpdateContainer.twig',[
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos'],
-			'id' => $id
-		]);
+			$validate = $this->validate($data);
+				if($validate['status']){
+
+					SubDocumentos::find($id)->update([
+						'idTipoDocto' => $data['documento'],
+						'nombre' => $data['nombre'],
+						'estatus' => $data['estatus'],
+						'usrModificacion' => $_SESSION['idUsuario'],
+						'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+
+					]);
+				}
+				echo json_encode($validate);
+
+		} catch(\Illuminate\Database\QueryException $e){
+		$error = new ErrorsController();
+		$error->errores_load_table($e,'Acciones');
+		}
 	}
 
-	
-	public function registro($id){
-		$accion = SubDocumentos::find($id);
-		echo json_encode($accion);
-	}
 
+/*--------------- Validate ----------------*/
 
 	public function validate($data){
 
-		
+		$validacion = [];
+		$validacion['status'] = false;
+
 
 		$valid = GUMP::is_valid($data,array(
 			'documento' => 'required|max_len,10',
@@ -137,10 +159,12 @@ class subDocumentosController extends TwigController {
 		));
 
 		if($valid === true){
-			$valid = [];	
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $valid[0];
 		}
 
-		return $valid;
+		return $validacion;
 	}
 
 }

@@ -13,12 +13,15 @@ class FirmasModal extends Component {
 
     HandleCloseModal = () => {
         let checkboxes = document.getElementsByName('puestos')
+        console.log(checkboxes[0])
         let checked = []
-        for(let x in checkboxes){
-          if(checkboxes[x].checked == true){
+        for(let x = 0; x < checkboxes.length;x++){
+            console.log(checkboxes[x])
+            if(checkboxes[x].checked == true){
             checked.push(checkboxes[x].value)
           }
         }
+        
         this.props.closeModalFirmas(checked)
     }
 

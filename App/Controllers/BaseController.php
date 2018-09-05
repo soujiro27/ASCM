@@ -50,13 +50,22 @@ class BaseController extends TwigController{
 
 		foreach ($roles as $key => $value) {
 
-			$data = array(
-						'modulo' => $value->idModulo,
-						'nombre' => $value->nombre,
-						'panel' => $value->panel,
-						'liga' => $value->liga,
-						'icono' => $value->icono
-			);
+		$pos = strstr($value->liga,'.');
+
+		if($pos != false){
+			$liga = './.'.$value->liga;
+		} else {
+			$liga = $value->liga;
+		}
+
+
+		$data = array(
+					'modulo' => $value->idModulo,
+					'nombre' => $value->nombre,
+					'panel' => $value->panel,
+					'liga' => $liga,
+					'icono' => $value->icono
+		);
 
 			array_push($json['modulos'][$value->panel]['submenus'],$data);
 

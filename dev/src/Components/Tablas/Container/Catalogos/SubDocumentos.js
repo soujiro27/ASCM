@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import axios from 'axios';
-import { GridLoader } from 'react-spinners';
-import './../spiner.styl'
+
 
 class TableContainer extends Component{
-   
-    state = {
-        load:false,
-        data:{}
-    }
+
+
 
     columns = [
         {
@@ -31,30 +27,21 @@ class TableContainer extends Component{
         }
     ]
 
-
-    componentDidMount(){
-        let url = `/SIA/juridico/SubTiposDocumentos/all`;
-        axios.get(url).then(response => {
-            if(response.status === 200 ){
-                let data = response.data
-                this.setState({data,load:true})
-            }
-        })
-    }
-
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-                location.href = `/SIA/juridico/SubTiposDocumentos/${rowInfo.original.idSubTipoDocumento}`
+              sessionStorage.removeItem('idSubDocumento')
+              sessionStorage.setItem('idSubDocumento',rowInfo.original.idSubTipoDocumento)
+                location.href = `/SIA/juridico/SubTiposDocumentos/Update}`
             }
         }
     }
 
     render(){
-        if(this.state.load){
-            return( 
+
+            return(
                 <ReactTable
-                data={this.state.data}
+                data={this.props.data}
                 columns={this.columns}
                 pageSizeOptions={[10,15]}
                 defaultPageSize={10}
@@ -65,19 +52,9 @@ class TableContainer extends Component{
                 pageText='Pagina'
                 ofText= 'de'
                 getTrProps={this.Handle_Click}
-            /> 
+            />
 
             )
-        } else {
-            return(  
-                <div className="spiner">
-                    <GridLoader
-                        color={'#851B07'} 
-                        loading={!this.state.load} 
-                    />
-                </div>
-            )
-        }
         
     }
 }
