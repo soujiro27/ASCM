@@ -90,31 +90,6 @@ public function cedula_template($id){
 	}
 
 
-
-/*------------------   Obtiene el Remitente del Irac -----------------*/
-
-
-
-public function get_remitente(array $data){
-	try {
-		$idVolante = $data['idVolante'];
-		$data = VolantesDocumentos::select('u.saludo','u.nombre','u.paterno','u.materno','a.nombre as puesto')
-										->join('sia_auditorias as audi','audi.idAuditoria','=','sia_volantesDocumentos.cveAuditoria')
-										->join('sia_areas as a','a.idArea','=','audi.idArea')
-										->join('sia_usuarios as u','u.idEmpleado','=','a.idEmpleadoTitular')
-										->where('sia_volantesDocumentos.idVolante',"$idVolante")
-										->get();
-		echo json_encode(array('status'=>true,'data' => $data));
-
-	}catch(\Illuminate\Database\QueryException $e){
-
-		$error = new ErrorsController();
-		$error->errores_load_table($e,'Irac');
-
-	}
-
-}
-
 /*------------------ Obtener el Registro -----------------*/
 
 	public function get_register_cedula($id){
@@ -256,11 +231,12 @@ public function get_remitente(array $data){
 			'e_texto' => 'required|max_len,2|numeric',
 			'e_firmas' => 'required|max_len,2|numeric',
 			'e_copias' => 'required|max_len,2|numeric',
-      'e_atte' => 'required|max_len,2|numeric',
-      'e_copias_oficio' => 'required|max_len,2|numeric',
-      'e_siglas' => 'required|max_len,2|numeric',
+			'e_atte' => 'required|max_len,2|numeric',
+			'e_copias_oficio' => 'required|max_len,2|numeric',
+			'e_siglas' => 'required|max_len,2|numeric',
 			'e_fecha' => 'required|max_len,2|numeric',
 		));
+
 		if($valid === true){
 			$validacion['status'] = true;
 		} else{

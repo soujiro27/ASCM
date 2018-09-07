@@ -21,24 +21,21 @@ class Form extends Component {
     }
 
     HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.formData['documento'] = value;
-        if(value != '')
-        {
-            let url = '/SIA/juridico/Api/SubDocumentos'
-            axios.get(url,{
-                params:{
-                    tipo:value,
-                    auditoria:'SI'
-                }
-            })
-            .then((response) => {
-                document.getElementById('subDocumento').removeAttribute('disabled')
-                this.setState({subDocumentos:response.data})
-            })
-        }
-    }
+        let tipo = event.target.value;
+        this.formData.documento = tipo;
+        let subArray = [];
+        this.props.subDocumentos.map(item => {
+            if(item.idTipoDocto === tipo){
+                subArray.push(item)
+            }
+        })
 
+        document.getElementById('subDocumento').removeAttribute('disabled')
+        this.setState({
+            subDocumentos:subArray
+        })
+    }
+    
     HandleChangeSubDocumento = (event) =>{
       if(this.formData.documento === 'OFICIO'){
         let texto = event.nativeEvent.target[event.nativeEvent.target.selectedIndex].text;
@@ -59,10 +56,6 @@ class Form extends Component {
             [name]: max - value_length
         })
     }
-
-
-
-
 
     render(){
         return(

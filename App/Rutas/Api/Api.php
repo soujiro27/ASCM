@@ -31,6 +31,10 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_subDocumentos($app->request->get());
 	});
 
+	$app->get('/SubDocumentosTest',function() use ($controller,$app){
+		$controller->get_subDocumentos_test($app->request->get());
+	});
+
 	$app->get('/Caracteres',function() use ($controller){
 		$controller->get_Caracteres();
 	});
@@ -87,6 +91,12 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 	$app->get('/Respuestas',function() use ($controller,$app){
 		$controller->get_respuestas($app->request->get());
 	});
+
+	$app->get('/Remitente_Cedula',function() use ($controller,$app){
+		$controller->get_remitente_cedula($app->request->get());
+	});
+
+	
 
 
 

@@ -24,3 +24,94 @@ Stack trace:
 #7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
 #8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
 #9 {main}
+[Thu, 06 Sep 2018 18:02:25 +0200] Error: Undefined index: tipo
+[Thu, 06 Sep 2018 18:02:25 +0200] Error: exception 'ErrorException' with message 'Undefined index: tipo' in C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php:45
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php(45): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 45, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Api\Api.php(31): Jur\App\Controllers\ModulosController->get_subDocumentos(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Thu, 06 Sep 2018 18:09:25 +0200] Error: Undefined index: tipo
+[Thu, 06 Sep 2018 18:09:25 +0200] Error: exception 'ErrorException' with message 'Undefined index: tipo' in C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php:45
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php(45): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 45, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Api\Api.php(31): Jur\App\Controllers\ModulosController->get_subDocumentos(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Thu, 06 Sep 2018 18:17:47 +0200] Error: Undefined index: tipo
+[Thu, 06 Sep 2018 18:17:47 +0200] Error: exception 'ErrorException' with message 'Undefined index: tipo' in C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php:45
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php(45): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 45, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Api\Api.php(31): Jur\App\Controllers\ModulosController->get_subDocumentos(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Thu, 06 Sep 2018 18:17:55 +0200] Error: Undefined index: tipo
+[Thu, 06 Sep 2018 18:17:55 +0200] Error: exception 'ErrorException' with message 'Undefined index: tipo' in C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php:45
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php(45): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 45, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Api\Api.php(31): Jur\App\Controllers\ModulosController->get_subDocumentos(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Thu, 06 Sep 2018 18:18:53 +0200] Error: Undefined index: tipo
+[Thu, 06 Sep 2018 18:18:53 +0200] Error: exception 'ErrorException' with message 'Undefined index: tipo' in C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php:45
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\ModulosController.php(45): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 45, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Api\Api.php(31): Jur\App\Controllers\ModulosController->get_subDocumentos(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Fri, 07 Sep 2018 19:51:00 +0200] Error: Undefined variable: template
+[Fri, 07 Sep 2018 19:51:00 +0200] Error: exception 'ErrorException' with message 'Undefined variable: template' in C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\ConfrontaController.php:56
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\ConfrontaController.php(56): Slim\Slim::handleErrors(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 56, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Cedulas\Confronta.php(40): Jur\App\Controllers\Cedulas\ConfrontaController->load_cedula_template('1110')
+#2 [internal function]: App\Rutas\{closure}('1110')
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Fri, 07 Sep 2018 19:51:23 +0200] Error: Undefined variable: template
+[Fri, 07 Sep 2018 19:51:23 +0200] Error: exception 'ErrorException' with message 'Undefined variable: template' in C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\ConfrontaController.php:56
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\ConfrontaController.php(56): Slim\Slim::handleErrors(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 56, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Cedulas\Confronta.php(40): Jur\App\Controllers\Cedulas\ConfrontaController->load_cedula_template('1110')
+#2 [internal function]: App\Rutas\{closure}('1110')
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}

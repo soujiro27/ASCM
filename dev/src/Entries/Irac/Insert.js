@@ -7,7 +7,7 @@ import ModalError from '../../Components/Modals/ErrorLoad';
 const root = document.getElementById('root');
 const idVolante = sessionStorage.getItem('idVolante');
 
-axios.get('/SIA/juridico/Irac/Remitente',{params:{idVolante}})
+axios.get('/SIA/juridico/Api/Remitente_Cedula',{params:{idVolante}})
 .then((response)=>{
   let datos = response.data;
 

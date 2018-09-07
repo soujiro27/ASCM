@@ -23,47 +23,51 @@ class ConfrontaController extends TwigController {
 	private $nombre = 'Confronta';
 
 
-	public function Home(){
+	/*---------------------Templates ------------------*/
+	public function load_data_templates() {
 
 		$notificaciones = new NotificacionesController();
 		$base = new BaseController();
 		$menu = $base->menu();
 
-
-		echo $this->render('HomeLayout/HomeContainer.twig',[
+		$data = [
 			'js' => $this->js,
 			'session' => $_SESSION,
 			'nombre' => $this->nombre,
 			'notificaciones' => $notificaciones->get_notificaciones(),
 			'menu' => $menu['modulos']
-		]);
+		];
+
+		return $data;
+
+	}
+
+	public function home_template(){
+
+		$data = $this->load_data_templates();
+		echo $this->render('HomeLayout/HomeContainer.twig',$data);
+	}
+
+	public function load_cedula_template($id){
+
+		$data = $this->load_data_templates();
+		$ds = Confrontas::where('idVolante',"$id")->get();
+		if($ds->isEmpty()){
+					echo $this->render('HomeLayout/InsertContainer.twig',$data);
+		} else {
+				
+				echo $this->render('HomeLayout/UpdateContainer.twig',$data);
+		}
+
 	}
 
 
-
-	public function Home_internos(){
-
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
-
-
-		echo $this->render('HomeLayout/HomeContainer.twig',[
-			'js' => 'ConfrontaInternos',
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		]);
-	}
+	/*------------------- Tabla ----------------------------*/
 
 	public function tabla(){
-
-
-        $area = $_SESSION['idArea'];
-
-
-        $ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado','vd.notaConfronta')
+		try{
+			$area = $_SESSION['idArea'];
+        	$confronta = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado','vd.notaConfronta')
             ->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
             ->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
             ->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
@@ -74,154 +78,138 @@ class ConfrontaController extends TwigController {
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idTipoTurnado','V')
             ->get();
-				//var_dump($ifa);
+			
 
-		echo json_encode($ifa);
+			echo json_encode(array('status'=>true,'data' => $confronta));
+
+		}catch(\Illuminate\Database\QueryException $e){
+
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Confronta');
+
+		}
+        
 	}
 
-
-	public function tabla_internos(){
-
-
-				$area = $_SESSION['idArea'];
-
-
-				$ifa = Volantes::select('sia_Volantes.*','c.nombre as caracter','a.nombre as accion','audi.clave','sia_Volantes.extemporaneo','t.idEstadoTurnado','vd.notaConfronta')
-						->join('sia_catCaracteres as c','c.idCaracter','=','sia_Volantes.idCaracter')
-						->join('sia_CatAcciones as a','a.idAccion','=','sia_Volantes.idAccion')
-						->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_Volantes.idVolante')
-						->join('sia_auditorias as audi','audi.idAuditoria','=','vd.cveAuditoria')
-						->join( 'sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
-						->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante')
-						->where('sub.nombre','=','CONFRONTA')
-						->where('t.idAreaRecepcion','=',"$area")
-						->where('t.idTipoTurnado','I')
-						->get();
-				//var_dump($ifa);
-
-		echo json_encode($ifa);
-	}
+	/*----------------- Obtener Registro ------------------------*/
 
 
 	public function get_register_cedula($id){
-
+		try{
 			$cedula = Confrontas::select('sia_ConfrontasJuridico.*','e.*')
 							->leftJoin('sia_espaciosJuridico as e','e.idVolante','=','sia_ConfrontasJuridico.idVolante')
 							->where('sia_ConfrontasJuridico.idVolante',"$id")->get();
-			echo json_encode($cedula);
-	}
+			echo json_encode(array('status'=>true,'data' => $cedula));
 
-	public function load_cedula_template($id){
+		}catch(\Illuminate\Database\QueryException $e){
 
-		$notificaciones = new NotificacionesController();
-		$base = new BaseController();
-		$menu = $base->menu();
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Confronta');
 
-		$template = [
-			'js' => $this->js,
-			'session' => $_SESSION,
-			'nombre' => $this->nombre,
-			'notificaciones' => $notificaciones->get_notificaciones(),
-			'menu' => $menu['modulos']
-		];
-
-		$ds = Confrontas::where('idVolante',"$id")->get();
-		if($ds->isEmpty()){
-					echo $this->render('HomeLayout/InsertContainer.twig',$template);
-		} else {
-				$template['id'] = $id;
-				echo $this->render('HomeLayout/UpdateContainer.twig',$template);
-		}
-
+		}		
 	}
 
 
-	public function get_register_nota(array $data){
-		$idVolante = $data['id'];
-		$vd = VolantesDocumentos::where('idVolante',"$idVolante")->get();
-		echo json_encode($vd);
-	}
+	/*------------------------- Insertar  ----------------------*/
 
 	public function insert_cedula(array $data){
 
-		$validate =  $this->validate($data);
-		if(empty($validate)){
+		try{
 
-			$idVolante = $data['idVolante'];
-
-			$confronta = new Confrontas([
-				'idVolante' => $idVolante,
-				'nombreResponsable' => $data['nombre'],
-				'cargoResponsable' => $data['cargo'],
-				'siglas' => $data['siglas'],
-				'numFolio' => $data['folio'],
-				'refDocumento' => $data['ref_documento'],
-				'fConfronta' => $data['fecha_confronta'],
-				'fOficio' => $data['fecha_documento'],
-				'hConfronta' => $data['hora_confronta'],
-				'usrAlta' => $_SESSION['idUsuario'],
-			]);
-
-			if(isset($data['notaInformativa'])){ $confronta['notaInformativa'] = $data['notaInformativa'];  }
-
-			$confronta->save();
-
-			$espacios = new Espacios([
-				'idVolante' => $idVolante,
-        'sigla' => $data['e_siglas'],
-				'usrAlta' => $_SESSION['idUsuario']
-			]);
-
+			
+			$validate =  $this->validate($data);
+			if($validate['status']){
+				
+				$idVolante = $data['idVolante'];
+				
+				$confronta = new Confrontas([
+					'idVolante' => $idVolante,
+					'nombreResponsable' => $data['nombre'],
+					'cargoResponsable' => $data['cargo'],
+					'siglas' => $data['siglas'],
+					'numFolio' => $data['folio'],
+					'refDocumento' => $data['ref_documento'],
+					'fConfronta' => $data['fecha_confronta'],
+					'fOficio' => $data['fecha_documento'],
+					'hConfronta' => $data['hora_confronta'],
+					'usrAlta' => $_SESSION['idUsuario'],
+				]);
+					
+				if(isset($data['notaInformativa'])){ $confronta['notaInformativa'] = $data['notaInformativa'];  }
+						
+				$confronta->save();
+						
+				$espacios = new Espacios([
+					'idVolante' => $idVolante,
+					'sigla' => $data['e_siglas'],
+					'usrAlta' => $_SESSION['idUsuario']
+				]);
+				
 				$espacios->save();
-				$validate[0] = 'OK';
+			}
+			echo json_encode($validate);
 
-		}
-		echo json_encode($validate);
+		}catch(\Illuminate\Database\QueryException $e){
+
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Confronta');
+
+		}	
 	}
 
 
 	public function update_cedula(array $data){
+		try{
 
-		$validate = $this->validate($data);
+			
+			$validate = $this->validate($data);
+			
+			if($validate['status']){
+				
+				$id = $data['idConfrontaJuridico'];
+				$idVolante = $data['idVolante'];
+				
+				$datos_confronta = [
+					'nombreResponsable' => $data['nombre'],
+					'cargoResponsable' => $data['cargo'],
+					'siglas' => $data['siglas'],
+					'numFolio' => $data['folio'],
+					'refDocumento' => $data['ref_documento'],
+					'fConfronta' => $data['fecha_confronta'],
+					'fOficio' => $data['fecha_documento'],
+					'hConfronta' => $data['hora_confronta'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+				];
+				
+				if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
 
-		if(empty($validate)){
-
-		$id = $data['idConfrontaJuridico'];
-		$idVolante = $data['idVolante'];
-
-		$datos_confronta = [
-			'nombreResponsable' => $data['nombre'],
-			'cargoResponsable' => $data['cargo'],
-			'siglas' => $data['siglas'],
-			'numFolio' => $data['folio'],
-			'refDocumento' => $data['ref_documento'],
-			'fConfronta' => $data['fecha_confronta'],
-			'fOficio' => $data['fecha_documento'],
-			'hConfronta' => $data['hora_confronta'],
-			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		];
-
-		if(isset($data['notaInformativa'])){ $datos_confronta['notaInformativa'] = $data['notaInformativa'];  }
-
-		Confrontas::find($id)->update($datos_confronta);
-
-
-		Espacios::where('idVolante',"$idVolante")->update([
-      'sigla' => $data['e_siglas'],
-			'usrModificacion' => $_SESSION['idUsuario'],
-			'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-		]);
-
-			 $validate[0] = 'OK';
-
-		}
+				Confrontas::find($id)->update($datos_confronta);
+				
+				
+				Espacios::where('idVolante',"$idVolante")->update([
+					'sigla' => $data['e_siglas'],
+					'usrModificacion' => $_SESSION['idUsuario'],
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					]);
+			
+			}
 		echo json_encode($validate);
+
+		} catch(\Illuminate\Database\QueryException $e){
+
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Confronta');
+
+		}	
 
 	}
 
 
 	public function validate(array $data){
+
+		$validacion = [];
+		$validacion['status'] = false;
 
 		$valid = GUMP::is_valid($data,array(
 			'nombre' => 'required|max_len,120',
@@ -232,14 +220,16 @@ class ConfrontaController extends TwigController {
 			'fecha_confronta' => 'required|max_len,10',
 			'fecha_documento' => 'required|max_len,10',
 			'hora_confronta' => 'required|max_len,5',
-      'e_siglas' => 'required|max_len,2|numeric',
+      		'e_siglas' => 'required|max_len,2|numeric',
 		));
 
 		if($valid === true){
-			$valid = [];
+			$validacion['status'] = true;
+		} else{
+			$validacion['message'] = $valid[0];
 		}
 
-		return $valid;
+		return $validacion;
 	}
 
 

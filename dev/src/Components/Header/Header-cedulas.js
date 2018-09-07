@@ -5,7 +5,7 @@ const HeaderCedula = (props) => {
 	let menu = ['Asignacion','Respuestas','Observaciones','Cedula'];
 	let url = ['Asignacion','Respuestas','Observaciones',cedula];
 	if(props.modulo === 'Confronta' || props.modulo === 'DocumentosDiversos'){
-		cedula.splice(2,1);
+		menu.splice(2,1);
 		url.splice(2,1);
 	}
 	return(

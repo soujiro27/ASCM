@@ -18,7 +18,7 @@ export default class Cedula extends Component {
   }
 
   componentWillMount(){
-    let nota = localStorage.getItem('nota')
+    let nota = sessionStorage.getItem('nota')
     if(nota == 'SI'){
       this.setState({inputNota:true})
     }
@@ -27,19 +27,39 @@ export default class Cedula extends Component {
 
 
   render(){
+    console.log(this.props)
+    let datos = this.props.data[0]
+    let nombreRemitente = `${datos.saludo} ${datos.nombre} ${datos.paterno} ${datos.materno}`
     return(
-      <div className="form-container">
-        <div className="row">
-
-          <div className="col-lg-4">
-            <label>Nombre</label>
+      <div className="form-container label-bold">
+        <div className="row datos_oficio">
+          <div className="col-lg-12">
+            <h4>Datos Cedula</h4>  
+          </div>
+          <div className="col-lg-12">
+            <label>Nombre de la Persona que acudira a la Confronta</label>
             <input type="text" name="nombre" required maxLength="120" placeholder="Nombre"  className="form-control"/>
           </div>
 
-          <div className="col-lg-4">
-            <label>Cargo</label>
+          <div className="col-lg-12">
+            <label>Cargo de la Persona que acudira a la Confronta</label>
             <input type="text" name="cargo" required maxLength="120" placeholder="Cargo"  className="form-control"/>
           </div>
+
+          <div className="col-lg-6">
+            <label>Siglas</label>
+            <input type="text" name="siglas" required maxLength="100" placeholder="Siglas"  className="form-control"/>
+          </div>
+
+          <div className="col-lg-6">
+            <label>Numero Documento</label>
+            <input type="text" name="folio" required maxLength="50" placeholder="Numero Documento"  className="form-control"/>
+          </div>
+          <div className={this.state.inputNota ? 'col-lg-6': 'col-lg-12' }>
+            <label>Referencia Documento</label>
+            <input type="text" name="ref_documento" required maxLength="50" placeholder="Referencia Documento"  className="form-control"/>
+          </div>
+
           {
             this.state.inputNota &&
             <div className="col-lg-4">
@@ -48,50 +68,52 @@ export default class Cedula extends Component {
             </div>
           }
 
-        </div>
-
-        <div className="row">
-
           <div className="col-lg-4">
-            <label>Siglas</label>
-            <input type="text" name="siglas" required maxLength="100" placeholder="Siglas"  className="form-control"/>
-          </div>
-
-          <div className="col-lg-4">
-            <label>Numero Documento</label>
-            <input type="text" name="folio" required maxLength="50" placeholder="Numero Documento"  className="form-control"/>
-          </div>
-
-          <div className="col-lg-4">
-            <label>Referencia Documento</label>
-            <input type="text" name="ref_documento" required maxLength="50" placeholder="Referencia Documento"  className="form-control"/>
-          </div>
-
-        </div>
-
-        <div className="row">
-          <div className="col-lg-2">
             <label>Fecha Confronta</label>
             <DayPickerInput />
           </div>
-          <div className="col-lg-2">
+          <div className="col-lg-4">
             <label>Hora Confronta</label>
               <input type="time" className="form-control"  name="hora_confronta" required
                   patter="(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}" placeholder="HH:MM" />
           </div>
 
-          <div className="col-lg-2">
+          <div className="col-lg-4">
             <label>Fecha Documento</label>
             <DayPickerInput />
           </div>
-
-          <div className="col-lg-2">
-            <label>Espacios Siglas</label>
-            <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue="0"/>
+          
+          <div className="col-lg-12">
+            <label>Nombre Remitente</label>
+            <input type="text" name="nombreRemitente" required maxLength="120" placeholder="Nombre"  className="form-control" defaultValue={nombreRemitente}/>
           </div>
+
+          <div className="col-lg-12">
+            <label>Nombre Remitente</label>
+            <input type="text" name="puestoRemitente" required maxLength="120" placeholder="Nombre"  className="form-control" defaultValue={datos.puesto}/>
+          </div>
+
+         
 
 
         </div>
+
+        <div className="form-container label-bold">
+          <div className="row datos_confronta">
+            <div className="col-lg-12">
+              <h4>Espacios Cedula</h4>  
+            </div>
+            <div className="col-lg-4">
+              <label>Espacios Siglas</label>
+              <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue="0" id="e_siglas"/>
+            </div>
+            <div className="col-lg-4">
+                <label>Previsualizar</label>
+                <button className="btn btn-warning form-control" onClick={this.props.prev} >Previsualizar Cedula</button>
+            </div>
+          </div>
+        </div>
+
 
 
         <div className="col-lg-4 submit-group">

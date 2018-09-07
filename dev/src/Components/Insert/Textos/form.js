@@ -1,47 +1,31 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ReactQuill from 'react-quill'
- 
-// import stylesheet
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import './../../shared_styles/text-editor.styl'
+import FroalaEditor from 'react-froala-editor'
+import './../form.styl'
 
 class Form extends Component {
     
     state = {
         subDocumentos:[],
-        text:''
     }
     
-
-    options = {
-        theme: 'snow'
-    }
-
     HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        if(value != '')
-        {
-            let url = '/SIA/juridico/Api/SubDocumentos'
-            axios.get(url,{
-                params:{
-                    tipo:value,
-                    auditoria:'SI'
-                }
-            })
-            .then((response) => {
-                this.setState({subDocumentos:response.data})
-            })
-        }
-    }
+        let tipo = event.target.value;
+        let subArray = [];
+        this.props.subDocumentos.map(item => {
+            if(item.idTipoDocto === tipo){
+                subArray.push(item)
+            }
+        })
 
-    HandleTextEditor = (html) =>{
-        this.setState({text:html})
+        document.getElementById('subDocumento').removeAttribute('disabled')
+        this.setState({
+            subDocumentos:subArray
+        })
     }
-
 
     render(){
+        
         return(
             <div className="form-container"> 
                 <div className="form-group col-lg-3">
@@ -58,7 +42,7 @@ class Form extends Component {
 
                 <div className="form-group col-lg-3">
                 <label>Sub-Documento</label>
-                <select className="form-control" required  name="subDocumento">
+                <select className="form-control" required  name="subDocumento" disabled id="subDocumento">
                     <option value="">Escoga Opcion</option>
                     {
                         this.state.subDocumentos.map((item) =>(
@@ -69,11 +53,19 @@ class Form extends Component {
                 </div>
                 
                 <div className="col-lg-11">
-                    <ReactQuill options={this.options} onChange={this.HandleTextEditor}/>
-                    <input type="hidden" name="texto" value={this.state.text} />
+                    <label>Texto Juridico</label>      
+                    <FroalaEditor
+                    base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
+                    fullscreenP={true}
+                    listsP={true}
+                    alignP={true}
+                    charCounterP={true}
+                    fontSizeP={true}
+                    fontFamilyP={true}
+                    quickInsertP={true}       
+                    options={{placeholderText: 'Escriba aqui el texto',}}
+                    />
                 </div>
-
-                
 
                 <div className="col-lg-4 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />

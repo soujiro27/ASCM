@@ -1,73 +1,66 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-
-import Modal from './../../Modals/form'
-
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
 import './../../shared_styles/insert.styl'
-
 import Formulario from './form';
-
 import submit from './../../functions/submit';
 
-class Insert extends Component{
+class Insert extends Component {
 
     state = {
-        "modal":{
-            "visible":false,
-            "message":"",
-            "class":"",
-            "icon":"",
-            "success":false
-        }
+        modal:false,
+        nombre:'',
+        message:'',
+        response:false
+    }
+    formData = {
+        texto:this.props.data.texto
     }
 
-    HandleSubmit = (event) => {
-        event.preventDefault();
-        console.log(this.props)
-        let form_functions = new submit()
-        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idDocumentoTexto',this.props.data.idDocumentoTexto)
-        let url = '/SIA/juridico/Textos/Update'
-
-        axios.post(url,data)
-        .then(response =>{
-            let state_response = form_functions.resolve_request(response)
-            this.setState(state_response)
-
-        })
-
-
+    OpenModal = () => {
+        if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+        else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
     }
 
-    HandleCancel = (event) =>{
+    HandleCancel = (event) => {
         event.preventDefault()
         location.href = '/SIA/juridico/DoctosTextos'
     }
 
-    HandleCloseModal = () =>{
-
-        if(this.state.modal.success){
-
-            location.href = '/SIA/juridico/DoctosTextos'
-        } else{
-
-            this.setState({
-                modal:{visible:false}
-            })
-        }
-
-
+    HandleCloseModal = () => {
+        this.state.response ? location.href = '/SIA/juridico/DoctosTextos' : this.setState({modal:false});
     }
+
+    HandleSubmit = (event) => {
+        event.preventDefault();
+  
+        let div = document.getElementsByClassName('fr-element');
+        let html = div[0].innerHTML;
+        this.formData['texto'] = html;
+  
+        let form_functions = new submit()
+        let data = form_functions.createDataUpdateFormData(document.getElementsByTagName('form'),'idDocumentoTexto',this.props.data.idDocumentoTexto,this.formData)
+        data.append('texto',html)
+        let url = '/SIA/juridico/Textos/Update'
+  
+        axios.post(url,data)
+        .then(response =>{
+          let respuesta = form_functions.resolve_request(response);
+          this.setState(respuesta);
+        })
+      }
 
 
     render(){
+        console.log(this.props)
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
                 <Formulario cancel={this.HandleCancel} {...this.props}/>
                 {
-                    this.state.modal.visible &&
-                    <Modal data={this.state.modal} close={this.HandleCloseModal}/>
+                this.state.modal &&
+                <this.OpenModal />
                 }
-
             </form>
 
         )

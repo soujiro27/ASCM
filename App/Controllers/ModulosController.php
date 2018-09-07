@@ -54,6 +54,18 @@ class ModulosController {
 
 	}
 
+	public function get_subDocumentos_test(array $data){
+
+		$auditoria = $data['auditoria'];
+
+		$SubTipos = SubTipos::where('auditoria',"$auditoria")
+					->where('estatus','ACTIVO')
+					->get();
+
+		echo json_encode($SubTipos);
+
+	}
+
 	public function get_Caracteres(){
 
 		$Caracteres = Caracteres::where('estatus','ACTIVO')->get();
@@ -339,6 +351,25 @@ class ModulosController {
 		echo json_encode($puestos);
 	}
 
+	public function get_remitente_cedula(array $data){
+		try {
+			$idVolante = $data['idVolante'];
+			$data = VolantesDocumentos::select('u.saludo','u.nombre','u.paterno','u.materno','a.nombre as puesto')
+											->join('sia_auditorias as audi','audi.idAuditoria','=','sia_volantesDocumentos.cveAuditoria')
+											->join('sia_areas as a','a.idArea','=','audi.idArea')
+											->join('sia_usuarios as u','u.idEmpleado','=','a.idEmpleadoTitular')
+											->where('sia_volantesDocumentos.idVolante',"$idVolante")
+											->get();
+			echo json_encode(array('status'=>true,'data' => $data));
+	
+		}catch(\Illuminate\Database\QueryException $e){
+	
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Api');
+	
+		}
+	
+	}
 
 
 }

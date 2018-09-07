@@ -30,14 +30,19 @@ function cuenta(){
   return axios.get(cuenta_url);
 }
 
-axios.all([doc(),caracteres(),areas(),acciones(),cuenta()])
-.then(axios.spread(function(documentos,caracteres,areas,acciones,cuenta){
+function subDocumentos(){
+    return axios.get('/SIA/juridico/Api/SubDocumentosTest',{params:{auditoria:'SI'}});
+}
+
+axios.all([doc(),caracteres(),areas(),acciones(),cuenta(),subDocumentos()])
+.then(axios.spread(function(documentos,caracteres,areas,acciones,cuenta,subDocumentos){
     render(<Home
             documentos={documentos.data}
             caracteres={caracteres.data}
             areas={areas.data}
             acciones={acciones.data}
             cuenta={cuenta.data}
+            subDocumentos={subDocumentos.data}
     />,root);
 
 }))

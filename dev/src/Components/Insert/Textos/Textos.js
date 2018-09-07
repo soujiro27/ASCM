@@ -15,6 +15,9 @@ class Insert extends Component{
       message:'',
       response:false,
     }
+    formData = {
+      texto:''
+    }
 
     OpenModal = () =>{
       if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
@@ -33,8 +36,11 @@ class Insert extends Component{
 
     HandleSubmit = (event) => {
       event.preventDefault();
+      let div = document.getElementsByClassName('fr-element');
+      let html = div[0].innerHTML;
+      this.formData['texto'] = html;
       let form_functions = new submit()
-      let data = form_functions.createData_complete(document.getElementsByTagName('form'),{})
+      let data = form_functions.createData_complete(document.getElementsByTagName('form'),this.formData)
       let url = `/SIA/juridico/Textos/Add`
       axios.post(url,data)
       .then(response =>{
@@ -47,7 +53,7 @@ class Insert extends Component{
     render(){
         return(
             <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario cancel={this.HandleCancel} documentos={this.props.data}/>
+                <Formulario cancel={this.HandleCancel} {...this.props}/>
                   {
                     this.state.modal &&
                     <this.OpenModal />

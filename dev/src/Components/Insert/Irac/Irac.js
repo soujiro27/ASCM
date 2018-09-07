@@ -10,6 +10,7 @@ import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
 
 export default class Asignacion extends Component {
+  
   state = {
     modal:false,
     nombre:'',

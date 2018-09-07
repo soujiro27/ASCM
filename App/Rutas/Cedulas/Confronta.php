@@ -25,48 +25,40 @@
 
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
+	/*------------------- HOME --------------------------*/
+
 	$app->get('/confrontasJuridico',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
 
-	$app->get('/Confronta/all',function() use ($controller){
+	$app->get('/Confronta/All',function() use ($controller){
 		$controller->tabla();
 	});
 
-
-
-
 	$app->get('/Confronta/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Cedula');
+		$controller->load_cedula_template($id);
 	});
 
-	$app->get('/Confronta/Cedula/Register/:id',function($id) use ($controller,$app){
-		$controller->get_register_cedula($id);
-	});
+	/*------------------ Insert ---------------------------*/
 
-
-	$app->get('/Confronta/Nota/Register',function() use ($controller,$app){
-		$controller->get_register_nota($app->request->get());
-	});
-
-
-
-	$app->post('/Confronta/Cedula/add',function() use ($controller,$app){
+	$app->post('/Confronta/Save',function() use ($controller,$app){
 		$controller->insert_cedula($app->request->post());
 	});
 
 
+	/*--------------- Update -----------------*/
 
-		$app->post('/Confronta/Cedula/Update',function() use ($controller,$app){
-			$controller->update_cedula($app->request->post());
-		});
+	$app->get('/Confronta/Cedula/Register/:id',function($id) use ($controller){
+		$controller->get_register_cedula($id);
+	});
+
+	$app->post('/Confronta/Cedula/Update',function() use ($controller,$app){
+		$controller->update_cedula($app->request->post());
+	});
 
 
 });
-
-
-
 
 
 ?>
