@@ -85,12 +85,12 @@ export default class Cedula extends Component {
           
           <div className="col-lg-12">
             <label>Nombre Remitente</label>
-            <input type="text" name="nombreRemitente" required maxLength="120" placeholder="Nombre"  className="form-control" defaultValue={nombreRemitente}/>
+            <input type="text" name="nombreRemitente" required maxLength="100" placeholder="Nombre"  className="form-control" defaultValue={nombreRemitente}/>
           </div>
 
           <div className="col-lg-12">
-            <label>Nombre Remitente</label>
-            <input type="text" name="puestoRemitente" required maxLength="120" placeholder="Nombre"  className="form-control" defaultValue={datos.puesto}/>
+            <label>Puesto Remitente</label>
+            <input type="text" name="puestoRemitente" required maxLength="300" placeholder="Nombre"  className="form-control" defaultValue={datos.puesto}/>
           </div>
 
          

@@ -132,6 +132,8 @@ class ConfrontaController extends TwigController {
 					'fConfronta' => $data['fecha_confronta'],
 					'fOficio' => $data['fecha_documento'],
 					'hConfronta' => $data['hora_confronta'],
+					'nombreRemitente' => $data['nombreRemitente'],
+					'puestoRemitente' => $data['puestoRemitente'],
 					'usrAlta' => $_SESSION['idUsuario'],
 				]);
 					
@@ -178,6 +180,8 @@ class ConfrontaController extends TwigController {
 					'fConfronta' => $data['fecha_confronta'],
 					'fOficio' => $data['fecha_documento'],
 					'hConfronta' => $data['hora_confronta'],
+					'nombreRemitente' => $data['nombreRemitente'],
+					'puestoRemitente' => $data['puestoRemitente'],
 					'usrModificacion' => $_SESSION['idUsuario'],
 					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
 				];
@@ -220,7 +224,9 @@ class ConfrontaController extends TwigController {
 			'fecha_confronta' => 'required|max_len,10',
 			'fecha_documento' => 'required|max_len,10',
 			'hora_confronta' => 'required|max_len,5',
-      		'e_siglas' => 'required|max_len,2|numeric',
+			'e_siglas' => 'required|max_len,2|numeric',
+			'nombreRemitente' => 'required|max_len,100',
+			'puestoRemitente' => 'required|max_len,300',
 		));
 
 		if($valid === true){
