@@ -34,6 +34,7 @@ include_once $root_directory.'/Cedulas/OficiosGenericos.php';
 
 /*--------------------- Asignacion -------------------------*/
 include_once $root_directory.'/Asignacion/Asignacion.php';
+include_once $root_directory.'/Asignacion/Turnos.php';
 
 
 /*--------------------- Respuestas -------------------------*/

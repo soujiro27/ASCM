@@ -6,45 +6,80 @@ import './modal.styl'
 
 class NotalModal extends Component {
 
-    state =  {
-      data:[]
-    }
+  state =  {
+    data:[],
+    select:false
+  }
+
 
     HandleCloseModal = () => {
-        let checkboxes = document.getElementsByName('textos')
-        let checked = []
-
-        checkboxes.forEach((element,index) => {
-          if(element.checked == true){
-            checked.push(element.value)
-          }
-        })
-
-      this.props.close(checked)
+        this.props.close()
     }
 
-    HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.setState({nota:value})
+    HandleClick = (event) =>{
+      event.preventDefault();
+      let checkboxes = document.getElementsByName('textos')
+      let value;
+     
+
+      for(let x = 0 ; x < checkboxes.length; x++){
+        if(checkboxes[x].checked == true){
+          value = checkboxes[x].value
+        }
+      }
+      this.props.closeModalTextos(value)
     }
 
     componentDidMount(){
         let url = '/SIA/juridico/Api/Textos'
         axios.get(url).then(response => {
-          this.setState({data:response.data})
+          this.setState({data:response.data,select:true})
         })
     }
+
+    loadOptions = () => {
+      let datos = this.state.data;
+      let id = this.props.idTexto
+      if(firmas != undefined){
+          for(let y in datos){
+            if(datos[y].idDocumentoTexto == id){
+              datos[y].selected = true;
+            }
+          }
+        
+        return datos.map(item => {
+          return (<tr key={item.idDocumentoTexto}>
+            <td><input type="radio" value={item.idDocumentoTexto} name="textos" className="form-control" defaultChecked={item.selected} /></td>
+            <td>{item.texto}</td>
+          
+          </tr>)
+        })
+
+
+      } else{
+        return datos.map(item => {
+          return (<tr key={item.idDocumentoTexto}>
+            <td><input type="radio" value={item.idDocumentoTexto} name="textos" className="form-control" /></td>
+            <td>{item.texto}</td>
+          </tr>)
+        })
+      }
+    }
+
     
   render(){
     return ReactDom.createPortal(
       <Modal
-        open={this.props.visible}
+        open={true}
         onClose={this.HandleCloseModal}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':'textosPromocion'}}>
 
         <div className="row">
+          <div className="col-lg-12">
+            <h4><i className="fas fa-file-alt"></i>  Seleccion Texto Promocion de Acciones</h4>
+          </div>
             <div className="col-lg-12">
                 <table className="table" >
                   <tbody>
@@ -52,16 +87,15 @@ class NotalModal extends Component {
                       <td><strong>Seleccionar</strong></td>
                       <td><strong>Texto</strong></td>
                     </tr>
-                      {
-                        this.state.data.map(item => (
-                          <tr key={item.idDocumentoTexto}>
-                            <td><input type="radio" value={item.idDocumentoTexto} name="textos" className="form-control" /></td>
-                            <td>{item.texto}</td>
-                          </tr>
-                        ))
-                      }
+                    {
+                      this.state.select &&
+                      <this.loadOptions />
+                    }
                   </tbody>
                 </table>
+            </div>
+            <div className="col-lg-12">
+              <button className="btn btn-primary" onClick={this.HandleClick}>Guardar Texto</button>
             </div>
         </div>
         </Modal>,

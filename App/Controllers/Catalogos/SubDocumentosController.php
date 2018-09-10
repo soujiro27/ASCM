@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 use Jur\App\Controllers\NotificacionesController;
 use Jur\App\Controllers\BaseController;
+use Jur\App\Controllers\ErrorsController;
 
 use Jur\App\Models\Catalogos\SubDocumentos;
 
@@ -65,7 +66,7 @@ class subDocumentosController extends TwigController {
 
 		} catch(\Illuminate\Database\QueryException $e){
 		$error = new ErrorsController();
-		$error->errores_load_table($e,'Acciones');
+		$error->errores_load_table($e,'subDocumentos');
 		}
 
 	}
@@ -82,7 +83,7 @@ class subDocumentosController extends TwigController {
 			echo json_encode(array('status'=>true,'data' => $accion));
 		} catch(\Illuminate\Database\QueryException $e){
 		$error = new ErrorsController();
-		$error->errores_load_table($e,'Acciones');
+		$error->errores_load_table($e,'subDocumentos');
 		}
 	}
 
@@ -109,7 +110,7 @@ class subDocumentosController extends TwigController {
 
 		} catch(\Illuminate\Database\QueryException $e){
 		$error = new ErrorsController();
-		$error->errores_load_table($e,'Acciones');
+		$error->errores_load_table($e,'subDocumentos');
 		}
 
 
@@ -135,11 +136,11 @@ class subDocumentosController extends TwigController {
 
 					]);
 				}
-				echo json_encode($validate);
+			echo json_encode($validate);
 
 		} catch(\Illuminate\Database\QueryException $e){
 		$error = new ErrorsController();
-		$error->errores_load_table($e,'Acciones');
+		$error->errores_load_table($e,'subDocumentos');
 		}
 	}
 
@@ -154,7 +155,7 @@ class subDocumentosController extends TwigController {
 
 		$valid = GUMP::is_valid($data,array(
 			'documento' => 'required|max_len,10',
-			'nombre' => 'required|max_len,5|alpha_space',
+			'nombre' => 'required|max_len,50|alpha_space',
 			'estatus' => 'required|max_len,8|alpha',
 		));
 

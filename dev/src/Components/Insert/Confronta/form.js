@@ -27,7 +27,6 @@ export default class Cedula extends Component {
 
 
   render(){
-    console.log(this.props)
     let datos = this.props.data[0]
     let nombreRemitente = `${datos.saludo} ${datos.nombre} ${datos.paterno} ${datos.materno}`
     return(

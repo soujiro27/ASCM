@@ -19,45 +19,41 @@
 		$security->validacion_sesion();
 	};
 
-
-
-
-
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
+	/*----------------------- HOME ------------------*/
+	
 	$app->get('/Ifa',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
 
-	$app->get('/Ifa/all',function() use ($controller){
+	$app->get('/Ifa/All',function() use ($controller){
 		$controller->tabla();
 	});
 
-
 	$app->get('/Ifa/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Cedula');
+		$controller->cedula_template($id,'Cedula');
 	});
+
+
+	/*---------------------- INSERT ------------------*/
+
+	$app->post('/Ifa/Save',function() use ($controller,$app){
+		$controller->insert_cedula($app->request->post());
+	});
+
+	/*--------------------- UPDATE ---------------------*/
+
 
 	$app->get('/Ifa/Cedula/Register/:id',function($id) use ($controller,$app){
 		$controller->get_register_cedula($id);
 	});
 
-
-	$app->post('/Ifa/Cedula/add',function() use ($controller,$app){
-		$controller->insert_cedula($app->request->post());
-	});
-
-
-	$app->post('/Ifa/Cedula/Update',function() use ($controller,$app){
+	$app->post('/Ifa/Update',function() use ($controller,$app){
 		$controller->update_cedula($app->request->post());
 	});
 
-
 });
-
-
-
-
 
 ?>

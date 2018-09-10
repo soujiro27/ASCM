@@ -12,61 +12,82 @@ export default class Cedula extends Component {
       input[0].children[0].setAttribute('name','fecha_documento')
   }
 
-  render(){
-    console.log(this.props.data)
+  openModal = (event) => {
+    event.preventDefault();
+    let modal = event.target.getAttribute('data-name');
+    this.props.open(modal)
+  }
+
+  render(){console.log(this.props)
+    let datos = this.props.data
     return(
-      <div className="form-container">
-        <div className="row">
-
-          <div className="col-lg-3">
+      <div className="form-container label-bold">
+        <div className="row datos_oficio">
+          <div className="col-lg-12">
+            <h4>Datos Cedula</h4>
+          </div>
+          <div className="col-lg-6">
             <label>Siglas</label>
-            <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control" defaultValue={this.props.data.siglas}/>
+            <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control" defaultValue={datos.siglas} />
           </div>
 
-          <div className="col-lg-2">
+          <div className="col-lg-6">
             <label>Fecha Documento</label>
-            <DayPickerInput />
+            <DayPickerInput value={datos.fOficio}/>
           </div>
 
-            <div className="col-lg-2">
+            <div className="col-lg-6">
               <label>Añadir Firmas</label>
-              <button className="btn btn-success" onClick={this.props.OpenModalFirmas}>Agregar</button>
+              <button className="btn btn-success form-control" onClick={this.openModal} data-name="FIRMAS">Agregar  <i className="fas fa-plus-circle" ></i></button>
             </div>
 
-            <div className="col-lg-3">
+            <div className="col-lg-6">
               <label>Texto Promocion de Acciones</label>
-              <button className="btn btn-success" onClick={this.props.OpenModalTextos}>Agregar</button>
+              <button className="btn btn-success form-control" onClick={this.openModal} data-name="TEXTOS">Agregar  <i className="fas fa-plus-circle"></i></button>
             </div>
 
         </div>
 
-        <div className="row">
-          <div className="col-lg-3">
-            <label>Espacios Observaciones</label>
-            <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue={this.props.data.encabezado} />
+        <div className="row datos_oficio">
+        <div className="col-lg-12">
+            <h4>Espacios Cedula</h4>
+          </div>
+          <div className="col-lg-4">
+            <label>Observaciones</label>
+            <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue={datos.encabezado} id="obvs"/>
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Texto</label>
-            <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue={this.props.data.cuerpo} />
+          <div className="col-lg-4">
+            <label>Texto</label>
+            <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue={datos.cuerpo} id="texto" />
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Firmas</label>
-            <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue={this.props.data.pie} />
+            <div className="col-lg-4">
+            <label>Fecha</label>
+            <input type="number" min='0' max='100' name="e_fecha" className="form-control" defaultValue={datos.fechaDocto} id="fecha" />
           </div>
 
-          <div className="col-lg-3">
-            <label>Espacios Copias</label>
-            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue={this.props.data.sigla}/>
+          <div className="col-lg-6">
+            <label>Firmas</label>
+            <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue={datos.pie} id="firmas"/>
           </div>
+
+          <div className="col-lg-6">
+            <label> Copias</label>
+            <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue={datos.copiaCedula} id="copias"/>
+          </div>
+
+           <div className="col-lg-6">
+            <button className="btn btn-warning" onClick={this.props.prev}>Previsualizar Cedula</button>
+          </div>
+
 
         </div>
 
         <div className="col-lg-4 submit-group">
-            <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
-            <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
-            <button className="btn btn-warning btn-sm" onClick={this.props.PrintCedula}>Cedula</button>
+            <input type="submit" value="Guardar" className="btn  btn-primary" />
+            <button className="btn btn-danger " onClick={this.props.cancel}>Cancelar</button>
+
         </div>
 
 

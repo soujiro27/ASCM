@@ -53,7 +53,7 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->get_register_cedula($id);
 	});
 
-	$app->post('/Confronta/Cedula/Update',function() use ($controller,$app){
+	$app->post('/Confronta/Update',function() use ($controller,$app){
 		$controller->update_cedula($app->request->post());
 	});
 

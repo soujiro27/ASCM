@@ -5,7 +5,7 @@ import axios from 'axios';
 
 
 let element = document.getElementById('root')
-let id = element.dataset.id
+let id = sessionStorage.getItem('idSubDocumento');
 let url = `/SIA/juridico/SubTiposDocumentos/Register/${id}`
 let urlDocumentos = '/SIA/juridico/Api/Documentos';
 

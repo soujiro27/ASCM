@@ -3,7 +3,7 @@
 
 	use Jur\App\Controllers\SecurityController;
 
-	use Jur\App\Controllers\Internos\IracController;
+	use Jur\App\Controllers\Cedulas\IracController;
 
 	$controller = new IracController();
 
@@ -19,50 +19,24 @@
 		$security->validacion_sesion();
 	};
 
-
-
-
-
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
 /*------------------- HOME -----------------*/
 
 	$app->get('/Irac-Internos',function() use ($controller){
-		$controller->home_template();
+		$controller->home_template_internos();
+	});
+
+	$app->get('/Irac-Internos/Cedula/:id',function($id) use ($controller){
+		$controller->cedula_template($id);
 	});
 
 /*-------------------- Tabla -------------------*/
-
 	$app->get('/Irac-Internos/All',function() use ($controller){
-		$controller->tabla();
+		$controller->tabla_internos();
 	});
-
-
-
-
-	$app->get('/Irac-Internos/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id);
-	});
-
-	$app->get('/Irac-Internos/Cedula/Register/:id',function($id) use ($controller,$app){
-		$controller->get_register_cedula($id);
-	});
-
-
-	$app->post('/Irac-Internos/Cedula/add',function() use ($controller,$app){
-		$controller->insert_cedula($app->request->post());
-	});
-
-
-	$app->post('/Irac-Internos/Cedula/Update',function() use ($controller,$app){
-		$controller->update_cedula($app->request->post());
-	});
-
 
 });
-
-
-
 
 
 ?>

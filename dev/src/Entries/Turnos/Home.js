@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Home from './../../Home/Ifa/Update'
+import Home from './../../Home/Turnos/Home'
 import axios from 'axios';
 import ModalError from '../../Components/Modals/ErrorLoad';
 
-const root = document.getElementById('root')
-const idVolante = sessionStorage.getItem('idVolante');
+const root = document.getElementById('root');
 
-axios.get(`/SIA/juridico/Ifa/Cedula/Register/${idVolante}`)
+axios.get('/SIA/juridico/turnos/All')
 .then((response)=>{
   let datos = response.data;
 

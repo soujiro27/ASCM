@@ -52,9 +52,8 @@ class TableContainer extends Component{
               sessionStorage.removeItem('idVolante');
               sessionStorage.removeItem('modulo');
               sessionStorage.setItem('idVolante',rowInfo.original.idVolante)
-              sessionStorage.setItem('modulo','Irac')
+              sessionStorage.setItem('modulo','Irac-Internos')
               location.href = `/SIA/juridico/Asignacion`
-                //location.href = `/SIA/juridico/Asignacion/${rowInfo.original.idVolante}`
             }
         }
     }

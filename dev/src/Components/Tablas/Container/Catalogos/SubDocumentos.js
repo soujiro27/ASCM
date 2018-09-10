@@ -30,11 +30,12 @@ class TableContainer extends Component{
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) => {
-              sessionStorage.removeItem('idSubDocumento')
-              sessionStorage.setItem('idSubDocumento',rowInfo.original.idSubTipoDocumento)
-                location.href = `/SIA/juridico/SubTiposDocumentos/Update}`
+                sessionStorage.removeItem('idSubDocumento')
+                sessionStorage.setItem('idSubDocumento',rowInfo.original.idSubTipoDocumento)
+                location.href = `/SIA/juridico/SubTiposDocumentos/Update`
             }
         }
+
     }
 
     render(){

@@ -6,13 +6,13 @@ import ModalError from '../../Components/Modals/ErrorLoad';
 
 const root = document.getElementById('root');
 const idVolante = sessionStorage.getItem('idVolante');
-
+const modulo = sessionStorage.getItem('modulo');
 axios.get('/SIA/juridico/Api/Remitente_Cedula',{params:{idVolante}})
 .then((response)=>{
   let datos = response.data;
 
   if(datos.status){
-    render(<Home data={datos.data} idVolante={idVolante} />,root);
+    render(<Home data={datos.data} idVolante={idVolante} modulo={modulo} />,root);
   } else {
     render(<ModalError {...response.data} />,root);
   }

@@ -195,7 +195,7 @@ class ConfrontaController extends TwigController {
 					'sigla' => $data['e_siglas'],
 					'usrModificacion' => $_SESSION['idUsuario'],
 					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
-					]);
+				]);
 			
 			}
 		echo json_encode($validate);

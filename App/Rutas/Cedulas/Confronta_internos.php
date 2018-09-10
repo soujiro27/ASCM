@@ -26,7 +26,7 @@
 $app->group('/juridico',$auth,function() use($app,$controller){
 
 	$app->get('/Confrontas-Internos',function() use ($controller){
-		$controller->Home_internos();
+		$controller->home_template_internos();
 	});
 
 

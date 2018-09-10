@@ -39,7 +39,7 @@ export default class Asignacion extends Component {
 
   HandleCancel = (event) => {
     event.preventDefault()
-    location.href = '/SIA/juridico/Irac'
+    location.href = '/SIA/juridico/'+ this.props.modulo
   }
 
   closeModalFirmas = (firmas) => {
@@ -51,7 +51,7 @@ export default class Asignacion extends Component {
     if(this.state.response){
       window.open('/SIA/jur/App/cedulas/OFICIO_IRAC.php?param='+this.props.idVolante);
       window.open('/SIA/jur/App/cedulas/CEDULA_IRAC.php?param='+this.props.idVolante);
-      location.href = '/SIA/juridico/Irac';
+      location.href = '/SIA/juridico/'+this.props.modulo;
     } else {
       this.setState({modal:false})
     }

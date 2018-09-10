@@ -1,76 +1,62 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import Modal from './../../Modals/form'
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
+import Formulario from './form';
+import submit from './../../functions/submit';
 
 import './../../shared_styles/insert.styl'
 
-import Formulario from './form';
 
-import submit from './../../functions/submit';
 
 class Update extends Component{
     
     state = {
-        "modal":{
-            "visible":false,
-            "message":"",
-            "class":"",
-            "icon":"",
-            "success":false
-        }
-    }
-
-    HandleSubmit = (event) => {
+        modal:false,
+        nombre:'',
+        message:'',
+        response:false
+      }
+    
+      OpenModal = () =>{
+        if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+        else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+      }
+    
+      HandleCancel = (event) =>{
+          event.preventDefault()
+          location.href = '/SIA/juridico/SubTiposDocumentos'
+      }
+    
+    
+      HandleCloseModal = () =>{
+        this.state.response ? location.href = '/SIA/juridico/SubTiposDocumentos' : this.setState({modal:false});
+      }
+    
+      HandleSubmit = (event) => {
         event.preventDefault();
         let form_functions = new submit()
-        let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idSubTipoDocumento',this.props.data.idSubTipoDocumento)
+        let data = form_functions.createDataUpdateFormData(document.getElementsByTagName('form'),'idSubTipoDocumento',this.props.data.data.idSubTipoDocumento,{})
         let url = '/SIA/juridico/SubTiposDocumentos/Update'
-        
         axios.post(url,data)
         .then(response =>{
-            let state_response = form_functions.resolve_request(response)
-            this.setState(state_response)
-        
+          let respuesta = form_functions.resolve_request(response);
+          this.setState(respuesta);
         })
-        
-
-    }
-
-    HandleCancel = (event) =>{
-        event.preventDefault()
-        location.href = '/SIA/juridico/SubTiposDocumentos'
-    }
-
-    HandleCloseModal = () =>{
-        
-        if(this.state.modal.success){
-
-            location.href = '/SIA/juridico/SubTiposDocumentos'
-        } else{
-
-            this.setState({
-                modal:{visible:false}
-            })
-        }
-        
     
-    }
-
-
-    render(){
-        return(
-            <form className="form" onSubmit={this.HandleSubmit}>
-                <Formulario cancel={this.HandleCancel} documentos={this.props.documentos}  datos={this.props.data}/>
-                {
-                    this.state.modal.visible &&
-                    <Modal data={this.state.modal} close={this.HandleCloseModal}/>
-                }
-            
+      }
+        render(){
+            return(
+            <form onSubmit={this.HandleSubmit}>
+                <Formulario {...this.props}  cancel={this.HandleCancel}/>
+                  {
+                    this.state.modal &&
+                    <this.OpenModal />
+                  }
             </form>
-
         )
-    }
+        }
 }
 
 export default Update;

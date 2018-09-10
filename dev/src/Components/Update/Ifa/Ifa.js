@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import Formulario from './form.js';
-import Modal from './../../Modals/form'
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
 import ModalFirmas from './../../Modals/FirmasCedula'
 import ModalTextos from './../../Modals/TextoPromocion'
 
@@ -10,40 +11,33 @@ import submit from './../../functions/submit';
 
 export default class Asignacion extends Component {
 
+  
   state = {
-      "modal":{
-          "visible":false,
-          "message":"",
-          "class":"",
-          "icon":"",
-          "success":false
-      },
-      modals:{
-        firmas:false,
-      },
-      textos:false,
-      formData:{
-        firmas:[],
-        texto:'',
-      }
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false,
   }
 
-  HandleSubmit = (event) => {
-    event.preventDefault();
+  formData = {
+    firmas:this.props.data[0].idPuestosJuridico,
+    texto:this.props.data[0].idDocumentoTexto,
+    idVolante:this.props.data[0].idVolante
+  }
 
-    let form_functions = new submit()
-    let data = form_functions.createDataUpdate(document.getElementsByTagName('form'),'idDocumentoSiglas',this.props.data[0].idDocumentoSiglas)
-    data.append('firmas',this.state.formData.firmas)
-    data.append('texto',this.state.formData.texto)
-    data.append('idVolante',this.props.data[0].idVolante)
-    let url = '/SIA/juridico/Ifa/Cedula/Update'
+  OpenModal = () =>{
+    if(this.state.nombre === 'FIRMAS'){ return <ModalFirmas visible={true} firmas={this.props.data[0].idPuestosJuridico} close={this.closeModalBolean} closeModalFirmas={this.closeModalFirmas}/>}
+    else if (this.state.nombre === 'TEXTOS') { return <ModalTextos  idTexto={this.props.data[0].idDocumentoTexto} close={this.closeModalBolean} closeModalTextos={this.closeModalTextos}/>}
+    else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+  }
 
-    axios.post(url,data)
-    .then(response =>{
-        let state_response = form_functions.resolve_request(response)
-        this.setState(state_response)
-    })
+  closeModalBolean = () => {
+    this.setState({modal:false});
+  }
 
+  HandleOpenModal = (nombre) =>{
+    this.setState({ modal:true, nombre});
   }
 
   HandleCancel = (event) => {
@@ -51,78 +45,65 @@ export default class Asignacion extends Component {
     location.href = '/SIA/juridico/Ifa'
   }
 
-  HandleCloseModal = () => {
-    if(this.state.modal.success){
-        window.open('/SIA/jur/App/cedulas/Ifa.php?param='+this.props.data[0].idVolante)
-        location.href = `/SIA/juridico/Ifa`
-    } else{
-
-        this.setState({
-            modal:{visible:false}
-        })
-    }
-
+  closeModalFirmas = (firmas) => {
+    if(firmas.length > 0 ) this.formData['firmas'] = firmas;
+    this.setState({modal:false});
   }
 
-  OpenModalFirmas = (event) => {
-    event.preventDefault()
-    this.setState({modals:{firmas:true}})
+  closeModalTextos = (texto) =>{
+    if(texto > 0 ) this.formData['texto'] = texto;
+    this.setState({modal:false});
   }
 
-  CloseModalFirmas = (firmas) => {
-      this.setState({
-          modals:{firmas:false}
-          ,formData:{
-            firmas,
-            texto:this.state.formData.texto
-          }
-      })
+  HandleCloseModal = () =>{
+    if(this.state.response){
+      window.open('/SIA/jur/App/cedulas/IFA.php?param='+this.props.data[0].idVolante);
+      
+    } 
+      this.setState({modal:false})
+    
   }
 
-  OpenModalTextos = (event) => {
-    event.preventDefault()
-    this.setState({modals:{textos:true}})
-  }
-
-  CloseModalTextos = (texto) => {
-    this.setState({
-      modals:{
-        firmas:false
-      },
-      formData:{
-        texto,
-        firmas:this.state.formData.firmas
-      }
+  HandleSubmit = (event) => {
+    event.preventDefault();
+    let form_functions = new submit()
+    let data = form_functions.createDataUpdateFormData(document.getElementsByTagName('form'),'idDocumentoSiglas',this.props.data[0].idDocumentoSiglas,this.formData)
+    axios.post('/SIA/juridico/Ifa/Update',data)
+    .then(response =>{
+      let respuesta = form_functions.resolve_request(response);
+      this.setState(respuesta);
     })
   }
 
-  PrintCedula = (event) =>{
-      event.preventDefault()
-      window.open('/SIA/jur/App/cedulas/Ifa.php?param='+this.props.data[0].idVolante)
+  prev = (event) => {
+    event.preventDefault();
+    let obvs = document.getElementById('obvs').value;
+    let texto = document.getElementById('texto').value;
+    let firmas = document.getElementById('firmas').value;
+    let copias = document.getElementById('copias').value;
+    let fecha = document.getElementById('fecha').value;
+    if(obvs != '' && texto != '' && firmas != '' && copias != '' ){
+      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/ifa_preview.php?obvs=${obvs}&copias=${copias}&texto=${texto}&firmas=${firmas}&idVolante=${this.props.data[0].idVolante}&fecha=${fecha}"></iframe>`)
+    }
   }
-
 
   render(){
-    return (<form onSubmit={this.HandleSubmit}>
-    <Formulario
-      data={this.props.data[0]}
-      cancel={this.HandleCancel}
-      OpenModalFirmas={this.OpenModalFirmas}
-      OpenModalTextos={this.OpenModalTextos}
-      PrintCedula={this.PrintCedula}
-      />
-      {
-          this.state.modal.visible &&
-          <Modal data={this.state.modal} close={this.HandleCloseModal}/>
-      }
-      {
-        this.state.modals.firmas &&
-        <ModalFirmas visible={true} close={this.CloseModalFirmas} />
-      }
-      {
-        this.state.modals.textos &&
-        <ModalTextos visible={true} close={this.CloseModalTextos} />
-      }
-    </form>)
+    
+    return (
+      <div className="cedula-container row">
+        <form onSubmit={this.HandleSubmit} className="col-lg-7">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  data={this.props.data[0]} prev={this.prev} />
+            {
+              this.state.modal &&
+              <this.OpenModal />
+            }
+        </form>
+        <div className="col-lg-5 prev-cedula" id="prev-cedula">
+          <h2><i className="fas fa-file-pdf"></i></h2>
+          <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
+        </div>
+      </div>
+    )
   }
+
 }
