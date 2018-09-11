@@ -1,1 +1,0 @@
-[Tue, 11 Sep 2018 01:18:07 +0200] Error: SQLSTATE[22018]: [Microsoft][ODBC Driver 11 for SQL Server][SQL Server]Conversion failed when converting the nvarchar value 'undefined' to data type int. (SQL: select top 1 * from [sia_catSubTiposDocumentos] where [sia_catSubTiposDocumentos].[idSubTipoDocumento] = undefined)

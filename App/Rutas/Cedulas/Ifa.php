@@ -19,7 +19,7 @@
 		$security->validacion_sesion();
 	};
 
-$app->group('/juridico',$auth,$rol,function() use($app,$controller){
+$app->group('/juridico',$auth,function() use($app,$controller){
 
 	/*----------------------- HOME ------------------*/
 	
@@ -33,7 +33,7 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 	$app->get('/Ifa/Cedula/:id',function($id) use ($controller){
-		$controller->cedula_template($id,'Cedula');
+		$controller->cedula_template($id);
 	});
 
 

@@ -56,12 +56,12 @@ class TurnosController extends TwigController {
             ->where('t.idAreaRecepcion','=',"$area")
             ->where('t.idUsrReceptor',"$idUsuario")
             ->where('t.idTipoTurnado','I')
-            ->orderBy('t.idTurnadoJuridico','DESC')
-            ->first();
+			->orderBy('t.idTurnadoJuridico','DESC')
+			->get();
 
-            $res[0] = $iracs;
+          
 
-            echo json_encode(array('status'=>true,'data' => $res));
+            echo json_encode(array('status'=>true,'data' => $iracs));
 
 	    } catch (\Illuminate\Database\QueryException $e) {
 		    $error = new ErrorsController();

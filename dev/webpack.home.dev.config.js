@@ -20,6 +20,8 @@ module.exports = {
     "Respuestas":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Respuestas/Home.js')],
     "Observaciones":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Observaciones/Home.js')],
     "Irac-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Irac-internos/Home.js')],
+    "Confronta-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Confronta-Internos/Home.js')],
+    "Ifa-Internos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Ifa-internos/Home.js')],
     "Turnos":['babel-polyfill', path.resolve(__dirname, 'src/Entries/Turnos/Home.js')],
 
   },

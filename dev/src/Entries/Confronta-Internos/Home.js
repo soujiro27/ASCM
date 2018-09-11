@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
-import Home from './../../Home/Ifa-Internos/Home'
+import Home from './../../Home/Confronta-internos/Home'
 import axios from 'axios';
 import ModalError from '../../Components/Modals/ErrorLoad';
 
 const root = document.getElementById('root');
 
-axios.get('/SIA/juridico/Ifa-Internos/All')
+axios.get('/SIA/juridico/Confrontas-Internos/All')
 .then((response)=>{
   let datos = response.data;
 
@@ -17,4 +17,3 @@ axios.get('/SIA/juridico/Ifa-Internos/All')
   }
 
 });
-

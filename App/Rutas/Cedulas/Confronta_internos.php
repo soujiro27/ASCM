@@ -20,9 +20,6 @@
 	};
 
 
-
-
-
 $app->group('/juridico',$auth,function() use($app,$controller){
 
 	$app->get('/Confrontas-Internos',function() use ($controller){
@@ -30,43 +27,15 @@ $app->group('/juridico',$auth,function() use($app,$controller){
 	});
 
 
-	$app->get('/Confrontas-Internos/all',function() use ($controller){
+	$app->get('/Confrontas-Internos/All',function() use ($controller){
 		$controller->tabla_internos();
 	});
 
-
-
-
 	$app->get('/Confrontas-Internos/Cedula/:id',function($id) use ($controller){
-		$controller->load_cedula_template($id,'Cedula');
+		$controller->load_cedula_template($id);
 	});
-
-	$app->get('/Confrontas-Internos/Cedula/Register/:id',function($id) use ($controller,$app){
-		$controller->get_register_cedula($id);
-	});
-
-
-	$app->get('/Confrontas-Internos/Nota/Register',function() use ($controller,$app){
-		$controller->get_register_nota($app->request->get());
-	});
-
-
-
-	$app->post('/Confrontas-Internos/Cedula/add',function() use ($controller,$app){
-		$controller->insert_cedula($app->request->post());
-	});
-
-
-
-		$app->post('/Confrontas-Internos/Cedula/Update',function() use ($controller,$app){
-			$controller->update_cedula($app->request->post());
-		});
-
 
 });
-
-
-
 
 
 ?>

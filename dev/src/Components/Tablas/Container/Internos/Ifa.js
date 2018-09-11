@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
-import axios from 'axios'
 import 'react-table/react-table.css';
-import { GridLoader } from 'react-spinners';
-import './../spiner.styl'
 import './../Table.styl'
 
 class TableContainer extends Component{
 
-    state = {
-        load:false,
-        data:{}
-    }
+  
 
     columns = [
         {
@@ -53,58 +47,50 @@ class TableContainer extends Component{
     ]
 
 
-    componentDidMount(){
-        let url = `/SIA/juridico/Ifa-Internos/all`;
-        axios.get(url).then(response =>{
-            if(response.status === 200){
-                let data = response.data
-                console.log(data)
-                this.setState({data,load:true})
-            }
-        })
-    }
-
     Handle_Click = (state, rowInfo, column) =>{
         return {
             onClick:(e,handleOriginal) =>{
-                localStorage.setItem('idVolante',rowInfo.original.idVolante)
-                localStorage.setItem('modulo','Ifa-Internos')
-                location.href = `/SIA/juridico/Asignacion/${rowInfo.original.idVolante}`
+                sessionStorage.setItem('idVolante',rowInfo.original.idVolante)
+                sessionStorage.setItem('modulo','Ifa-Internos')
+                location.href = `/SIA/juridico/Asignacion`
             }
         }
     }
 
-    render(){
-        if(this.state.load){
-            return(
-                <ReactTable
-                data={this.state.data}
-                columns={this.columns}
-                pageSizeOptions={[15,20,25,30]}
-                defaultPageSize={10}
-                className="-highlight"
-                previousText='Anterior'
-                filterable={true}
-                nextText='Siguiente'
-                noDataText='Sin Datos'
-                pageText='Pagina'
-                rowsText='Registros'
-                resizable={true}
-                ofText= 'de'
-                getTrProps={this.Handle_Click}
+    render() {
+
+        return ( <
+            ReactTable data = {
+                this.props.data
+            }
+            columns = {
+                this.columns
+            }
+            pageSizeOptions = {
+                [15, 20, 25, 30]
+            }
+            defaultPageSize = {
+                10
+            }
+            className = "-highlight"
+            previousText = 'Anterior'
+            filterable = {
+                true
+            }
+            nextText = 'Siguiente'
+            noDataText = 'Sin Datos'
+            pageText = 'Pagina'
+            rowsText = 'Registros'
+            resizable = {
+                true
+            }
+            ofText = 'de'
+            getTrProps = {
+                this.Handle_Click
+            }
             />
 
-            )
-        } else {
-            return(
-                <div className="spiner">
-                    <GridLoader
-                        color={'#851B07'}
-                        loading={!this.state.load}
-                    />
-                </div>
-            )
-        }
+        )
 
     }
 }
