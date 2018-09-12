@@ -96,6 +96,11 @@ $app->group('/juridico/Api',$auth,function() use($app,$controller){
 		$controller->get_remitente_cedula($app->request->get());
 	});
 
+
+	$app->get('/Remitente_Cedula_Diversos',function() use ($controller,$app){
+		$controller->get_remitente_cedula_diversos($app->request->get());
+	});
+
 	
 
 

@@ -1,0 +1,13 @@
+[Thu, 13 Sep 2018 00:51:08 +0200] Error: Undefined index: idVolante
+[Thu, 13 Sep 2018 00:51:08 +0200] Error: exception 'ErrorException' with message 'Undefined index: idVolante' in C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\DocumentosDiversosController.php:262
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\Cedulas\DocumentosDiversosController.php(262): Slim\Slim::handleErrors(8, 'Undefined index...', 'C:\\xampp\\htdocs...', 262, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Cedulas\OficiosGenericos.php(64): Jur\App\Controllers\Cedulas\DocumentosDiversosController->update_cedula_oficio(Array)
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}

@@ -10,22 +10,13 @@ class Home extends Component{
         return(
             <div className="MainContainer">
                 <Header {...this.props} />
-                <Form id={this.props.id} />
+                <Form {...this.props} />
             </div>
 
         )
     }
 }
 
-
-const modulo = localStorage.getItem('modulo')
-const url_cedula = localStorage.getItem('modulo') + '/Cedula'
-
-Home.defaultProps = {
-    menu:['Asignacion','Respuestas','Observaciones','Cedula'],
-    active:'Cedula',
-    id:localStorage.getItem('idVolante'),
-    url:['Asignacion','Respuestas','Observaciones',url_cedula],
-}
+Home.defaultProps = { active:'Cedula'};
 
 export default Home

@@ -25,12 +25,14 @@
 
 $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 
+	/*--------------------- Home -----------------------*/
+
 	$app->get('/DocumentosDiversos',function() use ($controller){
-		$controller->Home();
+		$controller->home_template();
 	});
 
 
-	$app->get('/DocumentosDiversos/all',function() use ($controller){
+	$app->get('/DocumentosDiversos/All',function() use ($controller){
 		$controller->tabla();
 	});
 
@@ -38,36 +40,34 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 		$controller->load_cedula_template($id);
 	});
 
-
-		$app->post('/OficiosGenericos/Cedula/add',function() use ($controller,$app){
-			$controller->insert_cedula_oficio($app->request->post());
-		});
+	/*-------------------- Insert ---------------------------*/
 
 
-		$app->post('/NotaGenericos/Cedula/add',function() use ($controller,$app){
-			$controller->insert_cedula_nota($app->request->post());
-		});
+	$app->post('/OficiosGenericos/Save',function() use ($controller,$app){
+		$controller->insert_cedula_oficio($app->request->post());
+	});
 
 
+	$app->post('/NotaGenericos/Cedula/add',function() use ($controller,$app){
+		$controller->insert_cedula_nota($app->request->post());
+	});
 
 
-	$app->get('/DocumentosDiversos/Cedula/Register/:id',function($id) use ($controller,$app){
+	/*---------------------- Update ---------------------------*/
+
+	$app->get('/DocumentosDiversos/Register/:id',function($id) use ($controller,$app){
 		$controller->get_register_cedula($id);
 	});
 
 
-		$app->post('/DocumentosDiversos/Cedula/Update',function() use ($controller,$app){
-			$controller->update_cedula_oficio($app->request->post());
-		});
+	$app->post('/DocumentosDiversos/Oficio/Update',function() use ($controller,$app){
+		$controller->update_cedula_oficio($app->request->post());
+	});
 
 
-
-		$app->post('/DocumentosDiversos/Cedula/Nota/Update',function() use ($controller,$app){
-			$controller->update_cedula_nota($app->request->post());
-		});
-
-
-
+	$app->post('/DocumentosDiversos/Cedula/Nota/Update',function() use ($controller,$app){
+		$controller->update_cedula_nota($app->request->post());
+	});
 
 
 	$app->get('/DocumentosDiversos/Nota/Register',function($id) use ($controller,$app){

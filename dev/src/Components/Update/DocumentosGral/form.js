@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import Switch from "react-switch";
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import './../form.styl'

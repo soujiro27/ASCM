@@ -1,9 +1,11 @@
 import React,{Component} from 'react';
 import axios from 'axios';
 import Formulario from './form.js';
-import Modal from './../../Modals/form'
+
+import ErrorForm from './../../Modals/ErrorForm';
+import SuccessForm from './../../Modals/SucessForm';
+
 import ModalInternos from './../../Modals/CopiasInternos'
-import ModalExternos from './../../Modals/CopiasExternos'
 
 import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
@@ -11,35 +13,63 @@ import submit from './../../functions/submit';
 export default class Asignacion extends Component {
 
   state = {
-      "modal":{
-          "visible":false,
-          "message":"",
-          "class":"",
-          "icon":"",
-          "success":false
-      },
-      modals:{
-        internos:false,
-        externos:false
-      },
-      formData:{
-        internos:[],
-        externos:[]
-      }
+    modal:false,
+    nombre:'',
+    message:'',
+    response:false,
   }
 
+  formData = {
+    Internos:'',
+    Externos:'',
+    texto:'',
+    idVolante:this.props.idVolante,
+    copias:''
+
+  }
+
+  OpenModal = () =>{
+    if(this.state.nombre === 'INTERNOS'){ return <ModalInternos   tipo='I' close={this.closeModalRemitente} closeModalCopias={this.closeModalCopias} />}
+    else if(this.state.nombre === 'EXTERNOS'){ return <ModalInternos   tipo='E' close={this.closeModalRemitente} closeModalCopias={this.closeModalCopias} />}
+    else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+  }
+
+  HandleCloseModal = () =>{
+    if(this.state.response) {
+      window.open(`/SIA/jur/App/Cedulas/OFICIO_GENERICO.php?param=${this.props.idVolante}`);
+      location.href = '/SIA/juridico/DocumentosDiversos' 
+    } 
+
+    this.setState({modal:false})
+  }
+
+  HandleOpenModal = (nombre) =>{
+    this.setState({modal:true,nombre});
+  }
+
+  closeModalCopias = (modal,value) => {
+    this.formData[modal]= value;
+    this.setState({modal:false});
+  }
+ 
+  closeModalRemitente = () => { 
+    this.setState({modal:false});
+  }
+ 
   HandleSubmit = (event) => {
     event.preventDefault();
 
-    let div = document.getElementsByClassName('fr-element')
-    let html = div[0].innerHTML
+    let div = document.getElementsByClassName('fr-element');
+    let html = div[0].innerHTML;
+    this.formData['texto'] = html;
+    this.formData['idVolante'] = this.props.idVolante;
+    this.formData['copias'] = this.formData['Internos'] + this.formData['Externos'];
 
     let form_functions = new submit()
-    let data = form_functions.createData(document.getElementsByTagName('form'))
-    data.append('idVolante',this.props.id)
-    data.append('texto',html)
-    data.append('copias',this.state.formData.internos.concat(this.state.formData.externos))
-    let url = '/SIA/juridico/OficiosGenericos/Cedula/add'
+    let data = form_functions.createData_complete(document.getElementsByTagName('form'),this.formData)
+  
+    let url = '/SIA/juridico/OficiosGenericos/Save'
 
     axios.post(url,data)
     .then(response =>{
@@ -48,77 +78,24 @@ export default class Asignacion extends Component {
     })
 
   }
-
   HandleCancel = (event) => {
     event.preventDefault()
     location.href = '/SIA/juridico/DocumentosDiversos'
   }
 
-  HandleCloseModal = () => {
-    if(this.state.modal.success){
-        window.open('/SIA/jur/App/cedulas/OFICIO.php?param='+this.props.id)
-        location.href = `/SIA/juridico/DocumentosDiversos`
-    } else{
-
-        this.setState({
-            modal:{visible:false}
-        })
-    }
-
-  }
-
-  OpenModalInternos = (event) =>{
-    event.preventDefault()
-    this.setState({modals:{internos:true}})
-  }
-
-  closeModalInternos = (values) => {
-    this.setState({
-      modals:{internos:false},
-      formData:{
-        internos:values,
-        externos:this.state.formData.externos
-      }
-    })
-  }
-
-  OpenModalExternos = (event) =>{
-    event.preventDefault()
-    this.setState({modals:{externos:true}})
-  }
-
-  closeModalExternos = (values) => {
-    this.setState({
-      modals:{externos:false},
-      formData:{
-        externos:values,
-        internos:this.state.formData.internos
-      }
-    })
-  }
-
 
   render(){
-
-    return (<form onSubmit={this.HandleSubmit}>
-    <Formulario
-      cancel={this.HandleCancel}
-      OpenModalInternos={this.OpenModalInternos}
-      OpenModalExternos={this.OpenModalExternos}
-      />
-      {
-          this.state.modal.visible &&
-          <Modal data={this.state.modal} close={this.HandleCloseModal}/>
-      }
-      {
-        this.state.modals.internos &&
-        <ModalInternos visible={true} close={this.closeModalInternos} />
-      }
-
-      {
-        this.state.modals.externos &&
-        <ModalExternos visible={true} close={this.closeModalExternos} />
-      }
-    </form>)
+    
+    return (
+      <div className="cedula-container row">
+        <form onSubmit={this.HandleSubmit} className="col-lg-12">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  {...this.props} />
+            {
+              this.state.modal &&
+              <this.OpenModal />
+            }
+        </form>
+      </div>
+    )
   }
 }

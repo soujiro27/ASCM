@@ -13,14 +13,20 @@ export default class FormularioInsert extends Component {
       input[0].children[0].setAttribute('name','fecha_documento')
   }
 
-
+  openModal = (event) =>{
+    event.preventDefault();
+    let modal = event.target.getAttribute('data-nombre');
+    this.props.open(modal);
+  }
 
   render(){
-    console.log(this.props.data[0])
-    let datos = this.props.data[0]
+   let datos = this.props.data
     return(
-      <div className="form-container">
-        <div className="row">
+      <div className="form-container label-bold">
+        <div className="row datos_confronta">
+        <div className="col-lg-12">
+          <h4>Datos Cedula</h4>
+        </div>
           <div className="col-lg-3">
             <label>Numero De Folio</label>
             <input type="text" placeholder="Folio" required name="folio" maxLength="50" className="form-control" defaultValue={datos.numFolio}/>
@@ -31,33 +37,57 @@ export default class FormularioInsert extends Component {
             <input type="text" placeholder="Siglas" required name="siglas" maxLength="50" className="form-control" defaultValue={datos.siglas} />
           </div>
 
-          <div className="col-lg-3">
+          <div className="col-lg-2">
             <label>Fecha Documento</label>
-            <DayPickerInput />
+            <DayPickerInput value={datos.fOficio}/>
           </div>
-
-
-
-        </div>
-
-        <div className="row">
-          <div className="col-lg-12">
-            <label>Asunto</label>
-            <textarea name="asunto" name="asunto" maxLength="200" className="form-control" rows="3" defaultValue={datos.asunto}></textarea>
-          </div>
-        </div>
-
-        <div className="row">
 
           <div className="col-lg-2">
             <label>Copias Internos</label>
-            <button className="btn btn-primary" onClick={this.props.OpenModalInternos}>Agregar</button>
+            <button className="btn btn-primary" onClick={this.openModal} data-nombre="INTERNOS">Agregar</button>
           </div>
 
           <div className="col-lg-2">
             <label>Copias Externos</label>
-            <button className="btn btn-primary" onClick={this.props.OpenModalExternos}>Agregar</button>
+            <button className="btn btn-primary" onClick={this.openModal} data-nombre="EXTERNOS">Agregar</button>
           </div>
+
+           <div className="col-lg-4">
+            <label>Nombre Remitente</label>
+            <input type="text" placeholder="Nombre Remitente" required name="nombre_remitente" maxLength="100" className="form-control" defaultValue={datos.nombreRemitente}/>
+          </div>
+
+          <div className="col-lg-8">
+            <label>Puesto Remitente</label>
+            <input type="text" placeholder="Puesto Remitente" required name="puesto_remitente" maxLength="300" className="form-control" defaultValue={datos.puestoRemitente}/>
+          </div>
+
+          {
+            datos.tipoRemitente == 'E' &&
+            <div className="col-lg-12">
+            <label>Institucion Remitente</label>
+            <input type="text" placeholder="Intitucion Remitente" required name="institucion_remitente" maxLength="300" className="form-control" defaultValue={datos.institucionRemitente} />
+          </div>
+          }
+
+
+          <div className="col-lg-12">
+            <label>Asunto</label>
+            <textarea name="asunto" name="asunto" maxLength="200" className="form-control" rows="3" defaultValue={datos.asunto}></textarea>
+          </div>
+
+          <div className="col-lg-12">
+            <label>Texto Cedula</label>
+            <FroalaEditor
+              base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
+              fullscreenP={true}
+              listsP={true}
+              tableP={true}
+              value={datos.texto}
+              options={{placeholderText: 'Escriba aqui el Texto',}}
+              />
+          </div>
+
 
         </div>
 
@@ -79,24 +109,12 @@ export default class FormularioInsert extends Component {
 
         </div>
 
-        <div className="row">
-          <div className="col-lg-12">
-            <label>Texto Cedula</label>
-            <FroalaEditor
-              base='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.3.4'
-              fullscreenP={true}
-              listsP={true}
-              tableP={true}
-              value={datos.texto}
-              options={{placeholderText: 'Escriba aqui el Texto',}}
-              />
-          </div>
-        </div>
+  
 
-        <div className="col-lg-4 submit-group">
-            <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
-            <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
-
+        <div className="col-lg-12 submit-group">
+            <input type="submit" value="Guardar" className="btn  btn-primary" />
+            <button className="btn btn-danger " onClick={this.props.cancel}>Cancelar</button>
+            <button className="btn btn-warning btn-print" onClick={this.props.PrintCedula} >Imprimir Cedula</button>
         </div>
 
 

@@ -371,6 +371,24 @@ class ModulosController {
 	
 	}
 
+	public function get_remitente_cedula_diversos(array $data){
+		try {
+			$idVolante = $data['idVolante'];
+			$data = Volantes::select('r.saludo','r.nombre','r.puesto','r.tipoRemitente')
+							->join('sia_RemitentesJuridico as r','r.idRemitenteJuridico','=','sia_volantes.idRemitenteJuridico')
+							->where('sia_volantes.idVolante',"$idVolante")
+							->get();
+			echo json_encode(array('status'=>true,'data' => $data));
+	
+		}catch(\Illuminate\Database\QueryException $e){
+	
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Api');
+	
+		}
+	
+	}
+
 
 }
 
