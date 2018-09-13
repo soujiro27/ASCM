@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
 import FroalaEditor from 'react-froala-editor'
+import Tooltip from 'rc-tooltip';
+import 'rc-tooltip/assets/bootstrap.css';
 import './../form.styl'
 import './../fechas.styl';
 
@@ -16,6 +18,20 @@ export default class FormularioInsert extends Component {
     event.preventDefault();
     let modal =event.target.getAttribute('data-nombre');
     this.props.open(modal);
+  }
+
+  upper = (event) =>{
+    event.preventDefault();
+    let id = event.target.getAttribute('data-name');
+    let texto = document.getElementById(id).value;
+    document.getElementById(id).value = texto.toUpperCase()
+  }
+  
+  lower = (event) =>{
+    event.preventDefault();
+    let id = event.target.getAttribute('data-name');
+    let texto = document.getElementById(id).value;
+    document.getElementById(id).value = texto.toLowerCase();
   }
 
   render(){
@@ -53,24 +69,48 @@ export default class FormularioInsert extends Component {
               <button className="btn btn-primary form-control" data-nombre="EXTERNOS" onClick={this.openModal}>Agregar</button>
             </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-11">
             <label>Nombre Remitente</label>
-            <input type="text" placeholder="Nombre Remitente" required name="nombre_remitente" maxLength="100" className="form-control" defaultValue={nombre} />
+            <Tooltip
+              placement="right" 
+              overlay={
+                <div className="btn-letters">
+                  <p className="upper" onClick={this.upper} data-name="nombre">A</p>
+                  <p className="lower" onClick={this.lower} data-name="nombre">a</p>
+                </div>}
+              >
+              <input type="text" placeholder="Nombre Remitente" required name="nombre_remitente" maxLength="100" className="form-control" defaultValue={nombre} id="nombre" />
+            </Tooltip>
           </div>
 
-           <div className="col-lg-8">
+           <div className="col-lg-11">
             <label>Puesto Remitente</label>
-            <input type="text" placeholder="Puesto Remitente" required name="puesto_remitente" maxLength="300" className="form-control" defaultValue={datos.puesto} />
+            <Tooltip
+              placement="right" 
+              overlay={
+                <div className="btn-letters">
+                  <p className="upper" onClick={this.upper} data-name="puesto">A</p>
+                  <p className="lower" onClick={this.lower} data-name="puesto">a</p>
+                </div>}
+              >
+              <input type="text" placeholder="Puesto Remitente" required name="puesto_remitente" maxLength="300" className="form-control" defaultValue={datos.puesto} id="puesto" />
+            </Tooltip>
           </div>
 
-          {
-            datos.tipoRemitente == 'E' &&
-            <div className="col-lg-12">
+          <div className="col-lg-11">
             <label>Institucion Remitente</label>
-            <input type="text" placeholder="Intitucion Remitente" required name="institucion_remitente" maxLength="300" className="form-control"  />
+            <Tooltip
+              placement="right" 
+              overlay={
+                <div className="btn-letters">
+                  <p className="upper" onClick={this.upper} data-name="institucion">A</p>
+                  <p className="lower" onClick={this.lower} data-name="institucion">a</p>
+                </div>}
+              >
+              <input type="text" placeholder="Institucion Remitente"  name="institucion_remitente" maxLength="300" className="form-control" id="institucion" />
+            </Tooltip>
           </div>
-          }
-
+     
           <div className="col-lg-12" >
             <label>Asunto</label>
             <textarea rows="4" className="form-control" name="asunto"></textarea>

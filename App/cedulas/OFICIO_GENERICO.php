@@ -125,7 +125,7 @@ $pdf->SetFont('helvetica', '', 11);
 
 
 
-
+/*
 $header = '<table  border="0" width="100%">
     <tr>
         <td width="140"><img src="img/asamblea.png" width="124" height="160" /></td>
@@ -143,30 +143,118 @@ $header = '<table  border="0" width="100%">
     </tr>
 </table>';
 $pdf->writeHTML($header);
+*/
 
-//$pdf->SetFont('helvetica', '', 8);
 
 
+
+
+$header = <<<EOD
+<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" >
+			<tr>
+              <td rowspan="12" width="280"><img src="img/asamblea.png"  width="110" height="160"></td>
+              <td width="65"></td>
+              <td width="245"></td>
+            </tr>
+            <tr>
+            <td colspan="2"><p style="text-align:justify;margin-top:0px"><b>AUDITORIA SUPERIOR DE LA CIUDAD...DE</b></p></td>
+              	
+            </tr>
+            <tr>
+              	<td colspan="2"><p style="text-align:justify;"><b>DE MÉXICO</b></p></td>
+              	
+            </tr>
+            <tr>
+              	<td colspan="2"></td>
+            </tr>
+            <tr>
+              	<td colspan="2"><p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p></td>
+            </tr>
+            <tr>
+              	<td colspan="2"></td>
+            </tr>
+            <tr>
+              	<td colspan="2"><p><b>OFICIO NÚM. AJU/DOC/23 </b></p></td>
+            </tr>
+            <tr>
+              	<td colspan="2"></td>
+            </tr>
+            <tr>
+              	<td><p style="border:1px solid red"><b>ASUNTO:</b></p></td>
+              	<td><p style="text-align:justify border:1px solid red">ESTO VA A SER UNA PRUEBA DEL ASUNTO  DSF .SD.F.DSF.SDF.DS.dsfsdfsdfsdsdfsdfsdfsdfsdfsdfsdffsdF</p></td>
+            </tr>
+            <tr>
+              	<td colspan="2"></td>
+            </tr>
+            <tr>
+              	<td colspan="2"><p>Ciudad de México, 25 de Septiembre de 2018.</p></td>
+            </tr>
+            <tr>
+              	<td colspan="2"><p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p></td>
+            </tr>
+        </table>
+EOD;
+$pdf->writeHTML($header);
+
+/*
+
+<p><b>OFICIO NÚM. ' .$datos[0]["numFolio"] .'</b></p>
+
+            <span style="border:1px solid red"><b>ASUNTO:</b></span>
+              <span style="text-align:justify">'.$datos[0]['asunto'].'.'.'</span>
+
+          <p>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'.</p>
+          <p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p>
+
+          */
 
 // -------------------------------------------------------------------
 $pdf->SetFont('helvetica', '', 11);
 
+$nombreRemitenteClean = trim($nombreRemitente);
+
 $textoPuesto = <<<EOD
+<table  border="0" width="100%">
+    <tr>
+        <td colspan="0" style="line-height:15px;"><b>{$nombreRemitenteClean}</b></td>
+    </tr>
+</table>
+EOD;
+$pdf->writeHTMLCell(168,0,23,105,$textoPuesto,0, 1, 0, true, 'J', true);
+
+
+$textoPuesto = <<<EOD
+<table  border="0" width="100%" >
+    <tr>
+        <td colspan="1" style="line-height:15px"><b>{$puestoRemitente}</b></td>
+    </tr>
+</table>
+EOD;
+$pdf->writeHTMLCell(98,0,23,109,$textoPuesto,0, 1, 0, true, 'J', true);
+/*
 <br><br>
 <table cellspacing="0" cellpadding="0" border="0" width="395" >
 
     <tr>
         <td colspan="1" style="line-height:15px"><b>{$nombreRemitente} <br>{$puestoRemitente}<br>P R E S E N T E</b></td>
-
+        
 
     </tr>
 </table><br><br><br>
-EOD;
 
+*/
+
+//$pdf->writeHTML($textoPuesto, true, true, false, false, '');
+/*
+$textoPuesto = <<<EOD
+<p style="border:1px solid black; text-align:justify;margin:0px !important"><b>$puestoRemitente</b></p>
+EOD;
 $pdf->writeHTML($textoPuesto, true, false, false, false, '');
+*/
 
 // -------------------------------------------------------------------
 $textoCuerpo = <<<EOD
+<br><br>
 <table cellspacing="0" cellpadding="0" border="0">
 
     <tr>
