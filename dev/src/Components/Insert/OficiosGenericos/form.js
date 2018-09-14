@@ -16,7 +16,7 @@ export default class FormularioInsert extends Component {
 
   openModal = (event) =>{
     event.preventDefault();
-    let modal =event.target.getAttribute('data-nombre');
+    let modal = event.target.getAttribute('data-nombre');
     this.props.open(modal);
   }
 
@@ -69,7 +69,7 @@ export default class FormularioInsert extends Component {
               <button className="btn btn-primary form-control" data-nombre="EXTERNOS" onClick={this.openModal}>Agregar</button>
             </div>
 
-          <div className="col-lg-11">
+          <div className="col-lg-12">
             <label>Nombre Remitente</label>
             <Tooltip
               placement="right" 
@@ -83,7 +83,7 @@ export default class FormularioInsert extends Component {
             </Tooltip>
           </div>
 
-           <div className="col-lg-11">
+           <div className="col-lg-12">
             <label>Puesto Remitente</label>
             <Tooltip
               placement="right" 
@@ -97,7 +97,7 @@ export default class FormularioInsert extends Component {
             </Tooltip>
           </div>
 
-          <div className="col-lg-11">
+          <div className="col-lg-12">
             <label>Institucion Remitente</label>
             <Tooltip
               placement="right" 
@@ -113,7 +113,7 @@ export default class FormularioInsert extends Component {
      
           <div className="col-lg-12" >
             <label>Asunto</label>
-            <textarea rows="4" className="form-control" name="asunto"></textarea>
+            <textarea rows="3" className="form-control" name="asunto" id="asunto"></textarea>
           </div>
 
           <div className="col-lg-12">
@@ -137,29 +137,36 @@ export default class FormularioInsert extends Component {
 
         <div className="row">
         <div className="col-lg-12"><h4>Espacios Cedula </h4></div>
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <label>Atentamente</label>
             <input type="number"  required name="e_atte" min="0" max="99" defaultValue="0" className="form-control"  id="atte"/>
           </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <label>Copias</label>
             <input type="number"  required name="e_copias" min="0" max="99" defaultValue="0" className="form-control" id="copias" />
           </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-2">
             <label>Siglas</label>
             <input type="number"  required name="e_siglas" min="0" max="99" defaultValue="0" className="form-control" id="siglas" />
           </div>
+
+          <div className="col-lg-4">
+            <label>Ancho Puesto(%) </label>
+            <input type="number"  required name="anchoPuesto" min="1" max="99" defaultValue="1" className="form-control" id="ancho" />
+          </div>
+
+        
           
         </div>
 
         
 
-        <div className="col-lg-4 submit-group">
+        <div className="col-lg-12 submit-group">
             <input type="submit" value="Guardar" className="btn  btn-primary" />
             <button className="btn btn-danger " onClick={this.props.cancel}>Cancelar</button>
-
+            <button className="btn btn-warning btn-print" onClick={this.openModal} data-nombre="PREVIEW">Vista Previa</button>
         </div>
 
 

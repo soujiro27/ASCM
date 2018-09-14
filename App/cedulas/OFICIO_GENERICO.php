@@ -98,7 +98,7 @@ $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins('24','24','25',true);
+$pdf->SetMargins('22','33','25',true);
 $pdf->SetFooterMargin('21');
 // set auto page breaks
 $pdf->SetY(0, true, true);
@@ -115,84 +115,55 @@ if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
 // -------------------------------------------------------------------
 
 
-// add a page
-
-// set font
-
-// add a page
 $pdf->AddPage('P','LETTER',true);
 $pdf->SetFont('helvetica', '', 11);
 
 
 
-/*
-$header = '<table  border="0" width="100%">
-    <tr>
-        <td width="140"><img src="img/asamblea.png" width="124" height="160" /></td>
-        <td width="139"></td>
-        <td width="308"><p style="text-align:justify;"><b>AUDITORÍA SUPERIOR DE LA CIUDAD DE MÉXICO</b></p>
-          <p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p>
-          <p><b>OFICIO NÚM. ' .$datos[0]["numFolio"] .'</b></p>
-
-            <span style="border:1px solid red"><b>ASUNTO:</b></span>
-              <span style="text-align:justify">'.$datos[0]['asunto'].'.'.'</span>
-
-          <p>Ciudad de México, '. $feoficio[2] . ' de ' .$mes2 . ' de ' . $feoficio[0].'.</p>
-          <p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p>
-        </td>
-    </tr>
-</table>';
-$pdf->writeHTML($header);
-*/
-
-
-
-
-
 $header = <<<EOD
-<table width="100%" border="1" cellpadding="0" cellspacing="0" bordercolor="#000000" >
-			<tr>
-              <td rowspan="12" width="280"><img src="img/asamblea.png"  width="110" height="160"></td>
-              <td width="65"></td>
-              <td width="245"></td>
-            </tr>
-            <tr>
-            <td colspan="2"><p style="text-align:justify;margin-top:0px"><b>AUDITORIA SUPERIOR DE LA CIUDAD...DE</b></p></td>
-              	
-            </tr>
-            <tr>
-              	<td colspan="2"><p style="text-align:justify;"><b>DE MÉXICO</b></p></td>
-              	
-            </tr>
-            <tr>
-              	<td colspan="2"></td>
-            </tr>
-            <tr>
-              	<td colspan="2"><p style="text-align:justify;margin-top:0px"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></p></td>
-            </tr>
-            <tr>
-              	<td colspan="2"></td>
-            </tr>
-            <tr>
-              	<td colspan="2"><p><b>OFICIO NÚM. AJU/DOC/23 </b></p></td>
-            </tr>
-            <tr>
-              	<td colspan="2"></td>
-            </tr>
-            <tr>
-              	<td><p style="border:1px solid red"><b>ASUNTO:</b></p></td>
-              	<td><p style="text-align:justify border:1px solid red">ESTO VA A SER UNA PRUEBA DEL ASUNTO  DSF .SD.F.DSF.SDF.DS.dsfsdfsdfsdsdfsdfsdfsdfsdfsdfsdffsdF</p></td>
-            </tr>
-            <tr>
-              	<td colspan="2"></td>
-            </tr>
-            <tr>
-              	<td colspan="2"><p>Ciudad de México, 25 de Septiembre de 2018.</p></td>
-            </tr>
-            <tr>
-              	<td colspan="2"><p><i>"Fiscalizar con Integridad para Prevenir y Mejorar"</i></p></td>
-            </tr>
-        </table>
+<table class="tg" border="0">
+  <tr>
+    <th class="tg-0pky" rowspan="8" width="45%"><img src="img/asamblea.png" width="124" height="160" /></th>
+    <th class="tg-fymr" colspan="2" width="55%"><b>AUDITORÍA&nbsp;&nbsp;&nbsp;&nbsp; SUPERIOR&nbsp;&nbsp;&nbsp;&nbsp; DE&nbsp;&nbsp;&nbsp;&nbsp; LA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CIUDAD</b></th>
+  </tr>
+  <tr>
+    <td class="tg-fymr" colspan="2"><b>DE MÉXICO</b></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="2"></td>
+  </tr>
+  <tr style="text-align:justify">
+    <td class="tg-0pky" colspan="2"><b>DIRECCIÓN GENERAL DE ASUNTOS JURÍDICOS</b></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="2"></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="2"><span style="font-weight:bold">OFICIO NÚM. {$datos[0]["numFolio"]}</span></td>
+  </tr>
+  <tr>
+    <td class="tg-0pky" colspan="2"></td>
+  </tr>
+  <tr style="text-align:justify">
+    <td class="tg-0pky" width="11%"><span style="font-weight:bold">ASUNTO:</span></td>
+    <td class="tg-0pky" width="44%">{$datos[0]['asunto']}</td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax" colspan="2"></td>
+  </tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax" colspan="2">Ciudad de México, {$feoficio[2]} de {$mes2} de {$feoficio[0]}</td>
+  </tr>
+  <tr>
+  <td class="tg-0pky" colspan="2"></td>
+</tr>
+  <tr>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax" colspan="2"><span style="font-style:italic">"Fiscalizar con Integridad para Prevenir y Mejorar"</span></td>
+  </tr>
+</table>
 EOD;
 $pdf->writeHTML($header);
 
@@ -210,17 +181,22 @@ $pdf->writeHTML($header);
 
 // -------------------------------------------------------------------
 $pdf->SetFont('helvetica', '', 11);
+$sql = "select * from sia_EspaciosJuridico where idVolante ='$idVolante'";
+$db=conecta();
+$datos=consultaRetorno($sql, $db);
 
-$nombreRemitenteClean = trim($nombreRemitente);
+
+$width = ($datos[0]['anchoPuesto'] / 10)  * 17;
+
 
 $textoPuesto = <<<EOD
 <table  border="0" width="100%">
     <tr>
-        <td colspan="0" style="line-height:15px;"><b>{$nombreRemitenteClean}</b></td>
+        <td colspan="0" style="line-height:15px;"><b>{$nombreRemitente}</b></td>
     </tr>
 </table>
 EOD;
-$pdf->writeHTMLCell(168,0,23,105,$textoPuesto,0, 1, 0, true, 'J', true);
+$pdf->writeHTMLCell(170,0,21,115,$textoPuesto,0, 1, 0, true, 'J', true);
 
 
 $textoPuesto = <<<EOD
@@ -230,27 +206,7 @@ $textoPuesto = <<<EOD
     </tr>
 </table>
 EOD;
-$pdf->writeHTMLCell(98,0,23,109,$textoPuesto,0, 1, 0, true, 'J', true);
-/*
-<br><br>
-<table cellspacing="0" cellpadding="0" border="0" width="395" >
-
-    <tr>
-        <td colspan="1" style="line-height:15px"><b>{$nombreRemitente} <br>{$puestoRemitente}<br>P R E S E N T E</b></td>
-        
-
-    </tr>
-</table><br><br><br>
-
-*/
-
-//$pdf->writeHTML($textoPuesto, true, true, false, false, '');
-/*
-$textoPuesto = <<<EOD
-<p style="border:1px solid black; text-align:justify;margin:0px !important"><b>$puestoRemitente</b></p>
-EOD;
-$pdf->writeHTML($textoPuesto, true, false, false, false, '');
-*/
+$pdf->writeHTMLCell($width,0,21,119,$textoPuesto,0, 1, 0, true, 'J', true);
 
 // -------------------------------------------------------------------
 $textoCuerpo = <<<EOD
@@ -340,7 +296,7 @@ $sql = "select copias from sia_plantillasJuridico where idVolante ='$idVolante'"
 $db=conecta();
 $datos=consultaRetorno($sql, $db);
 $arreglo = explode(",",$datos[0]['copias']);
-//var_dump($arreglo);
+
 $tr = '';
 foreach ($arreglo  as $valor){
     $sql = "select * from sia_RemitentesJuridico where idRemitenteJuridico ='$valor'";
@@ -356,10 +312,10 @@ foreach ($arreglo  as $valor){
 
 
 $tbl = <<<EOD
-<table cellspacing="0" cellpadding="0" border="0">
-    <tr>
-      <td width="30">c.c.p.</td>
-      <td width="555">$tr </td>
+<table cellspacing="0" cellpadding="0" border="0" style="text-align:justify" width="100%">
+    <tr style="text-align:justify">
+      <td width="5%">c.c.p.</td>
+      <td width="95%">$tr </td>
     </tr>
 </table>
 EOD;

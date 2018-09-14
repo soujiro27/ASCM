@@ -4,6 +4,7 @@ import Formulario from './form.js';
 
 import ErrorForm from './../../Modals/ErrorForm';
 import SuccessForm from './../../Modals/SucessForm';
+import Preview from './../../Modals/OficioGenericoPreview';
 
 import ModalInternos from './../../Modals/CopiasInternos'
 
@@ -33,6 +34,7 @@ export default class Asignacion extends Component {
     else if(this.state.nombre === 'EXTERNOS'){ return <ModalInternos   tipo='E' close={this.closeModalRemitente} closeModalCopias={this.closeModalCopias} />}
     else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
     else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'PREVIEW') { return <Preview  close={this.closeModalRemitente}/>}
   }
 
   HandleCloseModal = () =>{
@@ -83,13 +85,13 @@ export default class Asignacion extends Component {
     location.href = '/SIA/juridico/DocumentosDiversos'
   }
 
-
+ 
   render(){
     
     return (
       <div className="cedula-container row">
         <form onSubmit={this.HandleSubmit} className="col-lg-12">
-          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  {...this.props} />
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  {...this.props}  />
             {
               this.state.modal &&
               <this.OpenModal />

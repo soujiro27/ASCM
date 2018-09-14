@@ -22,7 +22,7 @@ use Jur\App\Models\Cedulas\Plantillas;
 class DocumentosDiversosController extends TwigController {
 
 	private $js = 'DocumentosDiversos';
-	private $nombre = 'DocumentosDiversos';
+	private $nombre = 'Oficios Diversos';
 
 	/*--------------------- Templates ------------------*/
 	
@@ -184,6 +184,7 @@ class DocumentosDiversosController extends TwigController {
 					'atte' => $data['e_atte'],
 					'copia' => $data['e_copias'],
 					'sigla' => $data['e_siglas'],
+					'anchoPuesto' => $data['anchoPuesto'],
 					'usrAlta' => $_SESSION['idUsuario']
 				]);
 
@@ -364,6 +365,7 @@ class DocumentosDiversosController extends TwigController {
 			'e_atte' => 'required|max_len,2|numeric',
 			'e_copias' => 'required|max_len,2|numeric',
 			'e_siglas' => 'required|max_len,2|numeric',
+			'anchoPuesto' => 'required|max_len,2|numeric',
 		));
 
 		if($valid === true){
