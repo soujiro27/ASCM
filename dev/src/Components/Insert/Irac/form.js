@@ -14,7 +14,8 @@ export default class Cedula extends Component {
 
   HandleClickModal = (event) =>{
     event.preventDefault();
-    this.props.open('FIRMAS');
+    let modal = event.target.getAttribute('data-modal');
+    this.props.open(modal);
   }
 
   render(){
@@ -22,21 +23,26 @@ export default class Cedula extends Component {
     let nombre = `${datos.saludo} ${datos.nombre} ${datos.paterno} ${datos.materno}`
     return(
       <div className="form-container label-bold">
-        <div className="row datos_oficio">
+        <div className="row datos_confronta">
           <div className="col-lg-12"><h4>Datos Cedula </h4></div>
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <label>Siglas</label>
             <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control"/>
           </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <label>Folio</label>
             <input type="text" name="folio" required maxLength="50" placeholder="Folio"  className="form-control"/>
           </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-3">
             <label>Fecha Documento</label>
             <DayPickerInput />
+          </div>
+
+           <div className="col-lg-2">
+            <label>Firmas Cedula</label>
+            <button className="btn btn-success form-control" onClick={this.HandleClickModal} data-modal="FIRMAS">Añadir Firmas  <i className="fas fa-plus-circle"></i></button>
           </div>
 
           <div className="col-lg-12">
@@ -49,16 +55,14 @@ export default class Cedula extends Component {
             <input type="text" name="puesto_remitente" required maxLength="100" defaultValue={datos.puesto}  className="form-control"/>
           </div>
 
-          <div className="col-lg-7">
-            <button className="btn btn-success" onClick={this.HandleClickModal}>Añadir Firmas  <i className="fas fa-plus-circle"></i></button>
-          </div>
+         
         </div>
 
 
         <div className="row espacios_oficio">
           <div className="col-lg-12"><h4>Espacios Cedula Oficio</h4></div>
 
-            <div className="col-lg-3">
+            <div className="col-lg-2">
               <label>Atentamente</label>
               <input type="number" min='0' max='100' name="e_atte" className="form-control" defaultValue="0" id="atte"/>
             </div>
@@ -72,16 +76,16 @@ export default class Cedula extends Component {
               <label>Siglas</label>
               <input type="number" min='0' max='100' name="e_siglas" className="form-control" defaultValue="0"id="siglas" />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-2">
                 <label>Previsualizar</label>
-              <button className="btn btn-warning form-control" onClick={this.props.prevOficio}>Previsualizar Oficio</button>
+              <button className="btn btn-warning form-control" onClick={this.HandleClickModal} data-modal="OFICIO"> Oficio</button>
             </div>
 
         </div>
 
         <div className="row espacios_observaciones">
           <div className="col-lg-12"><h4>Espacios Cedula Observaciones</h4></div>
-          <div className="col-lg-3">
+          <div className="col-lg-2">
             <label>Observaciones</label>
             <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue="0" id="obvs"/>
           </div>
@@ -108,8 +112,9 @@ export default class Cedula extends Component {
           </div>
 
 
-          <div className="col-lg-12 btn-obvs">
-              <button className="btn btn-warning btn-prev" onClick={this.props.prevObvs}>Previsualizar Observaciones</button>
+          <div className="col-lg-2">
+            <label>Previsualizar</label>
+              <button className="btn btn-warning form-control" onClick={this.HandleClickModal} data-modal="OBSERVACIONES">Observaciones</button>
           </div>
 
         </div>

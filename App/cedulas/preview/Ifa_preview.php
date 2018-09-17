@@ -9,6 +9,8 @@ $copias = $_GET['copias'];
 $texto = $_GET['texto'];
 $firmas = $_GET['firmas'];
 $fecha = $_GET['fecha'];
+$firmantes = $_GET['firmantes'];
+$idTexto = $_GET['idTexto'];
 
 
 function conecta(){
@@ -57,7 +59,7 @@ $pdf = new MYPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8',
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
 $pdf->SetAuthor('Auditoria Superior de la Ciudad de México');
-$pdf->SetTitle('IFA PRUEBAS');
+$pdf->SetTitle('IFA PREVIEW');
  
 //$pdf->setPrintHeader(true);
 $pdf->setPrintFooter(false);
@@ -159,10 +161,17 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 // -----------------------------------------------------
+$sql="SELECT texto FROM sia_CatDoctosTextos WHERE idDocumentoTexto='$idTexto'";
+
+$db=conecta();
+
+$datosTextos=consultaRetorno($sql, $db);
+
+//var_dump($datosTextos[0]['texto']);
 
 $texto_seleccionado = <<<EOD
     <table cellspacing="0" cellpadding="1" border="1" width="582">
-    <tr><td style="text-align:justify;line-height:14px">Esta Dirección General de Asuntos Jurídicos coincide con la (s) Potencial (es) Promoción (es) de Acción (es) señalada (s) en la cédula del Informe Final de Auditoría en revisión, por las observaciones contenidas en la presente Hoja de Evaluación.</p><p><br></p><p>Se debe considerar que esta Dirección General de Asuntos Jurídicos no cuenta con el soporte documental que permita determinar si se reúnen o no los elementos suficientes e idóneos para acreditar o no legalmente la existencia de la (s) irregularidad (es) detectada (s) y señalada (s) en los resultados de la auditoría; demostrar la eventual responsabilidad del (de los) servidor (es) público (s); y en su caso, la fecha probable de presentación de la Promoción de Acciones que correspondan ante la autoridad competente.</td></tr>
+    <tr><td style="text-align:justify;line-height:14px">{$datosTextos[0]['texto']}</td></tr>
     </table>
 EOD;
 
@@ -170,49 +179,35 @@ $pdf->SetFont('helvetica', '', 10);
 $pdf->writeHTML($texto_seleccionado, true, false, false, false, '');
 
 
-
-
 // -----------------------------------------------------------------------------
 
-
-if($fecha > 0){
-  $tbl= '';
-}
-
-for ($i=0; $i <$fecha ; $i++) { 
-  $tbl .= <<<EOD
-   <br>
- 
+if(($fecha) != '0' ){
+  $tbl='';
+  
+  for ($i=0; $i < $fecha ; $i++) {
+  
+    $tbl .= <<<EOD
+    <br>
 EOD;
-}
-
-if($fecha > 0 ){
-
-  $tbl .= <<<EOD
-  <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td colspan="6" align="right">Ciudad de México, 01 de ENERO de 2018</td></tr>  
-  </table>
-EOD;
-} else{
-
+  }
+  $pdf->writeHTML($tbl, true, false, false, false, '');
+  }
+  
   $tbl = <<<EOD
-  <table cellspacing="0" cellpadding="0" border="0">
-    <tr><td colspan="6" align="right">Ciudad de México, 01 de ENERO de 2018</td></tr>  
-  </table>
+    <table cellspacing="0" cellpadding="0" border="0">
+      <tr style="text-align:right"><td  align="right">Ciudad de México, 01 de ENERO de 2018</td></tr>
+    </table>
 EOD;
-}
-
-
-
-for ($i=0; $i <$firmas ; $i++) { 
- $tbl .= <<<EOD
-  <br>
-
+  
+  
+  for ($i=0; $i <$firmas; $i++) {
+   $tbl .= <<<EOD
+    <br>
 EOD;
-}
-
-$pdf->SetFont('helvetica', '', 11);
-$pdf->writeHTML($tbl, true, false, false, false, '');
+  }
+  
+  $pdf->SetFont('helvetica', '', 11);
+  $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 // -----------------------------------------------------------------------------
@@ -240,7 +235,7 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 
 // -----------------------------------------------------------------------------
-$ef=explode(",",$puesjud);
+$ef=explode(",",$firmantes);
 $nombres=array();
 $puestos=array();
 for($i=0;$i<count($ef);$i++){
@@ -255,13 +250,37 @@ $linea='';
 $elaboro='';
 $cont=1;
 $firmaSecond='';
-$elementos=1;
+$elementos=count($nombres);
   if($elementos==1){
-     $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>NOMBRE ELABORO<br>PUESTO ELABORO</b></td><td></td></tr>';
+     $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</b></td><td></td></tr>';
+  }elseif ($elementos==2) {
+    $elaboro='<tr><br>';
+    foreach ($nombres as $llave => $valor) {
+        $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td>';
+      } 
+    $elaboro=$elaboro.'</tr>';
+  }elseif ($elementos==3) {
+    $cont=1;
+    $elaboro='<tr><br>';
+    foreach ($nombres as $llave => $valor) {
+        if($cont>2){
+          $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr>';
+        }elseif($cont>1){
+
+        $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr>';
+
+        }else{
+           $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td>';
+        }
+        $cont++;
+      } 
+   
   }
 $lineaPuestos='';
-$lineaPuestos=$lineaPuestos.'<td align="center" colspan="0"  >'.$value.'</td>';
 
+foreach ($puestos as $key => $value) {
+  $lineaPuestos=$lineaPuestos.'<td align="center" colspan="0"  >'.$value.'</td>';
+}
 
 
 $html = <<<EOD
@@ -271,6 +290,17 @@ $elaboro
 EOD;
 $pdf->SetFont('helvetica', '', 10);
 $pdf->writeHTML($html, true, false, false, false, '');
+
+if($cont>2){
+  
+$html = <<<EOD
+<table cellspacing="0" cellpadding="0" border="0" >
+$firmaSecond
+</table>
+EOD;
+$pdf->SetFont('helvetica', '', 10);
+$pdf->writeHTML($html, true, false, false, false, '');
+}
 
 
 // -----------------------------------------------------------------------------
@@ -291,7 +321,7 @@ $pdf->SetFont('helvetica', '', 8);
 $pdf->writeHTML($tbl, true, false, false, false, '');
 // -----------------------------------------------------------------------------
 //Close and output PDF document
-ob_end_clean();
+//ob_end_clean();
 $pdf->Output('IFA-PREVIEW.pdf', 'I');
 
 //============================================================+

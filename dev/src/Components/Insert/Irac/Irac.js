@@ -3,6 +3,8 @@ import axios from 'axios';
 import Formulario from './form.js';
 import ErrorForm from './../../Modals/ErrorForm';
 import SuccessForm from './../../Modals/SucessForm';
+import OficioPreview from './../../Modals/OficioIracPreview';
+import ObservacionesPreview from './../../Modals/ObservacionesIracPreview';
 
 import ModalFirmas from './../../Modals/FirmasCedula'
 
@@ -25,6 +27,8 @@ export default class Asignacion extends Component {
 
   OpenModal = () =>{
     if(this.state.nombre === 'FIRMAS'){ return <ModalFirmas visible={true} close={this.closeModalBolean} closeModalFirmas={this.closeModalFirmas}/>}
+    else if (this.state.nombre === 'OFICIO') { return <OficioPreview  close={this.closeModalBolean}/>}
+    else if (this.state.nombre === 'OBSERVACIONES') { return <ObservacionesPreview idVolante={this.props.idVolante} close={this.closeModalBolean} firmas={this.formData['firmas']}/>}
     else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
     else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
   }
@@ -57,28 +61,6 @@ export default class Asignacion extends Component {
     }
   }
 
-  prevOficio = (event) => {
-    event.preventDefault();
-    let atte = document.getElementById('atte').value;
-    let copias = document.getElementById('e_copias').value;
-    let siglas = document.getElementById('siglas').value;
-    if(atte != '' && copias != '' && siglas != '' ){
-      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/oficio_irac_preview.php?atte=${atte}&copias=${copias}&siglas=${siglas}"></iframe>`)
-    }
-  }
-
-  prevObvs = (event) => {
-    event.preventDefault();
-    let obvs = document.getElementById('obvs').value;
-    let texto = document.getElementById('texto').value;
-    let firmas = document.getElementById('firmas').value;
-    let copias = document.getElementById('copias').value;
-    let fecha = document.getElementById('fecha').value;
-    if( obvs != '' && texto != '' && firmas != '' && copias != ''){
-      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/irac_preview.php?obvs=${obvs}&copias=${copias}&texto=${texto}&firmas=${firmas}&fecha=${fecha}&param=${this.props.idVolante}"></iframe>`)
-    }
-  }
-
   HandleSubmit = (event) => {
     event.preventDefault();
 
@@ -97,17 +79,13 @@ export default class Asignacion extends Component {
   render(){
     return (
       <div className="cedula-container row">
-        <form onSubmit={this.HandleSubmit} className="col-lg-7">
-          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal} prevOficio={this.prevOficio} data={this.props.data[0]} prevObvs={this.prevObvs}/>
+        <form onSubmit={this.HandleSubmit} className="col-lg-12">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  data={this.props.data[0]} />
             {
               this.state.modal &&
               <this.OpenModal />
             }
         </form>
-        <div className="col-lg-5 prev-cedula" id="prev-cedula">
-          <h2><i className="fas fa-file-pdf"></i></h2>
-          <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
-        </div>
       </div>
     )
   }

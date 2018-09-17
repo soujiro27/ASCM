@@ -18,67 +18,68 @@ export default class Cedula extends Component {
     this.props.open(modal)
   }
 
-  render(){console.log(this.props)
+  render(){
     let datos = this.props.data
     return(
       <div className="form-container label-bold">
-        <div className="row datos_oficio">
+        <div className="row datos_confronta">
           <div className="col-lg-12">
             <h4>Datos Cedula</h4>
           </div>
-          <div className="col-lg-6">
+          <div className="col-lg-3">
             <label>Siglas</label>
             <input type="text" name="siglas" required maxLength="150" placeholder="Siglas"  className="form-control" defaultValue={datos.siglas} />
           </div>
 
-          <div className="col-lg-6">
+          <div className="col-lg-3">
             <label>Fecha Documento</label>
             <DayPickerInput value={datos.fOficio}/>
           </div>
 
-            <div className="col-lg-6">
+            <div className="col-lg-3">
               <label>Añadir Firmas</label>
               <button className="btn btn-success form-control" onClick={this.openModal} data-name="FIRMAS">Agregar  <i className="fas fa-plus-circle" ></i></button>
             </div>
 
-            <div className="col-lg-6">
+            <div className="col-lg-3">
               <label>Texto Promocion de Acciones</label>
               <button className="btn btn-success form-control" onClick={this.openModal} data-name="TEXTOS">Agregar  <i className="fas fa-plus-circle"></i></button>
             </div>
 
         </div>
 
-        <div className="row datos_oficio">
+        <div className="row datos_confronta">
         <div className="col-lg-12">
             <h4>Espacios Cedula</h4>
           </div>
-          <div className="col-lg-4">
+          <div className="col-lg-2">
             <label>Observaciones</label>
             <input type="number" min='0' max='100' name="e_observaciones" className="form-control" defaultValue={datos.encabezado} id="obvs"/>
           </div>
 
-          <div className="col-lg-4">
+          <div className="col-lg-2">
             <label>Texto</label>
             <input type="number" min='0' max='100' name="e_texto" className="form-control" defaultValue={datos.cuerpo} id="texto" />
           </div>
 
-            <div className="col-lg-4">
+            <div className="col-lg-2">
             <label>Fecha</label>
             <input type="number" min='0' max='100' name="e_fecha" className="form-control" defaultValue={datos.fechaDocto} id="fecha" />
           </div>
 
-          <div className="col-lg-6">
+          <div className="col-lg-2">
             <label>Firmas</label>
             <input type="number" min='0' max='100' name="e_firmas" className="form-control" defaultValue={datos.pie} id="firmas"/>
           </div>
 
-          <div className="col-lg-6">
-            <label> Copias</label>
+          <div className="col-lg-2">
+            <label>Copias</label>
             <input type="number" min='0' max='100' name="e_copias" className="form-control" defaultValue={datos.copiaCedula} id="copias"/>
           </div>
 
-           <div className="col-lg-6">
-            <button className="btn btn-warning" onClick={this.props.prev}>Previsualizar Cedula</button>
+           <div className="col-lg-2">
+            <label>Previsualizar</label>
+            <button className="btn btn-warning" onClick={this.openModal} data-name="PREVIEW">Cedula</button>
           </div>
 
 

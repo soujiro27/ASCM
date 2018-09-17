@@ -6,10 +6,10 @@ require_once('./../tcpdf/tcpdf.php');
 $idVolante = $_GET['param'];
 $obvs = $_GET['obvs'];
 $texto = $_GET['texto'];
-$firmas = $_GET['firmas'];
+$firmas_espacio = $_GET['firmas_e'];
 $copias = $_GET['copias'];
 $fecha = $_GET['fecha'];
-
+$firmas = $_GET['firmas'];
 
 function conecta(){
   try{
@@ -161,8 +161,8 @@ EOD;
 $pdf->SetFont('helvetica', '', 10);
 $pdf->writeHTML($tbl, true, false, false, false, '');
 
-
-if(strlen($fecha) > 0 ){
+//var_dump($fecha);
+if(($fecha) != '0' ){
 $tbl='';
 
 for ($i=0; $i < $fecha ; $i++) {
@@ -181,10 +181,10 @@ $tbl = <<<EOD
   </table>
 EOD;
 
-for ($i=0; $i <$firmas ; $i++) {
+
+for ($i=0; $i <$firmas_espacio; $i++) {
  $tbl .= <<<EOD
   <br>
-
 EOD;
 }
 
@@ -219,22 +219,52 @@ $pdf->writeHTML($tbl, true, false, false, false, '');
 
 // -----------------------------------------------------------------------------
 
+$ef=explode(",",$firmas);
+$nombres=array();
+$puestos=array();
+for($i=0;$i<count($ef);$i++){
+    $usrf=$ef[$i];
+    $sql="select concat(saludo,' ',nombre,' ',paterno,' ',materno) as nombre,puesto from sia_PuestosJuridico where idPuestoJuridico='$usrf'";
+    $nombre=consultaRetorno($sql,$db);
+    array_push($nombres,$nombre[0]['nombre']);
+    array_push($puestos,$nombre[0]['puesto']);
+}
+
 $linea='';
 $elaboro='';
 $cont=1;
 $firmaSecond='';
-$elaboro='<tr><br>';
-$elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>NOMBRE PERSONA ELABORO IRAC<br>PUESTO PERSONAL ELABORO IRAC</b></td>';
-$elaboro=$elaboro.'</tr>';
-$elaboro='<tr><br>';
-$elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>NOMBRE PERSONA ELABORO IRAC<br>PUESTO PERSONAL ELABORO IRAC</b></td>';
-$elaboro=$elaboro.'</tr>';
+$elementos=count($nombres);
+  if($elementos==1){
+     $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$nombres[$elementos-1].'<br>'.$puestos[$elementos-1].'</b></td><td></td></tr>';
+  }elseif ($elementos==2) {
+    $elaboro='<tr><br>';
+    foreach ($nombres as $llave => $valor) {
+        $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td>';
+      }
+    $elaboro=$elaboro.'</tr>';
+  }elseif ($elementos==3) {
+    $cont=1;
+    $elaboro='<tr><br>';
+    foreach ($nombres as $llave => $valor) {
+        if($cont>2){
+          $elaboro=$elaboro.'<tr><td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr>';
+        }elseif($cont>1){
 
-/*$lineaPuestos='';
+        $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td></tr><br><br>';
+
+        }else{
+           $elaboro=$elaboro.'<td align="center"><b><p>ELABORÓ<br><br><br></p></b><br><br><br><br><b>'.$valor.'<br>'.$puestos[$llave].'</b></td>';
+        }
+        $cont++;
+      }
+
+  }
+$lineaPuestos='';
 
 foreach ($puestos as $key => $value) {
   $lineaPuestos=$lineaPuestos.'<td align="center" colspan="0"  >'.$value.'</td>';
-}*/
+}
 
 
 $html = <<<EOD
@@ -253,6 +283,7 @@ $firmaSecond
 EOD;
 $pdf->writeHTML($html, true, false, false, false, '');
 }
+
 
 // -----------------------------------------------------------------------------
 

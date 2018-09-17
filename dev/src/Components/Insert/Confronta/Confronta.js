@@ -3,6 +3,7 @@ import axios from 'axios';
 import Formulario from './form.js';
 import ErrorForm from './../../Modals/ErrorForm';
 import SuccessForm from './../../Modals/SucessForm';
+import ConfrontaPreview from './../../Modals/CedulaCronfrontaPreview';
 import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
 
@@ -22,11 +23,12 @@ export default class Asignacion extends Component {
     OpenModal = () =>{
         if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
         else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+        else if (this.state.nombre === 'PREVIEW') { return <ConfrontaPreview   close={this.CloseModal}/>}
       }
 
     HandleCancel = (event) => {
-    event.preventDefault()
-    location.href = '/SIA/juridico/confrontasJuridico'
+        event.preventDefault()
+        location.href = '/SIA/juridico/confrontasJuridico'
     }
 
     
@@ -38,6 +40,10 @@ export default class Asignacion extends Component {
         } else {
             this.setState({modal:false})
         }
+    }
+
+    CloseModal = () =>{
+        this.setState({modal:false});
     }
 
     HandleSubmit = (event) => {
@@ -57,15 +63,14 @@ export default class Asignacion extends Component {
 
     prev = (event) => {
         event.preventDefault();
-        let siglas = document.getElementById('e_siglas').value;
-        document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/confronta_preview.php?siglas=${siglas}"></iframe>`)
+        this.setState({modal:true,nombre:'PREVIEW'});
     }
 
   render(){
 
     return (
     <div className="cedula-container row">
-        <form onSubmit={this.HandleSubmit} className="col-lg-7">
+        <form onSubmit={this.HandleSubmit} className="col-lg-12">
             <Formulario
                 cancel={this.HandleCancel}
                 prev={this.prev}
@@ -76,10 +81,6 @@ export default class Asignacion extends Component {
                 <this.OpenModal />
             }
         </form>
-        <div className="col-lg-5 prev-cedula" id="prev-cedula">
-          <h2><i className="fas fa-file-pdf"></i></h2>
-          <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
-        </div>
     </div>
     )
   }

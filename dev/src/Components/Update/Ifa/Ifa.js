@@ -5,6 +5,7 @@ import ErrorForm from './../../Modals/ErrorForm';
 import SuccessForm from './../../Modals/SucessForm';
 import ModalFirmas from './../../Modals/FirmasCedula'
 import ModalTextos from './../../Modals/TextoPromocion'
+import IfaPreview from './../../Modals/IfaPreview';
 
 import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
@@ -28,6 +29,7 @@ export default class Asignacion extends Component {
   OpenModal = () =>{
     if(this.state.nombre === 'FIRMAS'){ return <ModalFirmas visible={true} firmas={this.props.data[0].idPuestosJuridico} close={this.closeModalBolean} closeModalFirmas={this.closeModalFirmas}/>}
     else if (this.state.nombre === 'TEXTOS') { return <ModalTextos  idTexto={this.props.data[0].idDocumentoTexto} close={this.closeModalBolean} closeModalTextos={this.closeModalTextos}/>}
+    else if (this.state.nombre === 'PREVIEW') { return <IfaPreview close={this.closeModalBolean} idVolante={this.props.data[0].idVolante} firmantes={this.formData['firmas']} texto={this.formData['texto']} />}
     else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
     else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
   }
@@ -75,33 +77,19 @@ export default class Asignacion extends Component {
     })
   }
 
-  prev = (event) => {
-    event.preventDefault();
-    let obvs = document.getElementById('obvs').value;
-    let texto = document.getElementById('texto').value;
-    let firmas = document.getElementById('firmas').value;
-    let copias = document.getElementById('copias').value;
-    let fecha = document.getElementById('fecha').value;
-    if(obvs != '' && texto != '' && firmas != '' && copias != '' ){
-      document.getElementById('prev-cedula').innerHTML = (`<iframe src="/SIA/jur/App/cedulas/preview/ifa_preview.php?obvs=${obvs}&copias=${copias}&texto=${texto}&firmas=${firmas}&idVolante=${this.props.data[0].idVolante}&fecha=${fecha}"></iframe>`)
-    }
-  }
+
 
   render(){
     
     return (
       <div className="cedula-container row">
-        <form onSubmit={this.HandleSubmit} className="col-lg-7">
-          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  data={this.props.data[0]} prev={this.prev} />
+        <form onSubmit={this.HandleSubmit} className="col-lg-12">
+          <Formulario cancel={this.HandleCancel} open={this.HandleOpenModal}  data={this.props.data[0]}  />
             {
               this.state.modal &&
               <this.OpenModal />
             }
         </form>
-        <div className="col-lg-5 prev-cedula" id="prev-cedula">
-          <h2><i className="fas fa-file-pdf"></i></h2>
-          <h4>Inserte los datos y presione el boton de Previsualizar para ver una vista previa de la cedula</h4>
-        </div>
       </div>
     )
   }
