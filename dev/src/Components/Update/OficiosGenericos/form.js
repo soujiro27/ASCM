@@ -44,36 +44,36 @@ export default class FormularioInsert extends Component {
 
           <div className="col-lg-2">
             <label>Copias Internos</label>
-            <button className="btn btn-primary" onClick={this.openModal} data-nombre="INTERNOS">Agregar</button>
+            <button className="btn btn-primary form-control" onClick={this.openModal} data-nombre="INTERNOS">Agregar</button>
           </div>
 
           <div className="col-lg-2">
             <label>Copias Externos</label>
-            <button className="btn btn-primary" onClick={this.openModal} data-nombre="EXTERNOS">Agregar</button>
+            <button className="btn btn-primary form-control" onClick={this.openModal} data-nombre="EXTERNOS">Agregar</button>
           </div>
 
-           <div className="col-lg-4">
+           <div className="col-lg-12">
             <label>Nombre Remitente</label>
-            <input type="text" placeholder="Nombre Remitente" required name="nombre_remitente" maxLength="100" className="form-control" defaultValue={datos.nombreRemitente}/>
+            <input type="text" placeholder="Nombre Remitente" required name="nombre_remitente" maxLength="100" className="form-control" defaultValue={datos.nombreRemitente} id="nombre" />
           </div>
 
-          <div className="col-lg-8">
+          <div className="col-lg-12">
             <label>Puesto Remitente</label>
-            <input type="text" placeholder="Puesto Remitente" required name="puesto_remitente" maxLength="300" className="form-control" defaultValue={datos.puestoRemitente}/>
+            <input type="text" placeholder="Puesto Remitente" required name="puesto_remitente" maxLength="300" className="form-control" defaultValue={datos.puestoRemitente} id="puesto" />
           </div>
 
-          {
-            datos.tipoRemitente == 'E' &&
+          
+            
             <div className="col-lg-12">
             <label>Institucion Remitente</label>
-            <input type="text" placeholder="Intitucion Remitente" required name="institucion_remitente" maxLength="300" className="form-control" defaultValue={datos.institucionRemitente} />
+            <input type="text" placeholder="Intitucion Remitente"  name="institucion_remitente" maxLength="300" className="form-control" defaultValue={datos.institucionRemitente}  id="institucion" />
           </div>
-          }
+          
 
 
           <div className="col-lg-12">
             <label>Asunto</label>
-            <textarea name="asunto" name="asunto" maxLength="200" className="form-control" rows="3" defaultValue={datos.asunto}></textarea>
+            <textarea name="asunto" name="asunto" maxLength="200" className="form-control" rows="3" defaultValue={datos.asunto} id="asunto"></textarea>
           </div>
 
           <div className="col-lg-12">
@@ -94,17 +94,27 @@ export default class FormularioInsert extends Component {
         <div className="row">
           <div className="col-lg-2">
             <label>Espacios Atte.</label>
-            <input type="number"  required name="e_atte" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.atte} />
+            <input type="number"  required name="e_atte" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.atte}  id="atte" />
           </div>
 
           <div className="col-lg-2">
             <label>Espacios Copias</label>
-            <input type="number"  required name="e_copias" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.copia} />
+            <input type="number"  required name="e_copias" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.copia} id="copias" />
           </div>
 
           <div className="col-lg-2">
             <label>Espacios Siglas</label>
-            <input type="number"  required name="e_siglas" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.sigla}/>
+            <input type="number"  required name="e_siglas" min="0" max="99" defaultValue="0" className="form-control" defaultValue={datos.sigla} id="siglas" />
+          </div>
+
+            <div className="col-lg-3">
+            <label>Ancho Puesto(%) </label>
+            <input type="number"  required name="anchoPuesto" min="1" max="99" defaultValue={datos.anchoPuesto} className="form-control" id="ancho" />
+          </div>
+
+             <div className="col-lg-2">
+            <label>Previsualizar</label>
+            <button className="btn btn-warning form-control" onClick={this.openModal} data-nombre="PREVIEW">Cedula</button>
           </div>
 
         </div>

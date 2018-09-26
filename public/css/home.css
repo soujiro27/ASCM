@@ -167,15 +167,15 @@ body{
 
 .Header-user .Header-user-submenu ul {
 	list-style: none;
-	padding: 8px;
+	padding: 6px;
 	margin: 0;
 	border: thin solid rgba(0,0,0,0.3);
 	border-radius: 10px;
 	position: absolute;
 	z-index: 9999;
 	top: 20px;
-	left: 6px;
-	width: 300px;
+	left: 13px;
+	width: 100px;
 	background: #fff;
 }
 
@@ -188,7 +188,7 @@ body{
 
 .Header-user .Header-user-submenu ul li a:hover {
 	color: #000;
-	text-shadow: 1px 1px 2px #666;
+	
 }
 
 .Header-user .Header-user-submenu ul li a svg {

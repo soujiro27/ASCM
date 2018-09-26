@@ -28,8 +28,12 @@ $app->group('/juridico',$auth,function() use($app,$controller){
 		$controller->home_template();
 	});
 
-	$app->get('/Volantes/All',function() use ($controller){
-		$controller->tabla();
+	$app->get('/Volantes/All',function() use ($controller,$app){
+		$controller->tabla($app->request->get());
+	});
+
+	$app->get('/Volantes/Years',function() use ($controller){
+		$controller->years();
 	});
 
 	$app->get('/Volantes/Export',function() use ($controller){

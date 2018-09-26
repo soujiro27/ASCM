@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import axios from 'axios'
 import 'react-table/react-table.css';
-import { GridLoader } from 'react-spinners';
-import './../spiner.styl'
 import './../Table.styl'
 
 class TableContainer extends Component{

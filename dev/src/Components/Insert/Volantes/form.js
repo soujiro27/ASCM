@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Folio from './../shared_components/folio';
 import Fechas from './../shared_components/fechas';
 import Combos from './../shared_components/Combos'
@@ -64,7 +63,7 @@ class Form extends Component {
                 <div className="row">
                     <div className="col-lg-3">
                         <label>Documento</label>
-                        <select className="form-control" required onChange={this.HandleChangeSelect} name="documento">
+                        <select className="form-control custom-select-sm" required onChange={this.HandleChangeSelect} name="documento">
                             <option value="">Escoja Opcion</option>
                             {
                                 this.props.documentos.map((item) =>(
@@ -76,7 +75,7 @@ class Form extends Component {
 
                     <div className="form-group col-lg-3">
                         <label>Sub-Documento</label>
-                        <select className="form-control" required  name="subDocumento" onChange={this.HandleChangeSubDocumento} id="subDocumento" disabled>
+                        <select className="form-control custom-select-sm" required  name="subDocumento" onChange={this.HandleChangeSubDocumento} id="subDocumento" disabled>
                         <option value="">Escoja Opcion</option>
                         {
                             this.state.subDocumentos.map((item) =>(
@@ -87,7 +86,7 @@ class Form extends Component {
                     </div>
                     <div className="col-lg-2">
                     <label>Promocion</label>
-                        <select className="form-control" required name="promocion" >
+                        <select className="form-control custom-select-sm" required name="promocion" >
                             <option value="">Escoja Opcion</option>
                             <option value="SI">SI</option>
                             <option value="NO">NO</option>
@@ -96,7 +95,7 @@ class Form extends Component {
 
                     <div className="col-lg-2">
                     <label>Extemporaneo</label>
-                        <select className="form-control" required name="extemporaneo" >
+                        <select className="form-control custom-select-sm" required name="extemporaneo" >
                             <option value="">Escoja Opcion</option>
                             <option value="SI">SI</option>
                             <option value="NO">NO</option>
@@ -120,16 +119,16 @@ class Form extends Component {
 
 
                 <div className="row">
-                    <div className="col-lg-12" >
+                    <div className="col-lg-10" >
                         <label>Asunto ({this.state.asunto})</label>
                         <textarea rows="4" className="form-control" name="asunto" onChange={this.CountCaracterText} maxLength="3000"></textarea>
                     </div>
                 </div>
 
                 <div className="row">
-                    <div className="col-lg-12" >
+                    <div className="col-lg-10" >
                         <label>Anexar Documento</label>
-                        <input type="file" className="form-control" name="file" id="file" />
+                        <input type="file" className="form-control form-control-sm" name="file" id="file" />
                     </div>
                 </div>
 

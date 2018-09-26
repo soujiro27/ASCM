@@ -2,22 +2,18 @@ import React, { Component } from 'react';
 import Header from './../../Components/Header/Header-text';
 import Form from './../../Components/Update/Volantes/Volantes';
 
-class Home extends Component{
+const Update = (props) =>{
+    return(
+        <div className="MainContainer">
+            <Header texto = {props.texto} />
+            <Form {...props} />
+        </div>
 
-
-    render(){
-        return(
-            <div className="MainContainer">
-                <Header texto = {this.props.texto} />
-                <Form {...this.props} />
-            </div>
-
-        )
-    }
+    )
 }
 
-Home.defaultProps = {
+Update.defaultProps = {
     texto:'Actualizar Registro',
 }
 
-export default Home
+export default Update

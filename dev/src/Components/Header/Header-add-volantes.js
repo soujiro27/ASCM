@@ -1,34 +1,37 @@
-import React, { Component } from 'react';
-
+import React,{Component} from 'react';
 import './Header.styl';
-import axios from 'axios';
 
+export default class Header extends Component {
 
-export default class HeaderVolantes extends Component {
-    
-    HandleClickExport = (event) =>{
-        axios.get('/SIA/juridico/Api/Export')
-        .then((response) => {
-            if(response.status === 200){
-                location.href = '/SIA/jur/export/volantes/volantes.xlsx'
-            }
-        })
+    HandleChangeYear = (event) => {
+        let year = event.target.value;
+        this.props.year(year);
     }
+
 
     render(){
         return(
             <div className="row Header">
-            <div className="col-lg-2 Header-title">
-                <p className="Header-title-text">{this.props.texto}</p>
+                <div className="col-lg-2 Header-title">
+                    <p className="Header-title-text">Registro de {this.props.modulo}</p>
+                </div>
+                <div className="col-lg-2">
+                    <select className="custom-select custom-select-sm" defaultValue={this.props.now} onChange={this.HandleChangeYear}>
+                        {
+                            this.props.data.map(item => (
+                                <option value={item} key={item}>{item}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+                <div className="col-lg-2 offset-lg-6 Header-button">
+                <a  href={'/SIA/juridico/'+this.props.modulo+'/Add'}  className="btn btn-primary btn-sm">Nuevo Volante  <i className="fas fa-plus-circle"></i></a>
+                </div>
             </div>
-            <div className="col-lg-2 offset-lg-6 Header-button">
-                <a  href={'/SIA/juridico/'+this.props.modulo+'/add'}  className="btn btn-primary btn-sm">{this.props.textoButton}</a>
-            </div>
-            <div className="col-lg-2 Header-button">
-                <button  className="btn btn-success btn-sm" onClick={this.HandleClickExport}>Exportar Datos</button>
-            </div>
-        </div>
         )
     }
 }
 
+
+
+// <a  href={'/SIA/juridico/'+this.props.modulo+'/Add'}  className="btn btn-primary btn-sm">Nuevo Registro</a>

@@ -3,7 +3,8 @@ import axios from 'axios';
 import Formulario from './form.js';
 import ErrorForm from './../../Modals/ErrorForm';
 import SuccessForm from './../../Modals/SucessForm';
-import ModalInternos from './../../Modals/CopiasInternos'
+import ModalInternos from './../../Modals/CopiasInternos';
+import Preview from './../../Modals/OficioGenericoPreview';
 
 import './../../shared_styles/insert.styl'
 import submit from './../../functions/submit';
@@ -32,6 +33,7 @@ export default class Update extends Component {
     else if(this.state.nombre === 'EXTERNOS'){ return <ModalInternos firmas={this.props.data[0].copias}  tipo='E' close={this.closeModalRemitente} closeModalCopias={this.closeModalCopias} />}
     else if (this.state.nombre === 'ERROR') { return <ErrorForm visible={true} message={this.state.message} close={this.HandleCloseModal}/>}
     else if (this.state.nombre === 'SUCCESS') { return <SuccessForm visible={true}  close={this.HandleCloseModal}/>}
+    else if (this.state.nombre === 'PREVIEW') { return <Preview  close={this.closeModalRemitente}/>}
   }
 
   HandleOpenModal = (nombre) =>{

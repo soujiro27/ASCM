@@ -48,7 +48,8 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->post('/NotaGenericos/Cedula/add',function() use ($controller,$app){
+
+	$app->post('/NotaGenericos/Save',function() use ($controller,$app){
 		$controller->insert_cedula_nota($app->request->post());
 	});
 
@@ -65,7 +66,7 @@ $app->group('/juridico',$auth,$rol,function() use($app,$controller){
 	});
 
 
-	$app->post('/DocumentosDiversos/Cedula/Nota/Update',function() use ($controller,$app){
+	$app->post('/DocumentosDiversos/Nota/Update',function() use ($controller,$app){
 		$controller->update_cedula_nota($app->request->post());
 	});
 

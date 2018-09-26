@@ -10,8 +10,16 @@ class FirmasModal extends Component {
       data:[]
     }
 
-    HandleCloseModal = () => {
-        let checkboxes = document.getElementsByName('puestos')
+    componentDidMount(){
+        let url = '/SIA/juridico/Api/Firmas'
+        axios.get(url).then(response => {
+          this.setState({data:response.data})
+        })
+    }
+
+    HandleClick = (event) => {
+      event.preventDefault()
+      let checkboxes = document.getElementsByName('puestos')
         let checked = []
 
         checkboxes.forEach((element,index) => {
@@ -20,27 +28,15 @@ class FirmasModal extends Component {
           }
         })
 
-      this.props.close(checked)
-    }
-
-    HandleChangeSelect = (event) =>{
-        let value = event.target.value
-        this.setState({nota:value})
-    }
-
-    componentDidMount(){
-        let url = '/SIA/juridico/Api/Firmas'
-        axios.get(url).then(response => {
-          this.setState({data:response.data})
-        })
+      this.props.closeModalCopias('firmas',checked)
     }
 
 
   render(){
     return ReactDom.createPortal(
       <Modal
-        open={this.props.visible}
-        onClose={this.HandleCloseModal}
+        open={true}
+        onClose={false}
         closeOnOverlayClick={false}
         center
         classNames={{'modal':'textosPromocion'}}>
@@ -57,7 +53,7 @@ class FirmasModal extends Component {
                       {
                         this.state.data.map(item => (
                           <tr key={item.idPuestoJuridico}>
-                            <td><input type="checkbox" value={item.idPuestoJuridico} name="puestos" className="form-control" /></td>
+                            <td><input type="radio" value={item.idPuestoJuridico} name="puestos" className="form-control" /></td>
                             <td>{item.saludo} {item.nombre} {item.paterno} {item.materno}</td>
                             <td>{item.puesto}</td>
                           </tr>
@@ -65,6 +61,9 @@ class FirmasModal extends Component {
                       }
                   </tbody>
                 </table>
+            </div>
+            <div className="col-lg-12">
+              <button className="btn btn-primary">Guardar</button>
             </div>
         </div>
         </Modal>,

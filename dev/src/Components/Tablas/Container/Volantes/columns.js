@@ -2,11 +2,19 @@
 const columns = [
     {
         Header:'Folio',
-        accessor:'folio'
+        accessor: (props) =>    {
+            return parseInt(props.folio)
+        },
+        id:'idFolio',
+        width:50
     },
     {
-        Header:'SubFolio',
-        accessor:'subFolio'
+        Header:'Sub',
+        accessor: (props) => {
+            return parseInt(props.subFolio)
+        },
+        id:'idSub',
+        width:50
     },
     {
         Header:'Documento',
@@ -14,11 +22,13 @@ const columns = [
     },
     {
         Header:'Remitente',
-        accessor:'idRemitente'
+        accessor:'idRemitente',
+        width:100
     },
     {
         Header:'Turnado',
-        accessor:'idAreaRecepcion'
+        accessor:'idAreaRecepcion',
+        width:100
     },
     {
         Header:'Fecha Recepcion',
@@ -26,7 +36,7 @@ const columns = [
     },
     {
         Header:'Desfazado',
-        accessor:'extemporaneo'
+        accessor:'extemporaneo',
     },
     {
         Header:'Auditoria',
@@ -40,10 +50,6 @@ const columns = [
         Header:'Estado',
         accessor:'idEstadoTurnado'
     },
-    {
-        Header:'Estatus',
-        accessor:'estatus'
-    }
 ]
 
 

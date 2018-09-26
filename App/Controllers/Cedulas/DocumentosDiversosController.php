@@ -205,7 +205,7 @@ class DocumentosDiversosController extends TwigController {
 
 		try{
 			$validate = $this->validate_nota($data);
-			if($validate['status']){
+			/*if($validate['status']){
 				$idVolante = $data['idVolante'];
 				
 				$v = Volantes::find($idVolante);
@@ -238,7 +238,8 @@ class DocumentosDiversosController extends TwigController {
 						
 			}
 					
-			echo json_encode($validate);
+			echo json_encode($validate);*/
+			var_dump($data);
 		} catch(\Illuminate\Database\QueryException $e){
 
 			$error = new ErrorsController();
@@ -278,7 +279,7 @@ class DocumentosDiversosController extends TwigController {
 					'puestoRemitente' => $data['puesto_remitente'],
 					'texto' => $data['texto'],
 					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 				]);
 					
 					
@@ -287,8 +288,9 @@ class DocumentosDiversosController extends TwigController {
 					'atte' => $data['e_atte'],
 					'copia' => $data['e_copias'],
 					'sigla' => $data['e_siglas'],
+					'anchoPuesto' => $data['anchoPuesto'],
 					'usrModificacion' => $_SESSION['idUsuario'],
-					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-d-m H:i:s')
+					'fModificacion' => Carbon::now('America/Mexico_City')->format('Y-m-d H:i:s')
 				]);
 
 			}

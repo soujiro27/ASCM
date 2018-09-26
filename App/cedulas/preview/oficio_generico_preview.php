@@ -22,8 +22,7 @@ $datos = [
 
 foreach ($datos as $key => $value) {
   if(empty($value)){
-    //header('Location: /SIA/juridico/Public/cedula.html');
-    var_dump($value);
+    header('Location: /SIA/juridico/Public/cedula.html');
   }
   
 }

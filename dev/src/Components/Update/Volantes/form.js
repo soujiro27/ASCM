@@ -133,9 +133,10 @@ class Form extends Component {
                     </div>
                 </div>
 
-                <div className="col-lg-4 submit-group">
+                <div className="col-lg-12 submit-group">
                     <input type="submit" value="Guardar" className="btn btn-sm btn-primary" />
-                    <button className="btn btn-danger btn-sm" onClick={this.props.cancel}>Cancelar</button>
+                    <button className="btn btn-danger btn-sm " onClick={this.props.cancel}>Cancelar</button>
+                    <button className="btn btn-warning btn-sm btn-print" >Cerrar Volante</button>
                 </div>
             </div>
             )

@@ -63,8 +63,11 @@ class VolantesController extends TwigController {
 
 /*-------------------Tabla-----------------------------*/
 
-	public function tabla(){
+	public function tabla(array $data){
 		try{
+
+			$year = $data['year'];
+			$anio = Carbon::now('America/Mexico_City')->format('Y');
 			$volantes = Volantes::select('sia_Volantes.*','vd.cveAuditoria','a.clave','sub.nombre','t.idEstadoTurnado','t.idAreaRecepcion')
 				->join('sia_VolantesDocumentos as vd','vd.idVolante','=','sia_volantes.idVolante')
 				->join('sia_TurnadosJuridico as t','t.idVolante','=','sia_Volantes.idVolante'  )
@@ -72,6 +75,7 @@ class VolantesController extends TwigController {
 				->join('sia_catSubTiposDocumentos as sub','sub.idSubTipoDocumento','=','vd.idSubTipoDocumento')
 				->where('sub.auditoria','SI')
 				->where('t.idTipoTurnado','V')
+				->whereYear('fRecepcion',"$year")
 				->orderBy("folio","ASC")
 				->get();
 
@@ -81,7 +85,35 @@ class VolantesController extends TwigController {
 
 			$error = new ErrorsController();
 			$error->errores_load_table($e,'Volantes');
+			
+		}
+	}
 
+
+	public function years(){
+		try{
+			$year = [];
+			$volantes = Volantes::select('fRecepcion')->get();
+			foreach ($volantes as $key => $value) {
+				
+				$get_year = explode('-',$volantes[$key]['fRecepcion']);
+				array_push($year,$get_year[0]);
+			}
+
+			$year_order = [];
+
+			$years = array_unique($year);
+			foreach ($years as $key => $value) {
+				array_push($year_order,$value);
+			}
+
+			echo json_encode(array('status'=>true,'data' => $year_order));
+
+		}catch(\Illuminate\Database\QueryException $e){
+
+			$error = new ErrorsController();
+			$error->errores_load_table($e,'Volantes');
+			
 		}
 	}
 

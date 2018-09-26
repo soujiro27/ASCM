@@ -1,0 +1,26 @@
+[Mon, 24 Sep 2018 18:00:32 +0200] Error: session_destroy(): Session object destruction failed
+[Mon, 24 Sep 2018 18:00:32 +0200] Error: exception 'ErrorException' with message 'session_destroy(): Session object destruction failed' in C:\xampp\htdocs\SIA\index.php:184
+Stack trace:
+#0 [internal function]: Slim\Slim::handleErrors(2, 'session_destroy...', 'C:\\xampp\\htdocs...', 184, Array)
+#1 C:\xampp\htdocs\SIA\index.php(184): session_destroy()
+#2 [internal function]: {closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}
+[Mon, 24 Sep 2018 21:50:50 +0200] Error: Undefined variable: years_order
+[Mon, 24 Sep 2018 21:50:50 +0200] Error: exception 'ErrorException' with message 'Undefined variable: years_order' in C:\xampp\htdocs\SIA\jur\App\Controllers\Volantes\VolantesController.php:109
+Stack trace:
+#0 C:\xampp\htdocs\SIA\jur\App\Controllers\Volantes\VolantesController.php(109): Slim\Slim::handleErrors(8, 'Undefined varia...', 'C:\\xampp\\htdocs...', 109, Array)
+#1 C:\xampp\htdocs\SIA\jur\App\Rutas\Volantes\Volantes.php(36): Jur\App\Controllers\Volantes\VolantesController->years()
+#2 [internal function]: App\Rutas\{closure}()
+#3 C:\xampp\htdocs\SIA\Slim\Route.php(468): call_user_func_array(Object(Closure), Array)
+#4 C:\xampp\htdocs\SIA\Slim\Slim.php(1357): Slim\Route->dispatch()
+#5 C:\xampp\htdocs\SIA\Slim\Middleware\Flash.php(85): Slim\Slim->call()
+#6 C:\xampp\htdocs\SIA\Slim\Middleware\MethodOverride.php(92): Slim\Middleware\Flash->call()
+#7 C:\xampp\htdocs\SIA\Slim\Slim.php(1302): Slim\Middleware\MethodOverride->call()
+#8 C:\xampp\htdocs\SIA\index.php(1192): Slim\Slim->run()
+#9 {main}

@@ -27,6 +27,29 @@ export default class submit {
         return formulario
     }
 
+    create_object_form(form,formData){
+        let elementos = form[0].elements;
+        let  formulario = {};
+        for(let x = 0;x<elementos.length-2;x++){
+          if(elementos[x].name != ''){
+            formulario[elementos[x].name] = elementos[x].value;
+            /*if(elementos[x].type == 'file' && elementos[x].files.length > 0 ){
+              formulario.append(elementos[x].name,elementos[x].files[0])
+            }*/
+          }
+        }
+
+      let keys = Object.keys(formData);
+
+
+      keys.map(item => {
+        formulario[item] = formData[item];
+      });
+
+        return formulario;
+        
+    }
+
     createDataUpdate(form,nombre,id){
         let elementos = form[0].elements
         let formData = new FormData()

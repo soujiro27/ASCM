@@ -3,8 +3,6 @@ import axios from 'axios';
 import submit from './../../functions/submit';
 import Formulario from './form';
 
-import Modal from './../../Modals/form'
-import ModalError from './../../Modals/ErrorForm'
 import ModalDictamen from './../../Modals/dictamen'
 import NotaModal from './../../Modals/nota'
 import AuditoriaModal from './../../Modals/Auditoria';
@@ -46,20 +44,20 @@ class Insert extends Component{
       this.setState({modal:false});
     }
 
-
-
-
     HandleSubmit = (event) => {
         event.preventDefault();
         let form_functions = new submit();
         let data = form_functions.createData_complete(document.getElementsByTagName('form'),this.formData);
-
+        //let test = form_functions.create_object_form(document.getElementsByTagName('form'),this.formData);
         axios.post('/SIA/juridico/Volantes/Save',data)
         .then(response =>{
             let respuesta = form_functions.resolve_request(response);
             this.setState(respuesta);
 
         });
+
+        //document.getElementsByTagName('form')[0].style.display = 'none';
+        //console.log(test);
 
     }
 
